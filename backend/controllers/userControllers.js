@@ -2,7 +2,9 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 
 
-
+// @desc   Login a user
+// @route  /api/users
+// @access Public
 const loginUser = async (req, res) => {
    const { email, password } = req.body;
 
@@ -10,7 +12,9 @@ const loginUser = async (req, res) => {
         const user = await User.findOne({ email });
 
         if(user && (await bcrypt.compare(password, user.password))){
-            res.status(200).send('Logged In');
+            const token = user.generateToken();
+            res.cookie('jwt', token, { httpOnly: true, maxAge: process.env.MAXAGE * 1000 });
+            res.status(200).json({ id: user._id, name: user.name });
         } else{
             res.status(401);
             throw new Error('Invalid credentials')
@@ -21,6 +25,10 @@ const loginUser = async (req, res) => {
 };
 
 
+
+// @desc   Register a new user. On success redirects user to login
+// @route  /api/users
+// @access Public
 const registerUser = async (req, res) => {
     const { name, email, password, confirmPassword } = req.body;
 
