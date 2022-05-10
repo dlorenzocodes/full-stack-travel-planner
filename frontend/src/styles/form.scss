@@ -1,0 +1,100 @@
+@import 'variables.scss';
+
+
+.form-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    padding: 0 3rem;
+
+    form{   
+        margin-top: 6rem;
+
+        h2,
+        p{
+            text-align: center;
+        }
+
+        h2{
+            color: $primary-color;
+        }
+
+        p{
+            color: $placeholder-color;
+        }
+
+        a{
+            color: $accent-color;
+        }
+
+        .pw-recovery{
+            text-align: right;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control{
+            padding: 1.125rem 0;
+
+            input,
+            .btn{
+                width: 100%;
+                padding: 0.8rem 0.5rem;
+                font-family: $font-family;
+                border-radius: 5px;
+                outline: none;
+                background-color: transparent;
+                border: 1px solid $primary-color;
+            }
+
+            .btn{
+                font-size: $base-size;
+                cursor: pointer;
+                transition: all 300ms ease-in-out;
+            }
+
+            .sign-btn{
+                background-color: $accent-color;
+                border: none;
+                color: #fff;
+            }
+
+            .google-btn{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                padding: 0.5rem;
+
+                p{
+                    color: $primary-color;
+                }
+            }
+
+            .btn:hover{
+                margin-left: 0.6rem;
+                margin-right: 0.6rem;
+            }
+
+            .google-icon{
+                box-shadow: none;
+                border-radius: 0%;
+                width: 2.5rem;
+                height: 2.5rem;
+                margin-right: 0.5rem;
+            }
+
+            input::placeholder{
+                color: $placeholder-color;
+                padding-left: 0.5rem;
+            }
+
+            input:focus{
+                outline: 2px dotted $primary-color;
+            }
+
+           
+        }
+    }
+}
