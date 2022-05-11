@@ -1,26 +1,33 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 
+const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production' ? true : false,
+    sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
+    maxAge: process.env.MAXAGE * 1000 
+}
 
 // @desc   Login a user
 // @route  /api/users
 // @access Public
-const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
    const { email, password } = req.body;
+   console.log(email, password)
 
    try{
         const user = await User.findOne({ email });
 
         if(user && (await bcrypt.compare(password, user.password))){
             const token = user.generateToken();
-            res.cookie('jwt', token, { httpOnly: true, maxAge: process.env.MAXAGE * 1000 });
+            res.cookie('jwt', token, cookieOptions);
             res.status(200).json({ id: user._id, name: user.name });
         } else{
             res.status(401);
             throw new Error('Invalid credentials')
         }
    }catch(err){
-       res.send(err.message);
+       next(err);
    }
 };
 
@@ -29,12 +36,15 @@ const loginUser = async (req, res) => {
 // @desc   Register a new user. On success redirects user to login
 // @route  /api/users
 // @access Public
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
     const { name, email, password, confirmPassword } = req.body;
 
-    if(password !== confirmPassword) return res.send('Passwords do not match');
-
     try{
+
+        if(password !== confirmPassword) {
+            res.status(400)
+            throw new Error('Passwords do not match!')
+        };
 
         const existingUser = await User.findOne({email});
 
@@ -54,11 +64,10 @@ const registerUser = async (req, res) => {
             password: hashedPassword
         });
 
-        if(newUser) res.status(201).send('User created');
+        if(newUser) res.status(201).send('Account successfully created. Log in!');
 
-    }catch(error){
-        console.log(error);
-        res.send(error)
+    }catch(err){
+        next(err)
     }
 };
 
