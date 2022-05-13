@@ -2,7 +2,7 @@ import axios from "axios"
 
 
 const register = async (userData) => {
-    const response = await axios.post('/users', userData)
+    const response = await axios.post('/users/', userData)
     return response.data
 }
 

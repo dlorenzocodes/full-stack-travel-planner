@@ -37,6 +37,14 @@ svg:hover{
     width: 1.8rem
 }
 
+span{
+    color: #EE4700;
+    display: block;
+    text-align: center;
+    font-size: 0.7rem;
+    margin-top: 0.8rem;
+}
+
 
 // CLASES
 
@@ -45,6 +53,12 @@ svg:hover{
 }
 
 .icon-wrapper{
-    position: absolute;
-    top: 45px;
+    text-align: center;
+}
+
+.error{
+    background-color: #f8ceb3;
+    padding: 0.8rem 0.5rem;
+    border: 1px solid $accent-color;
+    border-radius: $border-radius;
 }

@@ -1,4 +1,4 @@
-const User = require('../models/userModel');
+const { User } = require('../models/userModel');
 const bcrypt = require('bcrypt');
 
 const cookieOptions = {
@@ -13,10 +13,10 @@ const cookieOptions = {
 // @access Public
 const loginUser = async (req, res, next) => {
    const { email, password } = req.body;
-   console.log(email, password)
 
    try{
         const user = await User.findOne({ email });
+        console.log(user)
 
         if(user && (await bcrypt.compare(password, user.password))){
             const token = user.generateToken();
@@ -40,11 +40,6 @@ const registerUser = async (req, res, next) => {
     const { name, email, password, confirmPassword } = req.body;
 
     try{
-
-        if(password !== confirmPassword) {
-            res.status(400)
-            throw new Error('Passwords do not match!')
-        };
 
         const existingUser = await User.findOne({email});
 

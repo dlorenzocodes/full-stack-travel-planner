@@ -6,12 +6,15 @@
     flex-direction: column;
     justify-content: center;
     height: 100vh;
-    padding: 0 3rem;
     max-width: 450px;
     margin: 0 auto;
 
     form{   
-        margin-top: 6rem;
+        margin-top: 3rem;
+        border: 1px solid #E4E4E4;
+        box-shadow: 0 5px 25px 5px rgb(0 0 0 / 5%);
+        padding: 3rem;
+        border-radius: 10px;
 
         h2,
         p{
@@ -44,7 +47,7 @@
                 width: 100%;
                 padding: 0.8rem 0.5rem;
                 font-family: $font-family;
-                border-radius: 5px;
+                border-radius: $border-radius;
                 outline: none;
                 background-color: transparent;
                 border: 1px solid $primary-color;
@@ -54,6 +57,11 @@
                 font-size: $base-size;
                 cursor: pointer;
                 transition: all 300ms ease-in-out;
+            }
+            
+            .btn:disabled{
+                background-color: $selection-color;
+                cursor: not-allowed;
             }
 
             .sign-btn{

@@ -1,9 +1,11 @@
+import Icon from '../components/Icon'
 import { toast } from 'react-toastify'
-import { FcGoogle } from 'react-icons/fc'
 import { useEffect, useState } from 'react'
-import { HomeIcon } from '@heroicons/react/solid'
+import Button from '../components/Button'
+import GoogleBtn from '../components/GoogleBtn'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { useAuthValidation } from '../hooks/useAuthValidation'
 import { register, reset } from '../features/auth/authSlice'
 
 function SignUp() {
@@ -14,19 +16,26 @@ function SignUp() {
         confirmPassword: ''
     })
 
+    const { validate, errors } = useAuthValidation()
+    const [btnDisabled, setBtnDisbaled] = useState(true)
+
     const { name, email, password, confirmPassword } = formData
     const { isError, isAccountCreated , message } = useSelector(state => state.auth)
+
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
 
+    const onBlur = (e) => validate(e.target, password)
+        
     const handleForm = (e) => {
         setFromData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value
         }))
     }
+    
 
     useEffect(() => {
         if(isError) {
@@ -39,9 +48,24 @@ function SignUp() {
     }, [isError, isAccountCreated, message, navigate, dispatch])
 
 
+    useEffect(() => {
+        if(
+            name !== '' &&
+            email !== '' &&
+            password !== '' &&
+            confirmPassword !== ''
+        ) setBtnDisbaled(false)
+        else setBtnDisbaled(true)
+
+    }, [name, email, password, confirmPassword])
+
+
     const onSubmit = (e) => {
         e.preventDefault();
-        const userData = { name, email, password }
+
+        if(btnDisabled) return
+     
+        const userData = { name, email, password, confirmPassword }
 
         dispatch(register(userData))
         setFromData({
@@ -57,11 +81,7 @@ function SignUp() {
     return (
         <div className='form-wrapper'>
 
-            <div className='icon-wrapper'>
-                    <Link to='/'>
-                       <HomeIcon className='icon' fill='#F88747'/>
-                    </Link> 
-            </div>
+           <Icon />
 
             <form onSubmit={onSubmit}>
 
@@ -73,8 +93,10 @@ function SignUp() {
                         name='name' 
                         placeholder='name'
                         value={name}
+                        onBlur={onBlur}
                         onChange={handleForm}
                     />
+                    {errors.name !== null && <span>{errors.name}</span>}
                 </div>
 
                 <div className='form-control'>
@@ -83,8 +105,10 @@ function SignUp() {
                         name='email' 
                         placeholder='email'
                         value={email}
+                        onBlur={onBlur}
                         onChange={handleForm}
                     />
+                    {errors.email !== null && <span>{errors.email}</span>}
                 </div>
 
                 <div className='form-control'>
@@ -93,8 +117,10 @@ function SignUp() {
                         name='password' 
                         placeholder='password'
                         value={password}
+                        onBlur={onBlur}
                         onChange={handleForm}
                     />
+                    {errors.password !== null && <span>{errors.password}</span>}
                 </div>
 
                 <div className='form-control'>
@@ -103,24 +129,18 @@ function SignUp() {
                         name='confirmPassword' 
                         placeholder='confirm password'
                         value={confirmPassword}
+                        onBlur={onBlur}
                         onChange={handleForm}
                     />
+                    {errors.confirmPassword !== null && <span>{errors.confirmPassword}</span>}
                 </div>
 
                 <div className='form-control'>
-                    <button 
-                        type="submit" 
-                        className='btn sign-btn'
-                    >
-                        Sign up
-                    </button>
+                    <Button type='submit' isDisabled={btnDisabled} >Sign up</Button>
                 </div>
 
                 <div className='form-control'>
-                        <button type="button" className='btn google-btn'>
-                            <FcGoogle className='google-icon'/>
-                            <p>Sign up with Google</p>
-                        </button>
+                    <GoogleBtn type='button' />
                 </div>
 
                 <p>Already have an account? <Link to='/login'>Log in</Link></p>

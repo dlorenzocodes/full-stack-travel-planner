@@ -1,10 +1,13 @@
+import Icon from '../components/Icon'
 import { toast } from 'react-toastify'
-import { FcGoogle } from 'react-icons/fc'
+import Button from '../components/Button'
 import { useState, useEffect } from 'react'
-import { HomeIcon } from '@heroicons/react/solid'
+import GoogleBtn from '../components/GoogleBtn'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { reset, login } from '../features/auth/authSlice'
+import { invalidInputError } from '../features/error/errorSlice'
+import { useAuthValidation } from '../hooks/useAuthValidation'
 
 
 function Login() {
@@ -14,8 +17,13 @@ function Login() {
         password: ''
     })
 
+    const [btnDisabled, setBtnDisbaled] = useState(true)
+
     const { email, password } = formData
+    const { errorMessage } = useSelector(state => state.error)
     const { isError, isAccountCreated, isLoginSuccess, message } = useSelector( state => state.auth)
+
+    const { validate, errors } = useAuthValidation()
 
     const dispatch = useDispatch()
     const naviagte = useNavigate()
@@ -33,15 +41,25 @@ function Login() {
 
 
     useEffect(() => {
-        
         if(isError) {
             toast.error(message)
             dispatch(reset())
         }
+
         if(isLoginSuccess) naviagte('/')
 
     }, [isError, isLoginSuccess, isAccountCreated, message, naviagte, dispatch])
 
+
+    useEffect(() => {
+        if( email !== '' && password !== '') setBtnDisbaled(false)
+        else setBtnDisbaled(true)
+    },[email, password])
+
+
+    const onBlur = (e) => validate(e.target)
+
+    const validatePassword = (e) => dispatch(invalidInputError(e.target.value))
 
     const handleForm = (e) => {
         setFormData(prevState => ({
@@ -52,21 +70,21 @@ function Login() {
 
     const onSubmit = (e) => {
         e.preventDefault()
+
+        if(btnDisabled) return
+
         dispatch(login(formData))
         setFormData({
             email: '',
             password: ''
         })
     }
+    
 
     return (
         <div className='form-wrapper'>
 
-                <div className='icon-wrapper'>
-                        <Link to='/'>
-                        <HomeIcon className='icon' fill='#F88747'/>
-                        </Link> 
-                </div>
+               <Icon />
 
                 <form onSubmit={onSubmit}>
 
@@ -78,8 +96,10 @@ function Login() {
                             name='email' 
                             placeholder='email'
                             value={email}
+                            onBlur={onBlur}
                             onChange={handleForm}
                         />
+                        {errors.email && <span>{errors.email}</span>}
                     </div>
 
                     <div className='form-control'>
@@ -88,8 +108,10 @@ function Login() {
                             name='password' 
                             placeholder='password'
                             value={password}
+                            onBlur={validatePassword}
                             onChange={handleForm}
                         />
+                        {errorMessage && <span>{errorMessage}</span>}
                     </div>
 
                     <div className='pw-recovery'>
@@ -97,14 +119,11 @@ function Login() {
                     </div>
 
                     <div className='form-control'>
-                        <button type="submit" className='btn sign-btn'>Log in</button>
+                        <Button type='submit' isDisabled={btnDisabled} className='btn sign-btn'>Log in</Button>
                     </div>
 
                     <div className='form-control'>
-                            <button type="button" className='btn google-btn'>
-                                <FcGoogle className='google-icon'/>
-                                <p>Log in with Google</p>
-                            </button>
+                        <GoogleBtn type='button' />
                     </div>
 
                     <p>Don't have an account yet? <Link to='/register'>Sign up</Link></p>
