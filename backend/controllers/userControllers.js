@@ -37,29 +37,33 @@ const loginUser = async (req, res, next) => {
 // @route  /api/users
 // @access Public
 const registerUser = async (req, res, next) => {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password } = req.body;
 
     try{
 
-        const existingUser = await User.findOne({email});
+        const existingUser = await User.findOne({ email });
 
-         // maybe sent an email about why account was not created
         if(existingUser) {
             res.status(400);
             throw new Error('User already exists');
         }
 
-        // Hash password
         const salt = await bcrypt.genSalt(12);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const newUser = await User.create({
-            name,
-            email,
-            password: hashedPassword
-        });
-
-        if(newUser) res.status(201).send('Account successfully created. Log in!');
+        try{
+            const newUser = await User.create({
+                name,
+                email,
+                strategy: 'local',
+                password: hashedPassword
+            });
+            
+            if(newUser) res.status(201).send('Account successfully created. Log in!')
+        }catch(err){
+            res.status(500)
+            throw new Error('Account could not be created. Please try again later!')
+        }
 
     }catch(err){
         next(err)

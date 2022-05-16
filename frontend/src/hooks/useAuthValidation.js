@@ -29,7 +29,7 @@ export function useAuthValidation() {
             setsErrors(target.name, errorMsg)
         } 
         else if(target.name === 'email'){
-            pattern = /^[^@]+@[^@.]+\.[a-z]+$/i
+            pattern = /^[^@]+@[^@.]+\.[a-z]+$/
             errorMsg = pattern.test(target.value) ? null : 'Please enter a valid email address'
             setsErrors(target.name, errorMsg)
         }

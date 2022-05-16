@@ -1,7 +1,6 @@
 const validate = (validator) => {
     return (req, res, next) => {
-        const { name, email, password, confirmPassword } = req.body;
-        const { error } = validator(name, email, password, confirmPassword);
+        const { error } = validator(req.body);
         if (error) {
             console.log(error)
             return res.status(400).send(error.message)

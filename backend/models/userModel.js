@@ -13,9 +13,16 @@ const userSchema = mongoose.Schema({
         required: true,
         unique: true,
     },
+    strategy: {
+        type: String,
+        enum: ['local', 'google'],
+        required: true
+    },
     password: {
         type: String,
-        required: true,
+        required: function() {
+            return this.strategy === 'local';
+        },
         min: 8
     }
 },
@@ -30,29 +37,46 @@ userSchema.methods.generateToken = function() {
     return token;
 }
 
-const validateUser = (name, email, password, confirmPassword) => {
+
+const validateUser = (userData) => {
     const schema = Joi.object({
         name: Joi.string()
         .min(3)
+        .pattern(/^[A-Za-z]+$/)
         .required(),
-        email: Joi.string().required(),
+        email: Joi.string()
+        .pattern(/^[^@]+@[^@.]+\.[a-z]+$/)
+        .required(),
         password: Joi.string()
             .min(8)
+            .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
             .required(),
         confirmPassword: Joi.ref('password')
     });
 
-    return schema.validate({
-        name,
-        email,
-        password,
-        confirmPassword
-    });
+    return schema.validate(userData);
 }
+
+
+const validateUserLogin = (userData) => {
+    const schema = Joi.object({
+        email: Joi.string()
+        .pattern(/^[^@]+@[^@.]+\.[a-z]+$/)
+        .required(),
+        password: Joi.string()
+        .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+        .required()
+    });
+
+    return schema.validate(userData)
+}
+
 
 const User =  mongoose.model('User', userSchema);
 
+
 module.exports = {
     User,
-    validateUser
+    validateUser,
+    validateUserLogin
 }
