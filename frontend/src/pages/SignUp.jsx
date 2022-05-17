@@ -60,6 +60,12 @@ function SignUp() {
     }, [name, email, password, confirmPassword])
 
 
+    const socialSignUp = () => {
+        window.open('http://localhost:5000/auth/google', '_self')
+        console.log('Click')
+    }
+
+
     const onSubmit = (e) => {
         e.preventDefault();
 
@@ -140,7 +146,7 @@ function SignUp() {
                 </div>
 
                 <div className='form-control'>
-                    <GoogleBtn type='button' />
+                    <GoogleBtn type='button' googleSignUp={socialSignUp}/>
                 </div>
 
                 <p>Already have an account? <Link to='/login'>Log in</Link></p>
