@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useAuthValidation } from '../hooks/useAuthValidation'
 import { register, reset } from '../features/auth/authSlice'
+import { GoogleLogin } from 'react-google-login'
 
 function SignUp() {
     const [ formData, setFromData ] = useState({
@@ -76,8 +77,8 @@ function SignUp() {
         })
     }
 
-    const socialLogin = () => {
-        console.log('social')
+    const responseGoogle = (res) => {
+        console.log(res)
     }
 
     return (
@@ -142,7 +143,13 @@ function SignUp() {
                 </div>
 
                 <div className='form-control'>
-                    <GoogleBtn type='button' googleSignUp={socialLogin}/>
+                    <GoogleLogin 
+                        clientId={process.env.REACT_APP_CLIENT_ID}
+                        render={renderProps => (<GoogleBtn type='button' googleSignUp={renderProps.onClick}/>)}
+                        onSuccess={responseGoogle}
+                        onFailure={responseGoogle}
+                        cookiePolicy={'single_host_origin'}
+                    />   
                 </div>
                 <p>Already have an account? <Link to='/login'>Log in</Link></p>
 
