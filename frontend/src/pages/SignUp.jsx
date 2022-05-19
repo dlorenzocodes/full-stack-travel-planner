@@ -36,7 +36,6 @@ function SignUp() {
         }))
     }
     
-
     useEffect(() => {
         if(isError) {
             toast.error(message)
@@ -60,11 +59,6 @@ function SignUp() {
     }, [name, email, password, confirmPassword])
 
 
-    const socialSignUp = () => {
-        window.open('http://localhost:5000/auth/google', '_self')
-        console.log('Click')
-    }
-
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -82,7 +76,9 @@ function SignUp() {
         })
     }
 
-    
+    const socialLogin = () => {
+        console.log('social')
+    }
 
     return (
         <div className='form-wrapper'>
@@ -146,9 +142,8 @@ function SignUp() {
                 </div>
 
                 <div className='form-control'>
-                    <GoogleBtn type='button' googleSignUp={socialSignUp}/>
+                    <GoogleBtn type='button' googleSignUp={socialLogin}/>
                 </div>
-
                 <p>Already have an account? <Link to='/login'>Log in</Link></p>
 
             </form>
