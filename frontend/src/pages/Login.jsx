@@ -3,11 +3,11 @@ import { toast } from 'react-toastify'
 import Button from '../components/Button'
 import { useState, useEffect } from 'react'
 import GoogleBtn from '../components/GoogleBtn'
-import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { reset, login } from '../features/auth/authSlice'
-import { invalidInputError } from '../features/error/errorSlice'
 import { useAuthValidation } from '../hooks/useAuthValidation'
+import { invalidInputError } from '../features/error/errorSlice'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { reset, login, googleSignInFailure, getGoogleSignUrl } from '../features/auth/authSlice'
 
 
 function Login() {
@@ -18,6 +18,7 @@ function Login() {
     })
 
     const [btnDisabled, setBtnDisbaled] = useState(true)
+    const [searchParams] = useSearchParams()
 
     const { email, password } = formData
     const { errorMessage } = useSelector(state => state.error)
@@ -28,6 +29,8 @@ function Login() {
     const dispatch = useDispatch()
     const naviagte = useNavigate()
 
+
+    // USE EFFECTS
     useEffect(() => {
         const timer = setTimeout(() => {
             if(isAccountCreated){
@@ -48,7 +51,20 @@ function Login() {
 
         if(isLoginSuccess) naviagte('/')
 
-    }, [isError, isLoginSuccess, isAccountCreated, message, naviagte, dispatch])
+    }, [isError, isLoginSuccess, message, naviagte, dispatch])
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            let queryparam = searchParams.get('error')
+            if(searchParams.get('error') && queryparam) {
+                dispatch(googleSignInFailure())
+            }
+        }, 1000)
+
+        return () => clearTimeout(timer)
+
+    }, [searchParams, dispatch])
 
 
     useEffect(() => {
@@ -57,9 +73,12 @@ function Login() {
     },[email, password])
 
 
+    // EVENTS
     const onBlur = (e) => validate(e.target)
 
     const validatePassword = (e) => dispatch(invalidInputError(e.target.value))
+
+    const socialSignIn = () => dispatch(getGoogleSignUrl())
 
     const handleForm = (e) => {
         setFormData(prevState => ({
@@ -123,7 +142,7 @@ function Login() {
                     </div>
 
                     <div className='form-control'>
-                        <GoogleBtn type='button' />
+                        <GoogleBtn type='button' googleSignUp={socialSignIn}/>
                     </div>
 
                     <p>Don't have an account yet? <Link to='/register'>Sign up</Link></p>

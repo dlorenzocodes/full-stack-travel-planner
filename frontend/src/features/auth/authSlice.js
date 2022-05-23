@@ -38,6 +38,30 @@ export const login = createAsyncThunk(
     }
 )
 
+export const getGoogleSignUrl = createAsyncThunk(
+    'auth/getGoogleUrl',
+    async(_, thunkAPI) => {
+        try{
+            return await authService.getGoogleUrl()
+        }catch(err){
+            const message = err.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+export const googleSignInFailure = createAsyncThunk(
+    'auth/googleSignInFailure',
+    async(_, thunkAPI) => {
+        try{
+            return await authService.googleSignInFailure()
+        }catch(err){
+            const message = err.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -65,6 +89,10 @@ const authSlice = createSlice({
                 state.user = action.payload
             })
             .addCase(login.rejected, (state, action) => {
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(googleSignInFailure.rejected, (state, action) => {
                 state.isError = true
                 state.message = action.payload
             })
