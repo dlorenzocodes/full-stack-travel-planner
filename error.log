@@ -1,0 +1,1 @@
+{"level":"error","message":"Error: Cannot create property 'Symbol(level)' on string 'MongoDb connected: travelplanner-shard-00-00.fzlr2.mongodb.net'","service":"user-service"}

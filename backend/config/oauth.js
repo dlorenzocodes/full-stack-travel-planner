@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { logger } = require('./logger');
 const { google } = require('googleapis');
 
 const oauth2Client = new google.auth.OAuth2(
@@ -36,7 +37,7 @@ const getGoogleUser = async (code) => {
 
         return await googleUser.data;
     }catch(err){
-        console.log(err)
+        logger.error(err)
     }
 };
 

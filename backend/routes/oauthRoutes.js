@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { logger } = require('../config/logger');
 const { User } = require('../models/userModel');
 const { getGoogleAuthUrl, getGoogleUser } = require('../config/oauth');
 
@@ -49,12 +50,13 @@ router.get('/', async (req, res, next) => {
             req.user = newUser;
         }catch(err){
             res.redirect('http://localhost:3000/login?error=true');
+            logger.error(err);
         }
 
         req.user = exsistingUser;
 
     }catch(err){
-        console.log(err)
+        logger.error(err);
     }
 });
 

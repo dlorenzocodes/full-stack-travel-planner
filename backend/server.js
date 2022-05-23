@@ -3,10 +3,11 @@ const app = express();
 const connectDB = require('./config/db');
 const port = process.env.PORT || 5000;
 require('dotenv').config();
+const { logger } = require('./config/logger');
 
 connectDB();
 
 require('./startup/routes')(app);
 
 
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+app.listen(port, () => logger.info(`Listening on port ${port}...`));
