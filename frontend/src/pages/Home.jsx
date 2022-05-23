@@ -1,8 +1,14 @@
-import React from 'react'
+import Search from '../components/Search'
+import Suggestions from '../components/Suggestions'
+import SignupLoginBtns from '../components/SignupLoginBtns'
 
 function Home() {
   return (
-    <div>Home</div>
+    <>
+      <Search />
+      <Suggestions />
+      <SignupLoginBtns />
+    </>
   )
 }
 

@@ -1,0 +1,42 @@
+@import 'variables.scss';
+
+.search-container{
+    background: url('../assets/home-image.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: left bottom;
+    height: 216px;
+    color: #fff;
+
+    .search-wrapper{
+        height: 100%;
+
+        .main-title{
+            line-height: 1.2;
+            margin-top: 2rem;
+            letter-spacing: 0.03rem;
+        }
+
+        .search-bar{
+            position: relative;
+
+            input{
+                position: fixed;
+                width: calc(100% - 4.6rem);
+                top: 194px;
+                padding: 1.2rem 0.5rem;
+                border: none;
+                box-shadow: -2px -7px 45px 12px rgb(0 0 0 / 10%);
+                background: #fff;
+            }
+
+            .search-icon{
+                position: absolute;
+                right: 12px;
+                top: 48px;
+            }
+        }
+
+        
+    }
+}
