@@ -5,7 +5,7 @@ const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production' ? true : false,
     sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
-    maxAge: process.env.MAXAGE * 1000 
+    maxAge: 15 * 60 * 1000 
 }
 
 // @desc   Login a user
