@@ -24,4 +24,4 @@ const protectPrivateRoutes = (req, res, next) => {
     }
 }
 
-module.exports = protectPrivateRoutes;
+module.exports = { protectPrivateRoutes };

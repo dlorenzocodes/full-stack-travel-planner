@@ -31,7 +31,7 @@ router.get('/', async (req, res, next) => {
         if(exsistingUser){
             const jwtToken = exsistingUser.generateToken();
             res.cookie('jwt', jwtToken, cookieOptions);
-            return res.redirect('http://localhost:3000/');
+            return res.redirect('http://localhost:3000/?success=true');
         }
 
         try{
@@ -44,7 +44,7 @@ router.get('/', async (req, res, next) => {
             if(newUser) {
                 const jwtToken = newUser.generateToken();
                 res.cookie('jwt', jwtToken, cookieOptions);
-                res.redirect('http://localhost:3000/');
+                res.redirect('http://localhost:3000/?success=true');
             }
 
             req.user = newUser;

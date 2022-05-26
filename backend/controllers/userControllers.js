@@ -1,5 +1,6 @@
 const { User } = require('../models/userModel');
 const bcrypt = require('bcrypt');
+const logger = require('../config/logger');
 
 const cookieOptions = {
     httpOnly: true,
@@ -8,19 +9,19 @@ const cookieOptions = {
     maxAge: 15 * 60 * 1000 
 }
 
-// @desc   Login a user
-// @route  /api/users
+// @desc   Login an user
+// @route  /users/login
 // @access Public
 const loginUser = async (req, res, next) => {
    const { email, password } = req.body;
 
    try{
         const user = await User.findOne({ email });
-        console.log(user)
 
         if(user && (await bcrypt.compare(password, user.password))){
             const token = user.generateToken();
             res.cookie('jwt', token, cookieOptions);
+            req.user = user;
             res.status(200).json({ id: user._id, name: user.name });
         } else{
             res.status(401);
@@ -34,7 +35,7 @@ const loginUser = async (req, res, next) => {
 
 
 // @desc   Register a new user. On success redirects user to login
-// @route  /api/users
+// @route  /users
 // @access Public
 const registerUser = async (req, res, next) => {
     const { name, email, password } = req.body;
@@ -70,7 +71,38 @@ const registerUser = async (req, res, next) => {
     }
 };
 
+
+// @desc   Gets current user
+// @route  /users/me
+// @access Private
+const getCurrentUser = (req, res, next) => {
+    const user = {
+        id: req.user._id,
+        name: req.user.name
+    }
+    res.status(200).json(user);
+}
+
+const handleUserLogout = (req, res, next) => {
+    const cookies = req.cookies;
+    console.log(cookies);
+
+    try{
+        if(cookies.jwt){
+            res.clearCookie('jwt', cookieOptions);
+            return res.sendStatus(204);
+        } else{
+            return res.sendStatus(204);
+        }
+    }catch(err){
+        logger.error(err);
+        next(new Error('Could not be logged out'));
+    }
+}
+
 module.exports = {
     loginUser,
-    registerUser
+    registerUser,
+    getCurrentUser,
+    handleUserLogout
 }

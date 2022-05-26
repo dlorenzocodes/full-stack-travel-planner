@@ -60,6 +60,12 @@ input:focus{
     position: relative;
 }
 
+.container{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .section-padding{
     padding: 2rem 2.3rem;
 }
