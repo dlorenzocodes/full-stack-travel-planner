@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const users = require('../routes/userRoutes');
 const oauthRoutes = require('../routes/oauthRoutes');
+const placesRoutes = require('../routes/placesRoutes');
 const cors = require('cors');
 const errorHandler = require('../middleware/errorMiddleware');
 
@@ -16,10 +17,11 @@ const corsOptions = {
 
 module.exports = function(app){
     app.use(express.json());
-    app.use(express.urlencoded({ extended: false }));
+    app.use(express.urlencoded({ extended: true }));
     app.use(cors(corsOptions));
     app.use(cookieParser());
     app.use('/users', users);
     app.use('/auth/google', oauthRoutes);
+    app.use('/places', placesRoutes);
     app.use(errorHandler);
 }

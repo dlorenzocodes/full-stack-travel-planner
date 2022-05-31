@@ -3,12 +3,11 @@ import { useEffect } from 'react'
 import useAuth from "../hooks/useAuth"
 import { useDispatch } from 'react-redux'
 import { getCurrentUser } from '../features/auth/authSlice'
+import Explore from '../pages/Explore'
 
 function PersistLogin() {
-    const { loggedIn } = useAuth()
+    const { loggedIn, checkingStatus } = useAuth()
     const dispatch = useDispatch()
-
-    console.log(loggedIn)
 
     useEffect(() => {
 
@@ -16,8 +15,10 @@ function PersistLogin() {
 
     }, [loggedIn, dispatch])
 
+    if(checkingStatus) return <p>Loading... </p>
+
     return (
-        loggedIn ? <Outlet /> : <p>Loading...</p>
+        loggedIn ? <Outlet /> : <Explore />
     )
 }
 

@@ -1,16 +1,22 @@
 import React from 'react'
 import MenuBar from '../components/MenuBar'
+import SearchBar from '../components/SearchBar'
 import { UserAddIcon } from '@heroicons/react/solid'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { handleUserLogout, reset } from '../features/auth/authSlice'
 import { toast } from 'react-toastify'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { LogoutIcon } from '@heroicons/react/solid'
 
 
 function Profile() {
 
-  const { isError, message } = useSelector(state => state.auth)
+  const [isUpcoming, setIsUpcoming] = useState(true)
+  const [isOngoing, setIsOngoing] = useState(false)
+  const [isPast, setIsPast] = useState(false)
+
+  const { isError, message, user } = useSelector(state => state.auth)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -26,18 +32,76 @@ function Profile() {
       navigate('/explore')
   } 
 
+  const handleTripSelection = (e) => {
+    if(e.target.id === 'ongoing'){
+      setIsOngoing(true)
+      setIsUpcoming(false)
+      setIsPast(false)
+    } else if(e.target.id === 'past'){
+      setIsPast(true)
+      setIsUpcoming(false)
+      setIsOngoing(false)
+    } else{
+      setIsUpcoming(true)
+      setIsOngoing(false)
+      setIsPast(false)
+    }
+  }
+
   return (
     <div className='container'>
         <section className='profile-wrapper'>
-          <button type='button' onClick={handleLogout}>Logout</button>
           <div className='profile-image-wrapper'>
             <UserAddIcon fill='#CCC' />
             <h3 className='subheading-text'>Add profile image</h3>
           </div>
+
+          <button 
+            type='button' 
+            className='logout-btn'
+            onClick={handleLogout}
+          >
+            <h3>Logout</h3>
+            <LogoutIcon />
+          </button>
         </section>
 
-        <section className='trip-profile-section'>
-          Trips
+        <section className='trip-profile-section section-padding'>
+          
+          <aside>
+            <h2>Welcome, {user.name}!</h2>
+            <SearchBar />
+          </aside>
+
+          <section className='trip-categories'>
+            <div className='categories'>
+              <button 
+                type='button' 
+                id='upcoming'
+                className={ isUpcoming ? 'active' : ''}
+                onClick={handleTripSelection}
+              >
+                  Upcoming
+              </button>
+              <button 
+                type='button' 
+                id='ongoing'
+                className={ isOngoing ? 'active' : ''}
+                onClick={handleTripSelection}
+              >
+                Ongoing
+              </button>
+              <button 
+                type='button' 
+                id='past'
+                className={ isPast ? 'active' : ''}
+                onClick={handleTripSelection}
+              >
+                Past
+              </button>
+            </div>
+          </section>
+
         </section>
       
       <MenuBar />
