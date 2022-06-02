@@ -1,9 +1,10 @@
-import { Outlet } from "react-router-dom";
+import Spinner from './Spinner';
 import { useEffect } from 'react'
 import useAuth from "../hooks/useAuth"
-import { useDispatch } from 'react-redux'
-import { getCurrentUser } from '../features/auth/authSlice'
 import Explore from '../pages/Explore'
+import { useDispatch } from 'react-redux'
+import { Outlet } from "react-router-dom";
+import { getCurrentUser } from '../features/auth/authSlice'
 
 function PersistLogin() {
     const { loggedIn, checkingStatus } = useAuth()
@@ -15,7 +16,7 @@ function PersistLogin() {
 
     }, [loggedIn, dispatch])
 
-    if(checkingStatus) return <p>Loading... </p>
+    if(checkingStatus) return <Spinner />
 
     return (
         loggedIn ? <Outlet /> : <Explore />

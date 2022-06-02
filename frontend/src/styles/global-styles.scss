@@ -74,6 +74,10 @@ input:focus{
     text-align: center;
 }
 
+.section-heading{
+    font-size: $base-size;
+}
+
 .subheading-text{
     font-size: $subheading-size;
     font-weight: $medium-weight;
@@ -106,6 +110,34 @@ input,
     padding: 0.8rem 0.5rem;
     border: 1px solid $accent-color;
     border-radius: $border-radius;
+}
+
+.arrow-left,
+.arrow-right{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity 300ms ease-in-out;
+}
+
+.arrow-right{
+    right: 0;
+}
+
+.spinner-container{
+    flex-grow: 2;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner{
+    background: url('../assets/loader.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 60px;
+    height: 60px;
 }
 
 

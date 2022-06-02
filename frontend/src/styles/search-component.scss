@@ -5,11 +5,12 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: left bottom;
-    height: 216px;
+    min-height: 216px;
     color: #fff;
 
     .search-wrapper{
         height: 100%;
+        position: relative;
 
         .main-title{
             line-height: 1.2;
@@ -18,11 +19,11 @@
         }
 
         .search-bar{
+            width: 100%;
+            position: absolute;
+            top: 100%;
 
             input{
-                position: fixed;
-                width: calc(100% - 4.6rem);
-                top: 194px;
                 padding: 1.2rem 0.5rem;
                 border: none;
                 box-shadow: -2px -7px 45px 12px rgb(0 0 0 / 10%);
@@ -31,7 +32,7 @@
 
             .search-icon{
                 right: 12px;
-                top: 48px;
+                top: 15px;
             }
         }
 
