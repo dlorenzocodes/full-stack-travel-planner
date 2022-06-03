@@ -11,9 +11,11 @@ const login = async (userData) => {
     return await response.data
 }
 
-
 const getGoogleUrl = async() => {
-    const response = await axios.get('/auth/google/url', { withCredentials: true })
+    const response = await axios.get('/auth/google/url', { 
+            headers: { 'Content-Type': 'application/json'},
+            withCredentials: true 
+        })
     const url = await response.data
     window.open(url, '_self')
 }
@@ -23,11 +25,26 @@ const googleSignInFailure = async () => {
     return await response.data
 }
 
+const getCurrentUser = async () => {
+    const response = await axios.get('/users/me', { 
+        headers: { 'Content-Type': 'application/json'  }, 
+        withCredentials: true 
+    })
+    return await response.data
+}
+
+const logoutUser = async () => {
+    const response = await axios.get('/users/logout', { withCredentials: true })
+    return await response.data
+}
+
 const authService = {
     register,
     login,
     getGoogleUrl,
-    googleSignInFailure
+    googleSignInFailure,
+    getCurrentUser,
+    logoutUser
 }
 
 export default authService

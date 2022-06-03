@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from './authService'
 
-
 const initialState = {
     user: null,
     isAccountCreated: false,
@@ -62,6 +61,30 @@ export const googleSignInFailure = createAsyncThunk(
     }
 )
 
+export const getCurrentUser = createAsyncThunk(
+    'auth/getCurrentUser',
+    async(_, thunkAPI) => {
+        try{
+            return await authService.getCurrentUser()
+        }catch(err){
+            const message = err.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+export const handleUserLogout = createAsyncThunk(
+    'auth/LogoutUser',
+    async(_, thunkAPI) => {
+        try{
+            return await authService.logoutUser()
+        }catch(err){
+            const message = err.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -93,6 +116,18 @@ const authSlice = createSlice({
                 state.message = action.payload
             })
             .addCase(googleSignInFailure.rejected, (state, action) => {
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(getCurrentUser.fulfilled, (state, action) => {
+                state.isLoginSuccess = true
+                state.user = action.payload
+            })
+            .addCase(handleUserLogout.fulfilled, (state, action) => {
+                state.user = null
+                state.isLoginSuccess = false
+            })
+            .addCase(handleUserLogout.rejected, (state, action) => {
                 state.isError = true
                 state.message = action.payload
             })

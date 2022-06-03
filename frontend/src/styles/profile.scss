@@ -1,0 +1,116 @@
+@import './variables';
+
+
+.profile-wrapper{
+    background: url('../assets/fieldimage.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 165px;
+    position: relative;
+
+    .logout-btn{
+        margin: 1rem;
+        background: #fff;
+        color: $primary-color;
+        padding: 0.25rem 1rem;
+        border: none;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        border-radius: $border-radius;
+        right: 0;
+        position: fixed;
+        cursor: pointer;
+        transition: all 300ms ease-in-out;
+
+        &:hover{
+            margin-right: 1.5rem;
+        }
+
+        svg{
+            box-shadow: none;
+            background-color: transparent;
+            border-radius: 0%;
+        }
+    }
+
+    .profile-image-wrapper{
+        background-color: $section-color;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        position: fixed;
+        left: 50%;
+        top: calc(165px - 75px);
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        svg{
+            background-color: transparent;
+            box-shadow: none;
+            width: 4rem;
+            padding: 0;
+        }
+
+        h3{
+            padding: 0.5rem 1.2rem;
+            text-align: center;
+            color: $primary-color;
+        }
+    }
+}
+
+.trip-profile-section{
+    flex-grow: 2;
+
+    aside{
+        margin-top: 5rem;
+
+        h2{
+            color: $primary-color;
+            text-align: center;
+            padding-bottom: 2.3rem;
+        }
+
+        .search-bar{
+
+            .icon-wrapper{
+                right: 9px;
+                top: 10px;
+            }
+        }
+    }
+
+    .trip-categories{
+        margin-top: 2.75rem;
+
+        .categories{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid $selection-color;
+
+            button{
+                background: transparent;
+                border: none;
+                font-size: 1rem;
+                font-family: $font-family;
+                color: $selection-color;
+                padding-bottom: 0.5rem;
+                cursor: pointer;
+                font-weight: $semibold-weight;
+            }
+
+            button.active{
+                color: $accent-color;
+                border-bottom: 2px solid $accent-color;
+            }
+        }
+    }
+}

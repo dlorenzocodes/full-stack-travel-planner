@@ -1,0 +1,101 @@
+@import 'variables.scss';
+
+.suggestions-container{
+    margin-top: 2.25rem;
+    flex-grow: 2;
+    color: $primary-color;
+
+    .suggestions-results{
+        position: relative;
+
+        p{
+            margin-bottom: 1.5rem;
+            font-weight: $regular-weight;
+        }
+
+        .arrows{
+            .arrow-left,
+            .arrow-right{
+                top: 55%;
+                transform: translateY(-55%); 
+            }
+
+            .arrow-left{
+                margin-left: 0.5rem;
+            }
+
+            .arrow-right{
+                margin-right: 1rem;
+            }
+        }
+
+        .carousel{
+            display: grid;
+            overflow: hidden;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 21px;
+
+            .city-item,
+            .attraction-item{
+                transition: transform 300ms ease-in-out;
+
+                div > img{
+                    width: 180px;
+                }
+                img{ 
+                    width: 100%;
+                    border-radius: $border-radius;
+                }
+
+                .city-info,
+                .attraction-info{
+                    display: flex;
+                    align-items: center;
+                    margin-top: 0.3rem;
+
+                    p{
+                        margin: 0;
+                        color: $accent-color;
+                    }
+
+                    svg{
+                        box-shadow: none;
+                        padding: 0;
+                        margin-right: 0.25rem;
+                        min-width: 16px;
+                        width: 16px;
+                    }
+                }
+            }
+        }
+
+        &:hover .arrow-left,
+        &:hover .arrow-right{
+            opacity: 1;
+        }
+    }
+
+    .attractions{
+        margin-top: 4rem;
+
+        .section-heading{
+            margin-bottom: 1rem;
+        }
+
+        .arrows{
+            .arrow-left,
+            .arrow-right{
+                top: 35%;
+                transform: translateX(-35%);
+            }
+
+            .arrow-left{
+                margin-left: 1rem
+            }
+
+            .arrow-right{
+                margin-right: 0.5rem;
+            }
+        }
+    }
+}
