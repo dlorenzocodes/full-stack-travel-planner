@@ -106,9 +106,7 @@ function Login() {
                <Icon />
 
                 <form onSubmit={onSubmit}>
-
                     <h2>Login to you account</h2>
-
                     <div className='form-control'>
                         <input 
                             type="email" 

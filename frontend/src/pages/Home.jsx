@@ -5,8 +5,11 @@ import { useSearchParams } from 'react-router-dom'
 import Suggestions from '../components/Suggestions'
 import { useDispatch  } from 'react-redux'
 import { getCurrentUser } from '../features/auth/authSlice'
+import { useSelector } from 'react-redux'
 
 function Home() {
+
+  const { addTripModal } = useSelector( auth => auth.modal )
 
   const [searchParams] = useSearchParams()
   const dispatch = useDispatch()
@@ -25,7 +28,9 @@ function Home() {
   }, [searchParams, dispatch])
 
   return (
-    <div className='container'>
+    <div 
+      className={ addTripModal ? 'container isModal' : 'container'}
+    >
       <Search />
       <Suggestions />
       <MenuBar />

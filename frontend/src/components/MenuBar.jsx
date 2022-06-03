@@ -1,10 +1,21 @@
 import { useState, useEffect } from 'react'
+import AddTrip from './AddTrip'
 import { useLocation, Link } from 'react-router-dom'
 import { UserIcon, SearchIcon, PlusCircleIcon } from '@heroicons/react/solid'
+import { useDispatch, useSelector } from 'react-redux'
+import { openAddTripModal } from '../features/modals/modalSlice'
 
 function MenuBar() {
 
+  const { addTripModal } = useSelector( state => state.modal )
   const location = useLocation()
+  const dispatch = useDispatch()
+
+  const handleAddTrip = () => {
+    dispatch(openAddTripModal())
+  }
+
+  if(addTripModal) return <AddTrip />
 
   return (
     <div className='menu-bar-container section-padding'>
@@ -19,7 +30,10 @@ function MenuBar() {
             <h3 className='subheading-text'>Explore</h3>
         </Link>
 
-        <div className='add-trip-tab centered'>
+        <div 
+          className='add-trip-tab centered'
+          onClick={handleAddTrip}
+        >
             <PlusCircleIcon />
             <h3 className='subheading-text'>Add Trip</h3>
         </div>

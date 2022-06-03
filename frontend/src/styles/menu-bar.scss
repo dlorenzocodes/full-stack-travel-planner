@@ -11,6 +11,12 @@
     .add-trip-tab,
     .profile-tab{
         color: $selection-color;
+        cursor: pointer;
+        transition: color 300ms ease-in-out;
+    }
+
+    .add-trip-tab:hover{
+        color: $accent-color;
     }
 
     .active{
