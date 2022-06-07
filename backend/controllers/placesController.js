@@ -25,7 +25,6 @@ const getUserCoordinates = async () => {
 const getPlacesRecomendations = async (req, res, next) => {
     try{
         const response = await getUserCoordinates();
-        console.log(response);
 
         if(response.hasOwnProperty('messages')){
             res.status(response.code);
@@ -43,12 +42,10 @@ const getPlacesRecomendations = async (req, res, next) => {
 
             const newAttractionData = attractionsData.results.slice(1,5);
             const data = [cityData, newAttractionData];
-
-            console.log(data);
+            
             res.send(data);
         }catch(err){
             logger.error(err.response);
-            console.log(err.response);
             throw new Error(err.response);
         }
 

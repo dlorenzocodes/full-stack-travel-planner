@@ -18,6 +18,34 @@
         flex-direction: column;
         justify-content: center;
 
+        .form-control{
+
+            .dates-container{
+                border: 1px solid $accent-color;
+                border-radius: $border-radius;
+
+                span{
+                    text-align: left;
+                    color: $primary-color;
+                    padding-left: 1rem;
+                }
+
+                .dates-wrapper{
+                    display: flex;
+                    flex-direction: row;
+    
+                    input{
+                        border: none;
+                        padding: 0.5rem 1rem;
+                        width: 35%;
+                        font-size: 0.8rem;
+                        color:$placeholder-color;
+                    }
+                }
+            }
+            
+        }
+
         h1{
             text-align: center;
         }

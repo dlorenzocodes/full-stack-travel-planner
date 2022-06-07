@@ -6,10 +6,12 @@ import Suggestions from '../components/Suggestions'
 import { useDispatch  } from 'react-redux'
 import { getCurrentUser } from '../features/auth/authSlice'
 import { useSelector } from 'react-redux'
+import CityModal from '../components/CityModal'
 
 function Home() {
 
   const { addTripModal } = useSelector( auth => auth.modal )
+  const { isCityActive } = useSelector( state => state.trip )
 
   const [searchParams] = useSearchParams()
   const dispatch = useDispatch()
@@ -34,6 +36,7 @@ function Home() {
       <Search />
       <Suggestions />
       <MenuBar />
+      { isCityActive && <CityModal />}
     </div>
   )
 }
