@@ -1,9 +1,9 @@
-import { SearchIcon } from '@heroicons/react/solid'
-import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { postDestination } from '../features/trip/tripSlice'
 import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import { SearchIcon } from '@heroicons/react/solid'
+import { postDestination } from '../features/trip/tripSlice'
 
 function SearchBar() {
 

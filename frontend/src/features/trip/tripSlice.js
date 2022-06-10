@@ -5,7 +5,7 @@ const initialState = {
     cityInfo: {},
     isLoading: false,
     isError: false,
-    isCityActive: false,
+    isSuccess: false,
     message: ''
 }
 
@@ -25,11 +25,10 @@ const tripSlice = createSlice({
     name: 'trip',
     initialState,
     reducers: {
-        closeCityModal: (state) => {
-            state.isCityActive = false
-        },
         resetTripState: (state) => {
+            state.cityInfo = {}
             state.isError = false
+            state.isSuccess = false
             state.isLoading = false
             state.message = ''
 
@@ -41,18 +40,19 @@ const tripSlice = createSlice({
                 state.isLoading = true
             })
             .addCase(postDestination.fulfilled, (state, action) => {
+                state.isSuccess = true
                 state.isLoading = false
-                state.isCityActive = true
+                state.isError = false
                 state.cityInfo = action.payload
             })
             .addCase(postDestination.rejected, (state, action) => {
-                state.isCityActive = false
-                state.isLoading = false
                 state.isError = true
+                state.isLoading = false
+                state.isSuccess = false
                 state.message = action.payload || 'Invalid request!'
             })
     }
 })
 
-export const { closeCityModal, resetTripState } = tripSlice.actions
+export const { resetTripState } = tripSlice.actions
 export default tripSlice.reducer

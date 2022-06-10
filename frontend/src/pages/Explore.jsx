@@ -6,27 +6,29 @@ import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 import { resetTripState } from '../features/trip/tripSlice'
+import { openSearchCityModal } from '../features/modals/modalSlice'
 
 function Explore() {
 
-  const { isCityActive, isError, message } = useSelector( state => state.trip)
+  const { searchCityModal } = useSelector(state => state.modal)
+  const { isError, isSuccess, message } = useSelector( state => state.trip)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if(isError) toast.error(message)
+    if(isError) {
+      toast.error(message)
       dispatch(resetTripState())
-    }, 1000)
+    } 
 
-    return () => clearTimeout(timer)
-  })
+    if(isSuccess) dispatch(openSearchCityModal())
+  },[isError, message, isSuccess, dispatch])
 
   return (
     <div className='container'>
       <Search />
       <Suggestions />
       <SignupLoginBtns />
-      { isCityActive && <CityModal />}
+      { searchCityModal && <CityModal />}
     </div>
   )
 }

@@ -56,6 +56,7 @@ input:focus{
 }
 
 
+
 // CLASES
 .container{
     position: relative;
@@ -147,6 +148,36 @@ input,
     background-size: cover;
     width: 60px;
     height: 60px;
+}
+
+// Category Buttons
+.trip-categories{
+    margin-top: 2.75rem;
+
+    .categories{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid $selection-color;
+
+        button{
+            width: 30%;
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            font-family: $font-family;
+            color: $selection-color;
+            padding-bottom: 0.5rem;
+            cursor: pointer;
+            font-weight: $semibold-weight;
+        }
+
+        button.active{
+            color: $accent-color;
+            border-bottom: 2px solid $accent-color;
+        }
+    }
 }
 
 

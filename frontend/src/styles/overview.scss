@@ -1,0 +1,58 @@
+@import 'variables.scss';
+
+.trip-overview{
+    font-family: $font-family;
+
+    .reservation-icons{
+        background-color: $section-color;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 0.8rem;
+        margin-top: 0.8rem;
+
+        button{
+            width: 25%;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+
+            p{
+                font-weight: $medium-weight;
+                margin-top: 0.5rem;
+            }
+
+            svg{
+                width: 2rem;
+                height: 100%;
+            }
+        }
+    }
+
+    .trip-form{
+        margin-top: 2rem;
+
+        form{
+
+            fieldset{
+                border: none;
+                margin-top: 1rem;
+
+                div{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    border-bottom: 1px solid $primary-color;
+                    padding-bottom: 0.8rem;
+
+                    svg{
+                        background-color: transparent;
+                        border-radius: 0;
+                        box-shadow: none;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,13 +1,14 @@
 import React from 'react'
+import { toast } from 'react-toastify'
+import NewTrip from '../components/NewTrip'
+import { useEffect, useState } from 'react'
 import MenuBar from '../components/MenuBar'
-import SearchBar from '../components/SearchBar'
-import { UserAddIcon } from '@heroicons/react/solid'
 import { useNavigate } from 'react-router-dom'
+import SearchBar from '../components/SearchBar'
+import { LogoutIcon } from '@heroicons/react/solid'
+import { UserAddIcon } from '@heroicons/react/solid'
 import { useDispatch, useSelector } from 'react-redux'
 import { handleUserLogout, reset } from '../features/auth/authSlice'
-import { toast } from 'react-toastify'
-import { useEffect, useState } from 'react'
-import { LogoutIcon } from '@heroicons/react/solid'
 
 
 function Profile() {
@@ -16,6 +17,7 @@ function Profile() {
   const [isOngoing, setIsOngoing] = useState(false)
   const [isPast, setIsPast] = useState(false)
 
+  const { addNewTripForm } = useSelector( state => state.modal)
   const { isError, message, user } = useSelector(state => state.auth)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -105,6 +107,7 @@ function Profile() {
         </section>
       
       <MenuBar />
+      { addNewTripForm && <NewTrip />}
     </div>
   )
 }

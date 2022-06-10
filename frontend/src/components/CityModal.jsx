@@ -1,11 +1,15 @@
 import { XIcon } from '@heroicons/react/solid'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { closeCityModal } from '../features/trip/tripSlice'
+import { resetTripState } from '../features/trip/tripSlice'
+import { openNewTripForm, closedSearchCityModel } from '../features/modals/modalSlice'
 
 function CityModal() {
 
+    const { user } = useSelector( state => state.auth )
     const { cityInfo } = useSelector( state => state.trip)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const image = !cityInfo?.imageURl ? 'http://localhost:3000/static/media/fieldimage.9771d9277256011ffd97.jpg' : cityInfo.imageURl
     const cityDescription = !cityInfo?.cityInfo ? `No information was found about ${cityInfo.title}` : cityInfo.cityInfo
@@ -13,7 +17,16 @@ function CityModal() {
     const style = { backgroundImage: `url(${image})`}
 
     const handleCloseModal = () => {
-        dispatch(closeCityModal())
+        dispatch(closedSearchCityModel())
+        dispatch(resetTripState())
+    }
+
+    const handleStartTrip = () => {
+        if(user) {
+            dispatch(openNewTripForm())
+            dispatch(closedSearchCityModel())
+        }
+        else navigate('/login')
     }
 
     return (
@@ -25,7 +38,7 @@ function CityModal() {
                     </div>
                     <div className='modal-headline'>
                         <h1>Is {cityInfo.title} in your mind?</h1>
-                        <button className='btn'>Strat planning</button>
+                        <button className='btn' onClick={handleStartTrip}>Start planning</button>
                     </div>
                 </div>
                 <div className='modal-info'>

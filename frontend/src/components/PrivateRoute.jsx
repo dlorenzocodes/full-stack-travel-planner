@@ -1,6 +1,6 @@
-import { Outlet, Navigate, useLocation } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import Spinner from '../components/Spinner'
+import { Outlet, Navigate, useLocation } from 'react-router-dom'
 
 function PrivateRoute() {
 

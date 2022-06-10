@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState ={
-    addTripModal: false
+    addTripModal: false,
+    addNewTripForm: false,
+    searchCityModal: false
 }
 
 const modalSlice = createSlice({
@@ -13,9 +15,28 @@ const modalSlice = createSlice({
         },
         closeAddTripModal: (state) => {
             state.addTripModal = false
+        },
+        openNewTripForm: (state) => {
+            state.addNewTripForm = true
+        },
+        closeNewTripForm: (state) => {
+            state.addNewTripForm = false
+        },
+        openSearchCityModal: (state) => {
+            state.searchCityModal = true
+        },
+        closedSearchCityModel: (state) => {
+            state.searchCityModal = false
         }
     }
 })
 
-export const { openAddTripModal, closeAddTripModal } = modalSlice.actions
+export const { 
+    openAddTripModal, 
+    closeAddTripModal,
+    openNewTripForm,
+    closeNewTripForm,
+    openSearchCityModal,
+    closedSearchCityModel
+} = modalSlice.actions
 export default modalSlice.reducer

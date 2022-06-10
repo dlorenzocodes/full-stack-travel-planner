@@ -1,5 +1,5 @@
-import { LocationMarkerIcon } from '@heroicons/react/solid'
 import fieldimage from '../assets/fieldimage.jpg'
+import { LocationMarkerIcon } from '@heroicons/react/solid'
 
 function AttractionItem({ place, style }) {
 
