@@ -94,6 +94,7 @@ input:focus{
 }
 
 input,
+textarea,
 .btn{
     padding: 0.8rem 0.5rem;
     width: 100%;
@@ -188,5 +189,70 @@ input,
     .search-icon{
         position: absolute;
         cursor: pointer;
+    }
+}
+
+// Trip Modals
+.flight-modal-container{
+    padding-top: 6rem;
+    padding-bottom: 11rem;
+}
+
+.hotel-modal-container{
+    padding-top: 10rem;
+    padding-bottom: 15rem;
+}
+
+.car-modal-container{
+    padding-top: 6rem;
+    padding-bottom: 13rem;
+
+    form{
+        .address-question{
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+
+            input{
+                width: auto;
+            }
+
+
+            label{
+                font-size: $subheading-size;
+                margin-left: 0.5rem;
+                color: $placeholder-color;
+            }
+        }
+
+        .trip-form-control{
+            #dropoff-address{
+    
+                &.isHidden{
+                    display: none;
+                }
+            }
+        }
+
+    }
+}
+
+.other-modal-container{
+    padding-top: 11rem;
+    padding-bottom: 18rem;
+}
+
+.note-modal-container{
+    padding-top: 15rem;
+    padding-bottom: 30rem;
+}
+
+.trip-form-control{
+    padding: 0.5rem 0;
+
+    input,
+    textarea{
+        border: none;
+        background-color: $section-color;
     }
 }

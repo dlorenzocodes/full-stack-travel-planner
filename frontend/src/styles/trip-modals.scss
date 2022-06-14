@@ -1,0 +1,61 @@
+@import 'variables.scss';
+
+.trip-modal{
+    position: absolute;
+    top: 0;
+    background: rgba(0,0,0, 0.5);
+    width: 100%;
+    color: $primary-color;
+
+    form{
+        padding: 2rem;
+        background: #fff;
+        width: 77%;
+        margin: 0 auto;
+        border-radius: 5px;
+
+        h3{
+            text-align: center;
+        }
+
+        .trip-form-control{
+
+            #departure-date,
+            #arrival-date,
+            #checkin-date,
+            #checkout-date,
+            #pickup-date,
+            #dropoff-date,
+            #other-date,
+            #other-checkout-date{
+                margin-right: 0.5rem;
+            }
+
+            #departure-time,
+            #arrival-time,
+            #pickup-time,
+            #dropoff-time,
+            #other-time,
+            #other-checkout-time{
+                margin-left: 0.5rem;
+            }
+        }
+
+        .db-input{
+            display: flex;
+            margin-top: 0.5rem;
+
+            input{
+                color: $placeholder-color;
+            }
+        }
+
+        .btn{
+            color: #fff;
+            background-color: $accent-color;
+            padding: 0.8rem;
+            font-size: 0.8rem;
+            border: none;
+        }
+    }
+}

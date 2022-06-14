@@ -2,6 +2,11 @@ import { useState } from 'react'
 import Overview from './Overview'
 import Expenses from './Expenses'
 import Itinerary from './Itinerary'
+import CarModal from './modals/CarModal';
+import NoteModal from './modals/NoteModal';
+import OtherModal from './modals/OtherModal';
+import HotelModal from './modals/HotelModal';
+import FlightModal from './modals/FlightModal';
 import { useSelector, useDispatch } from 'react-redux'
 import { SaveIcon, XIcon } from '@heroicons/react/solid'
 import { resetTripState } from '../features/trip/tripSlice'
@@ -10,6 +15,13 @@ import { closeNewTripForm, closeAddTripModal } from '../features/modals/modalSli
 function NewTrip() {
 
   const { cityInfo } = useSelector( state => state.trip )
+  const { 
+    flightModal, 
+    hotelModal, 
+    carModal, 
+    otherModal, 
+    notesModal 
+  } = useSelector( state => state.modal )
   const dispatch = useDispatch()
 
   const style = {
@@ -101,6 +113,12 @@ function NewTrip() {
         </section>
         
       </section>
+
+      { flightModal && <FlightModal /> }
+      { hotelModal && <HotelModal /> }
+      { carModal && <CarModal /> }
+      { otherModal && <OtherModal /> }
+      { notesModal && <NoteModal /> }
     </section>
   )
 }
