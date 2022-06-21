@@ -18,7 +18,22 @@ import { closeNewTripForm, closeAddTripModal } from '../features/modals/modalSli
 function NewTrip() {
 
   const dispatch = useDispatch()
-  const { cityInfo } = useSelector( state => state.trip )
+  const [ dates, setDates ] = useState({
+    startDate: '',
+    endDate: ''
+  })
+
+  const { startDate, endDate } = dates
+  const { 
+      cityInfo, 
+      Flights, 
+      Cars, 
+      Lodging, 
+      Other, 
+      Notes, 
+      Itinerary: itinerary, 
+      Expenses: expenses 
+  } = useSelector( state => state.trip )
 
   const { 
     flightModal, 
@@ -62,7 +77,29 @@ function NewTrip() {
     dispatch(resetTripState())
   }
 
-  const saveTrip = () => {}
+  const handleTripDates = (e) => {
+    setDates((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value
+    }))
+  }
+
+  const saveTrip = () => {
+    const tripData = {
+      tripName: cityInfo.title,
+      dates: {...dates},
+      Flights,
+      Cars,
+      Lodging,
+      Notes,
+      Other,
+      itinerary,
+      expenses
+    }
+
+    console.log(tripData)
+    dispatch(closeNewTripForm())
+  }
   
 
   return (
@@ -80,8 +117,20 @@ function NewTrip() {
         <div className='trip-header section-padding'>
             <h1>{cityInfo.title} Trip</h1>
             <div className='trip-dates'>
-              <input type="date" name='start-date'/>
-              <input type="date" name='end-date'/>
+              <input 
+                type="date" 
+                name='startDate' 
+                id='startDate'
+                value={startDate}
+                onChange={handleTripDates}
+              />
+              <input 
+                type="date" 
+                name='endDate' 
+                id='endDate'
+                value={endDate}
+                onChange={handleTripDates}
+              />
             </div>
         </div>
 
