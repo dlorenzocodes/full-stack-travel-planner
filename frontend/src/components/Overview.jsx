@@ -1,10 +1,15 @@
+import CarItem from './CarItem'
 import { useState } from 'react'
-import { v4 as uuidv4 } from 'uuid';
+import NoteItem from './NoteItem'
+import { v4 as uuidv4 } from 'uuid'
+import OtherItem from './OtherItem'
+import FlightItem from './FlightItem'
+import LodgingItem from './LodgingItem'
 import { TbDots } from 'react-icons/tb'
-import { useDispatch } from 'react-redux'
 import { MdNoteAlt } from 'react-icons/md'
 import { IoCarSportSharp } from 'react-icons/io5'
 import { ChevronUpIcon } from '@heroicons/react/solid'
+import { useDispatch, useSelector } from 'react-redux'
 import { IoMdBed, IoIosAirplane } from 'react-icons/io'
 import { tripFormFieldsets } from '../utils/TripFromFieldsets'
 import { 
@@ -17,15 +22,25 @@ import {
 
 function Overview() {
 
+    const dispatch = useDispatch()
+    const { Flights, Cars, Lodging, Notes, Other } = useSelector( state => state.trip )
+
+    const tripData = { Flights, Cars, Lodging, Notes, Other }
+    const resevationComponents = {
+        Flights: <FlightItem />,
+        Cars: <CarItem />,
+        Lodging: <LodgingItem />,
+        Other: <OtherItem />,
+        Notes: <NoteItem />
+    }
+    
     const [isClicked, setIsClicked] = useState({
         Flights: false,
         Cars: false,
         Lodging: false,
-        Others: false,
+        Other: false,
         Notes: false
     })
-
-    const dispatch = useDispatch()
 
     const onClick = (e, index) => {
         if(e.target.id === index.toString()){
@@ -55,26 +70,32 @@ function Overview() {
         <div className='trip-overview'>
             <h2 className='section-heading'>Add Reservations</h2>
             <section className='reservation-icons'>
+
                     <button type='button' onClick={handleFlightModal}>
                         <IoIosAirplane fill='#2F2E41'/>
                         <p>Flights</p>
                     </button>
+
                     <button type='button' onClick={handleHotelModal}>
                         <IoMdBed fill='#2F2E41'/>
                         <p>Lodging</p>
                     </button>
+
                     <button type='button' onClick={handleCarModal}>
                         <IoCarSportSharp fill='#2F2E41'/>
                         <p>Cars</p>
                     </button>
-                    <button type='button' onClick={handleNoteModal}>
-                        <MdNoteAlt fill='#2F2E41'/>
-                        <p>Notes</p>
-                    </button>
+
                     <button type='button' onClick={handleOtherModal}>
                         <TbDots fill='#2F2E41'/>
                         <p>Other</p>
                     </button>
+
+                    <button type='button' onClick={handleNoteModal}>
+                        <MdNoteAlt fill='#2F2E41'/>
+                        <p>Notes</p>
+                    </button>
+
             </section>
 
             <section className='trip-form'>
@@ -95,14 +116,18 @@ function Overview() {
                             <section className={`${field}-container`}>
                                     <div 
                                         className={ isClicked[field] ? 
-                                        'no-reservation-block show' : 
-                                        'no-reservation-block'}
+                                        'reservation-block show' : 
+                                        'reservation-block'}
                                     >
-                                        <p>
-                                            You have no {lowercaseCat(field)}. 
-                                            Please click the {lowercaseCat(field)} icon to add reservations.
-                                        </p>
-                                    </div>
+                                        { 
+                                            tripData[field].length === 0 ?
+                                            <p>
+                                                You have no {lowercaseCat(field) === 'other' ? 'other reservation' : lowercaseCat(field)}. 
+                                                Please click the {lowercaseCat(field)} icon to add reservations.
+                                            </p> 
+                                            : resevationComponents[field]
+                                        }
+                                    </div> 
                             </section>   
 
                         </fieldset>

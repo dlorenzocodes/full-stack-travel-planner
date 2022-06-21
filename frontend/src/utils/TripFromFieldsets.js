@@ -2,7 +2,7 @@ const tripFormFieldsets = [
     'Flights',
     'Cars',
     'Lodging',
-    'Others',
+    'Other',
     'Notes'
 ]
 

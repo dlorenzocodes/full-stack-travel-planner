@@ -1,15 +1,56 @@
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { XIcon } from '@heroicons/react/outline'
 import { closeFlightModal } from '../../features/modals/modalSlice'
+import { addFlightReservation } from '../../features/trip/tripSlice'
 
 function FlightModal() {
+    
+    const [ formData, setFormData ] = useState({
+        departure: '',
+        arrival: '',
+        airline: '',
+        flightNumber: '',
+        departureDate: '',
+        departureTime: '',
+        arrivalDate: '',
+        arrivalTime: '',
+        flightNotes: ''
+    })
+
+    const { 
+        departure,
+        arrival, 
+        airline, 
+        flightNumber,
+        departureDate,
+        departureTime,
+        arrivalDate,
+        arrivalTime,
+        flightNotes
+    } = formData
 
     const dispatch = useDispatch()
 
-    const addFlight = () => dispatch(closeFlightModal())
+    const closeModal = () => dispatch(closeFlightModal())
+   
+
+    const handleForm = (e) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [e.target.id]: e.target.value
+        }))
+    }
+
+    const addFlight = () => {
+        dispatch(addFlightReservation(formData))
+        dispatch(closeFlightModal())
+    }
     
     return (
         <section className='flight-modal-container trip-modal'>
             <form>
+                <XIcon onClick={closeModal}/>
                 <h3>Add a flight</h3>
                 <div className='trip-form-control'>
                     <input 
@@ -17,6 +58,8 @@ function FlightModal() {
                         name='departure' 
                         id='departure' 
                         placeholder='From'
+                        value={departure}
+                        onChange={handleForm}
                     />
                 </div>
 
@@ -26,6 +69,8 @@ function FlightModal() {
                         name='arrival' 
                         id='arrival' 
                         placeholder='To'
+                        value={arrival}
+                        onChange={handleForm}
                     />
                 </div>
 
@@ -35,15 +80,19 @@ function FlightModal() {
                         name='airline' 
                         id='airline' 
                         placeholder='Airline'
+                        value={airline}
+                        onChange={handleForm}
                     />
                 </div>
 
                 <div className='trip-form-control'>
                     <input 
                         type='text' 
-                        name='flight-number' 
-                        id='flight-number' 
+                        name='flightNumber' 
+                        id='flightNumber' 
                         placeholder='Flight number'
+                        value={flightNumber}
+                        onChange={handleForm}
                     />
                 </div>
 
@@ -52,14 +101,18 @@ function FlightModal() {
                     <div className='db-input'>
                         <input 
                             type='date' 
-                            name='departure-date' 
-                            id='departure-date' 
+                            name='departuredDate' 
+                            id='departureDate'
+                            value={departureDate}
+                            onChange={handleForm}
                         />
 
                         <input 
                             type='time' 
-                            name='departure-time' 
-                            id='departure-time' 
+                            name='departureTime' 
+                            id='departureTime'
+                            value={departureTime}
+                            onChange={handleForm}
                         />
                     </div>
                 </div>
@@ -69,24 +122,30 @@ function FlightModal() {
                     <div className='db-input'>
                         <input 
                             type='date' 
-                            name='arrival-date' 
-                            id='arrival-date' 
+                            name='arrivalDate' 
+                            id='arrivalDate'
+                            value={arrivalDate}
+                            onChange={handleForm}
                         />
 
                         <input 
                             type='time' 
-                            name='arrival-time' 
-                            id='arrival-time' 
+                            name='arrivalTime' 
+                            id='arrivalTime'
+                            value={arrivalTime}
+                            onChange={handleForm}
                         />
                     </div>
                 </div>
 
                 <div className='trip-form-control'>
                 <textarea 
-                    name='flight-notes' 
-                    id='flight-notes' 
+                    name='flightNotes' 
+                    id='flightNotes' 
                     placeholder='Notes'
-                    />
+                    value={flightNotes}
+                    onChange={handleForm}
+                />
                 </div>
 
                 <button 

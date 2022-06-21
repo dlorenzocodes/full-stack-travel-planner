@@ -8,7 +8,8 @@ const initialState ={
     carModal: false,
     hotelModal: false,
     otherModal: false,
-    notesModal: false
+    notesModal: false,
+    expenseModal: false
 }
 
 const modalSlice = createSlice({
@@ -62,6 +63,12 @@ const modalSlice = createSlice({
         },
         closeNoteModal: (state) => {
             state.notesModal = false
+        },
+        openExpenseModal: (state) => {
+            state.expenseModal = true
+        },
+        closeExpenseModal: (state) => {
+            state.expenseModal = false
         }
     }
 })
@@ -82,6 +89,8 @@ export const {
     openOtherModal,
     closeOtherModal,
     openNoteModal,
-    closeNoteModal
+    closeNoteModal,
+    openExpenseModal,
+    closeExpenseModal
 } = modalSlice.actions
 export default modalSlice.reducer

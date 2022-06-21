@@ -6,7 +6,14 @@ const initialState = {
     isLoading: false,
     isError: false,
     isSuccess: false,
-    message: ''
+    message: '',
+    Flights: [],
+    Cars:[],
+    Lodging: [],
+    Other: [],
+    Notes: [],
+    Itinerary: [],
+    Expenses: []
 }
 
 export const postDestination = createAsyncThunk(
@@ -32,6 +39,33 @@ const tripSlice = createSlice({
             state.isLoading = false
             state.message = ''
 
+        },
+        addFlightReservation: (state, action) => {
+            state.Flights.push(action.payload)
+        },
+        addHotelReservation: (state, action) => {
+            state.Lodging.push(action.payload)
+        },
+        addOtherReservation: (state, action) => {
+            state.Other.push(action.payload)
+        },
+        addNoteReservation: (state, action) => {
+            state.Notes.push(action.payload)
+        },
+        addCarReservation: (state, action) => {
+            state.Cars.push(action.payload)
+        },
+        addItinerary: (state, action) => {
+            state.Itinerary.push(action.payload)
+        },
+        addActivityToItinerary: (state, action) => {
+            const { activity, time } = action.payload
+            const indexData = action.payload.index
+            const itinerary = state.Itinerary.find((item, index) => indexData === index)
+            itinerary.activities.push({ activity, time})
+        },
+        addExpenses: (state, action) => {
+            state.Expenses.push(action.payload)
         }
     },
     extraReducers: (builder) => {
@@ -54,5 +88,15 @@ const tripSlice = createSlice({
     }
 })
 
-export const { resetTripState } = tripSlice.actions
+export const { 
+    resetTripState, 
+    addFlightReservation,
+    addHotelReservation,
+    addOtherReservation,
+    addNoteReservation,
+    addCarReservation,
+    addItinerary,
+    addActivityToItinerary,
+    addExpenses
+} = tripSlice.actions
 export default tripSlice.reducer

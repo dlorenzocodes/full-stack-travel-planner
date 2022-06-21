@@ -60,28 +60,105 @@
                 }
 
                 section{
-                    .no-reservation-block{
-                        background-color: $section-color;
-                        border-radius: 20px;
-                        transform: translateX(-200%);
+                    .reservation-block{
                         opacity: 0;
-                        transition: opacity 300ms ease-in-out;
                         height: 0;
+                        display: none;
+                        transition: opacity 300ms ease-in-out;
 
                         &.show{
                             margin: 1.5rem 0;
-                            transform: translateX(0);
                             height: auto;
                             opacity: 1;
+                            display: block;
                         }
 
                         p{
                             text-align: center;
                             padding: 1.5rem 1rem;
                             color: $selection-color;
+                            background-color: $section-color;
+                            border-radius: 20px;
+                        }
+
+                        .flight-container,
+                        .lodging-container,
+                        .other-container,
+                        .notes-container,
+                        .cars-container{
+                            color: $primary-color;
+                            width: 100%;
+                        
+                            .flight-info,
+                            .lodging-info,
+                            .other-info,
+                            .note-info,
+                            .car-info{
+                                flex-direction: column;
+                                align-items: flex-start;
+                                background-color: $section-color;
+                                padding: 1rem;
+                                margin-bottom: 1rem;
+                                border-radius: 10px;
+
+                                p{
+                                    padding: 0;
+                                    color: $primary-color;
+                                }
+                        
+                                h2{
+                                    font-weight: $semibold-weight;
+                                }
+                        
+                                h3{ 
+                                    font-weight: $semibold-weight;
+                                    text-transform: uppercase;
+                                }
+                        
+                                div{
+                                    padding: 1rem 0;
+
+                                    .departure-info,
+                                    .arrival-info,
+                                    .checkin-info,
+                                    .checkout-info,
+                                    .pickup-info,
+                                    .dropoff-info{
+                                        flex-direction: column;
+                                        align-items: flex-start;
+                                        padding-right: 1.5rem;
+                        
+                                        p{
+                                            text-align: left;
+                                            padding: 0;
+                                            background: transparent;
+                                            color: $primary-color;
+                                        }
+                                    }
+                        
+                                }
+                            }
+
+                            .car-info{
+                                .reservation-info{
+                                    flex-direction: column;
+                                    padding-top: 0.5rem;
+
+                                    .pickup-info,
+                                    .dropoff-info{
+                                        padding: 0.5rem 0;
+                                    }
+
+                                    span{
+                                        margin-top: 0;
+                                        color: $primary-color;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
+
             }
         }
     }

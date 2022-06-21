@@ -194,18 +194,15 @@ textarea,
 
 // Trip Modals
 .flight-modal-container{
-    padding-top: 6rem;
-    padding-bottom: 11rem;
+    padding-top: 2rem;
 }
 
 .hotel-modal-container{
-    padding-top: 10rem;
-    padding-bottom: 15rem;
+    padding-top: 6rem;
 }
 
 .car-modal-container{
-    padding-top: 6rem;
-    padding-bottom: 13rem;
+    padding-top: 3rem;
 
     form{
         .address-question{
@@ -226,7 +223,7 @@ textarea,
         }
 
         .trip-form-control{
-            #dropoff-address{
+            #dropoffAddress{
     
                 &.isHidden{
                     display: none;
@@ -238,13 +235,15 @@ textarea,
 }
 
 .other-modal-container{
-    padding-top: 11rem;
-    padding-bottom: 18rem;
+    padding-top: 8rem;
 }
 
 .note-modal-container{
     padding-top: 15rem;
-    padding-bottom: 30rem;
+}
+
+.expense-modal-container{
+    padding-top: 9rem;
 }
 
 .trip-form-control{
@@ -255,4 +254,13 @@ textarea,
         border: none;
         background-color: $section-color;
     }
+}
+
+#textarea-notes{
+    background: $textarea-color;
+    width: 100%;
+    border-radius: 5px;
+    padding: 1.5rem 1rem;
+    margin-top: 0.5rem;
+    text-align: left;
 }
