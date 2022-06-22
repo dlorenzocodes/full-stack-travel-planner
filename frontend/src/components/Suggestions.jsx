@@ -38,9 +38,9 @@ function Suggestions() {
     transform: `translateX(-${attrSlide}%)`,
   }
 
-  useEffect(() => {
-    dispatch(getCityRecomendations())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(getCityRecomendations())
+  // }, [dispatch])
 
   useEffect(() => {
     const slideNumber = cityCounter * 100
@@ -62,46 +62,51 @@ function Suggestions() {
 
   if(isLoading) return <Spinner />
 
-  if(cities === null) return <p> Suggestions can't be provided at this time</p>
-
   return (
     <section className='suggestions-container section-padding'>
 
-      <div className='suggestions-results' id='cities'>
-        <h3 className='section-heading'>Planning your next trip?</h3>
-        <p className='subheading-text'>Here are some suggestions</p>
+      { cities === null ? 
+        <p> Suggestions can't be provided at this time</p> 
+        : (
+          <>
+            <div className='suggestions-results' id='cities'>
+              <h3 className='section-heading'>Planning your next trip?</h3>
+              <p className='subheading-text'>Here are some suggestions</p>
 
-        <div className='carousel'>
-          {cities.geonames.map((city) => (
-            <CityItem 
-              city={city} 
-              key={uuidv4()} 
-              style={cityStyle}
-            />
-          ))}
-        </div>
-        
-        <Arrows slideLeft={citySlideLeft} slideRight={citySlideRight} />
-      </div>
-
-      <div className='suggestions-results attractions' id='attractions'>
-        <h3 className='section-heading'>Attractions</h3>
-
-        { attractions.length !== 0 ?
-          (
-            <div className='carousel'>
-              { attractions.map((place) => (
-                <AttractionItem place={place} key={uuidv4()} style={attrStyle} />
-              ))}
+              <div className='carousel'>
+                {cities.geonames.map((city) => (
+                  <CityItem 
+                    city={city} 
+                    key={uuidv4()} 
+                    style={cityStyle}
+                  />
+                ))}
+              </div>
+              
+              <Arrows slideLeft={citySlideLeft} slideRight={citySlideRight} />
             </div>
-          ) : (
-            <p>Suggestions can't be provided at this time</p>
-          )
-        }      
 
-         <Arrows slideLeft={attrSlideLeft} slideRight={attrSlideRight} /> 
+            <div className='suggestions-results attractions' id='attractions'>
+              <h3 className='section-heading'>Attractions</h3>
 
-      </div>
+              { attractions.length !== 0 ?
+                (
+                  <div className='carousel'>
+                    { attractions.map((place) => (
+                      <AttractionItem place={place} key={uuidv4()} style={attrStyle} />
+                    ))}
+                  </div>
+                ) : (
+                  <p>Suggestions can't be provided at this time</p>
+                )
+              }      
+
+              <Arrows slideLeft={attrSlideLeft} slideRight={attrSlideRight} /> 
+
+            </div>
+          </>
+        )
+      }
     </section>
   )
 }

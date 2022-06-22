@@ -1,0 +1,84 @@
+@import 'variables.scss';
+
+.itinerary-container{
+    color: $primary-color;
+
+    svg{
+        box-shadow: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    .itinerary-items{
+        .itinerary-card{
+            margin-bottom: 3rem;
+            border-bottom: 1px solid $primary-color;
+
+            &.slide{
+                padding-bottom: 1rem;
+            }
+
+            .card-header{
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+            }
+
+            .card-content{
+                display: none;
+
+                .activities{
+                    margin-bottom: 2rem;
+                }
+
+                form{
+                    display: block;
+                    padding: 2rem 1rem 1rem; 
+                    background-color: $section-color;
+                    border-radius: 20px;
+    
+                    fieldset{
+                        border: none;
+                        display: flex;
+                        flex-direction: row;
+                        margin-bottom: 1rem;
+                    }
+    
+                    button{
+                        background: transparent;
+    
+                        svg{
+                            width: 2.8rem;
+                        }
+                    }
+                }
+
+                &.show{
+                    display: block;
+                }
+            }
+        }
+    }
+
+    form{
+        display: flex;
+        justify-content: space-between;
+
+        input {
+            width: 70%;
+            margin-right: 1rem;
+            border: none;
+            background: $textarea-color;
+            color: $placeholder-color;
+        }
+
+        button{
+            width: 25%;
+            border: none;
+            background: $accent-color;
+            color: #fff;
+            padding: 0;
+            font-size: 0.8rem;
+        }
+    }
+}

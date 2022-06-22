@@ -1,7 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState ={
-    addTripModal: false
+    addTripModal: false,
+    addNewTripForm: false,
+    searchCityModal: false,
+    flightModal: false,
+    carModal: false,
+    hotelModal: false,
+    otherModal: false,
+    notesModal: false,
+    expenseModal: false
 }
 
 const modalSlice = createSlice({
@@ -13,9 +21,76 @@ const modalSlice = createSlice({
         },
         closeAddTripModal: (state) => {
             state.addTripModal = false
+        },
+        openNewTripForm: (state) => {
+            state.addNewTripForm = true
+        },
+        closeNewTripForm: (state) => {
+            state.addNewTripForm = false
+        },
+        openSearchCityModal: (state) => {
+            state.searchCityModal = true
+        },
+        closedSearchCityModel: (state) => {
+            state.searchCityModal = false
+        },
+        openFlightModal: (state) => {
+            state.flightModal = true
+        },
+        closeFlightModal: (state) => {
+            state.flightModal = false
+        },
+        openHotelModal: (state) => {
+            state.hotelModal = true
+        },
+        closeHotelModal: (state) => {
+            state.hotelModal = false
+        },
+        openCarModal: (state) => {
+            state.carModal = true
+        },
+        closeCarModal: (state) => {
+            state.carModal = false
+        },
+        openOtherModal: (state) => {
+            state.otherModal = true
+        },
+        closeOtherModal: (state) => {
+            state.otherModal = false
+        },
+        openNoteModal: (state) => {
+            state.notesModal = true
+        },
+        closeNoteModal: (state) => {
+            state.notesModal = false
+        },
+        openExpenseModal: (state) => {
+            state.expenseModal = true
+        },
+        closeExpenseModal: (state) => {
+            state.expenseModal = false
         }
     }
 })
 
-export const { openAddTripModal, closeAddTripModal } = modalSlice.actions
+export const { 
+    openAddTripModal, 
+    closeAddTripModal,
+    openNewTripForm,
+    closeNewTripForm,
+    openSearchCityModal,
+    closedSearchCityModel,
+    openFlightModal,
+    closeFlightModal,
+    openHotelModal,
+    closeHotelModal,
+    openCarModal,
+    closeCarModal,
+    openOtherModal,
+    closeOtherModal,
+    openNoteModal,
+    closeNoteModal,
+    openExpenseModal,
+    closeExpenseModal
+} = modalSlice.actions
 export default modalSlice.reducer

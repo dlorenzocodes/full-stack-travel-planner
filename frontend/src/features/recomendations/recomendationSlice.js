@@ -43,6 +43,5 @@ const recomendationSlice = createSlice({
     }
 })
 
-export const {} = recomendationSlice.actions
 export default recomendationSlice.reducer
 

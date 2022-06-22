@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react'
 import AddTrip from './AddTrip'
 import { useLocation, Link } from 'react-router-dom'
-import { UserIcon, SearchIcon, PlusCircleIcon } from '@heroicons/react/solid'
 import { useDispatch, useSelector } from 'react-redux'
 import { openAddTripModal } from '../features/modals/modalSlice'
+import { UserIcon, SearchIcon, PlusCircleIcon } from '@heroicons/react/solid'
 
 function MenuBar() {
 
@@ -11,9 +10,8 @@ function MenuBar() {
   const location = useLocation()
   const dispatch = useDispatch()
 
-  const handleAddTrip = () => {
-    dispatch(openAddTripModal())
-  }
+  const handleAddTrip = () => dispatch(openAddTripModal())
+
 
   if(addTripModal) return <AddTrip />
 
