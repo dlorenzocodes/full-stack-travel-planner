@@ -35,7 +35,13 @@ function HotelModal() {
     }
 
     const closeModal = () => dispatch(closeHotelModal())
+
     const addHotel = () => {
+        if(hotel === ''){
+            dispatch(closeHotelModal())
+            return
+        }
+        
         dispatch(addHotelReservation(formData))
         dispatch(closeHotelModal())
     }

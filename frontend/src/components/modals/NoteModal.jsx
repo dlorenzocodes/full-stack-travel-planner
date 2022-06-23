@@ -13,7 +13,12 @@ function NoteModal() {
   const handleNote = (e) => setNote(e.target.value)
 
   const closeModal = () => dispatch(closeNoteModal())
+
   const addNote = () => {
+    if(note === ''){
+      dispatch(closeNoteModal())
+      return
+    }
     dispatch(addNoteReservation({note}))
     dispatch(closeNoteModal())
   }

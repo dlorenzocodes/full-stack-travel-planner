@@ -43,6 +43,11 @@ function FlightModal() {
     }
 
     const addFlight = () => {
+        if(departure === '' || arrival === ''){
+            dispatch(closeFlightModal())
+            return
+        }
+        
         dispatch(addFlightReservation(formData))
         dispatch(closeFlightModal())
     }

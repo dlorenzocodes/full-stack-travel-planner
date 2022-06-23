@@ -30,7 +30,14 @@ function CarModal() {
     } = formData
 
     const closeModal = () => dispatch(closeCarModal())
+
     const addCar = () => { 
+        
+        if(rental === ''){
+            dispatch(closeCarModal())
+            return
+        }
+
         const address = isChecked ? pickupAddress : dropoffAddress
         const data = { ...formData, dropoffAddress: address } 
         dispatch(addCarReservation(data))

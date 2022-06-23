@@ -33,7 +33,13 @@ const handleForm = (e) => {
 }
 
 const closeModal = () => dispatch(closeOtherModal())
+
 const addReservation = () => {
+    if(reservationName === ''){
+        dispatch(closeOtherModal())
+        return
+    }
+    
     dispatch(addOtherReservation(formData))
     dispatch(closeOtherModal())
 }
