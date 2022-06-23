@@ -1,14 +1,17 @@
 import { useState } from 'react'
+import useTime from '../hooks/useTime'
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 
 function ActivityItem({ activityValues, index }) {
 
+    const { formatTime } = useTime()
+    const [ isDisabled, setIsDisabled ] = useState(true) 
     const [ formData, setFormData ] = useState({
         activity: activityValues.activity,
         time: activityValues.time
     })
-
     const { activity, time } = formData
+
 
     const handleForm = (e) => {
         setFormData((prevState) => ({
@@ -26,13 +29,15 @@ function ActivityItem({ activityValues, index }) {
                         name='activity' 
                         id='activity'
                         value={activity}
+                        disabled={isDisabled}
                         onChange={handleForm}
                         placeholder='Activity'
                     />
                     <input 
                         type='timeEdit' 
                         id='timeEdit'
-                        value={time}
+                        value={formatTime(time)}
+                        disabled={isDisabled}
                         onChange={handleForm}
                     />
                 </fieldset>

@@ -1,10 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
+import useDate from '../hooks/useDate'
+import useTime from '../hooks/useTime'
 import { useSelector } from 'react-redux'
+
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 
 function FlightItem() {
 
     const { Cars } = useSelector( state => state.trip )
+    const { formatDate } = useDate()
+    const { formatTime } = useTime()
 
     return (
         <section className='cars-container'>
@@ -15,13 +20,13 @@ function FlightItem() {
                     <div className='reservation-info'>
                         <div className='pickup-info'>
                             <h3 className='section-heading'>Pick up:</h3>
-                            <p>{item.pickupDate} - {item.pickupTime}</p>
+                            <p>{formatDate(item.pickupDate)} - {formatTime(item.pickupTime)}</p>
                             <span>{item.pickupAddress}</span>
                         </div>
 
                         <div className='dropoff-info'>
                             <h3 className='section-heading'>Drop off:</h3>
-                            <p>{item.dropoffDate} - {item.dropoffTime}</p>
+                            <p>{formatDate(item.dropoffDate)} - {formatTime(item.dropoffTime)}</p>
                             <span>{item.dropoffAddress}</span>
                         </div>
                     </div>

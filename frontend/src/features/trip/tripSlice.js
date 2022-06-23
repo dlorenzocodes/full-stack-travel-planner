@@ -28,6 +28,18 @@ export const postDestination = createAsyncThunk(
     }
 )
 
+export const saveTrip = createAsyncThunk(
+    'trip/postTrip',
+    async(tripData, thunkAPI) => {
+        try{
+            return await tripService.saveTrip(tripData)
+        }catch(err){
+            const message = err.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 const tripSlice = createSlice({
     name: 'trip',
     initialState,
@@ -38,6 +50,13 @@ const tripSlice = createSlice({
             state.isSuccess = false
             state.isLoading = false
             state.message = ''
+            state.Flights = []
+            state.Cars = []
+            state.Lodging = []
+            state.Other = []
+            state.Notes = []
+            state.Itinerary = []
+            state.Expenses = []
 
         },
         addFlightReservation: (state, action) => {
@@ -84,6 +103,17 @@ const tripSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = false
                 state.message = action.payload || 'Invalid request!'
+            })
+            .addCase(saveTrip.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(saveTrip.fulfilled, (state) => {
+                state.isLoading = false
+                state.isSuccess = true
+            })
+            .addCase(saveTrip.rejected, (state) => {
+                state.isLoading = false
+                state.isError = true
             })
     }
 })

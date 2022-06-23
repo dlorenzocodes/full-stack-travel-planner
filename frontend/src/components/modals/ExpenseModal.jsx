@@ -25,6 +25,15 @@ function ExpenseModal() {
     }
 
     const addExpense = () => {
+        if( 
+            expenseDate === '' ||
+            expensePlace === '' ||
+            expenseAmount === ''
+        ) {
+            dispatch(closeExpenseModal())
+            return
+        }
+
         dispatch(addExpenses(formData))
         dispatch(closeExpenseModal())
     }

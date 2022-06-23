@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify'
 import useDate from '../hooks/useDate'
 import ActivityItem from './ActivityItem';
 import { useState, useEffect } from 'react'
@@ -19,7 +20,6 @@ function ItineraryItem() {
   const { activity, time } = formData
   const { formatDate } = useDate()
 
-
   useEffect(() => {
     if(Itinerary.length !== 0){
       let stateObj = {}
@@ -33,7 +33,6 @@ function ItineraryItem() {
   const showCardContent = (e, index) => {
     const parent = e.target.parentNode.parentNode.parentNode
     if(parent.id === index.toString()){
-      console.log(parent.id)
       setIsClicked((prevState) => ({
         ...prevState,
         [parent.id]: !prevState[parent.id]
@@ -49,8 +48,14 @@ function ItineraryItem() {
   }
 
   const addActivity = (index) => {
+    if(activity === ''){
+      toast.error('An activity must be provided. Please enter one!')
+      return
+    }
+
     const activityData = { activity, time, index }
     dispatch(addActivityToItinerary(activityData))
+    setFormData('')
   }
 
   return (

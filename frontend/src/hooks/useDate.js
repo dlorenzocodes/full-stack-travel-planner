@@ -13,11 +13,10 @@ function useDate() {
 
     const formatDate = (entry) => {
         if(entry !== ''){
-            console.log(entry)
-            const date = new Date(entry)
-            const week = weekDays[date.getDay() + 1];
+            const date = new Date(entry.replace(/-/g, '/'))
+            const week = weekDays[date.getDay()];
             const month = date.toLocaleDateString('en-US',{month: 'short'});
-            const day = date.getDate() + 1
+            const day = date.getDate()
             return `${week}, ${month} ${day}`
         } else{
             return ''

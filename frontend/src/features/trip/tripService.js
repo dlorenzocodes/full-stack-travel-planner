@@ -5,9 +5,15 @@ const postCityDestination = async (city) => {
     return await response.data
 }
 
+const saveTrip = async (tripData) => {
+    const response = await axios.post('/trips', tripData, { withCredentials: true} )
+    return await response.data
+}
+
 
 const tripService = {
-    postCityDestination
+    postCityDestination,
+    saveTrip
 }
 
 export default tripService

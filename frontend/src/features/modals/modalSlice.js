@@ -16,6 +16,7 @@ const modalSlice = createSlice({
     name: 'modal',
     initialState,
     reducers: {
+        resetModals: (state) => initialState,
         openAddTripModal: (state) => {
             state.addTripModal = true
         },
@@ -91,6 +92,7 @@ export const {
     openNoteModal,
     closeNoteModal,
     openExpenseModal,
-    closeExpenseModal
+    closeExpenseModal,
+    resetModals
 } = modalSlice.actions
 export default modalSlice.reducer

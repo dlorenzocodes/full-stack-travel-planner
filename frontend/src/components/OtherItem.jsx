@@ -1,10 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
+import useDate from '../hooks/useDate'
+import useTime from '../hooks/useTime'
 import { useSelector } from 'react-redux'
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 
 function OtherItem() {
 
     const { Other } = useSelector( state => state.trip )
+    const { formatDate } = useDate()
+    const { formatTime } = useTime()
 
     return (
         <section className='other-container'>
@@ -14,12 +18,12 @@ function OtherItem() {
                     <div>
                         <div className='checkin-info'>
                             <h3 className='section-heading'>Check in:</h3>
-                            <p>{item.otherDate} - {item.otherTime}</p>
+                            <p>{formatDate(item.otherDate)} - {formatTime(item.otherTime)}</p>
                         </div>
 
                         <div className='checkout-info'>
                             <h3 className='section-heading'>Check out:</h3>
-                            <p>{item.otherCheckoutDate} - {item.otherCheckoutTime}</p>
+                            <p>{formatDate(item.otherCheckoutDate)} - {formatTime(item.otherCheckoutTime)}</p>
                         </div>
                     </div>
 

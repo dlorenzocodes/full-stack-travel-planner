@@ -3,21 +3,27 @@ import Overview from './Overview'
 import Expenses from './Expenses'
 import Itinerary from './Itinerary'
 import { v4 as uuidv4 } from 'uuid';
+import useDate from '../hooks/useDate'
 import CarModal from './modals/CarModal'
 import NoteModal from './modals/NoteModal'
 import OtherModal from './modals/OtherModal'
 import HotelModal from './modals/HotelModal'
+import { useNavigate } from 'react-router-dom'
 import FlightModal from './modals/FlightModal'
 import ExpenseModal from './modals/ExpenseModal'
 import { useSelector, useDispatch } from 'react-redux'
 import { SaveIcon, XIcon } from '@heroicons/react/solid'
-import { resetTripState } from '../features/trip/tripSlice'
+import { resetTripState, saveTrip } from '../features/trip/tripSlice'
 import { tripSectionButtons } from '../utils/TripSectionButtons'
-import { closeNewTripForm, closeAddTripModal } from '../features/modals/modalSlice'
+import { closeNewTripForm, closeAddTripModal, resetModals } from '../features/modals/modalSlice'
 
 function NewTrip() {
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const { formatDate } = useDate()
+
   const [ dates, setDates ] = useState({
     startDate: '',
     endDate: ''
@@ -55,12 +61,13 @@ function NewTrip() {
   }
 
   const [activeComponent, setActiveComponent ] = useState(buttonComponents.Overview)
-
   const [ isActive, setIsActive ] = useState({
     Overview: true,
     Itinerary: false,
     Expenses: false
   })
+
+  const { isSuccess } = useSelector( state => state.trip )
 
   const handleActiveCat = (e, index) => {
     if(e.target.id === index.toString()){
@@ -84,10 +91,14 @@ function NewTrip() {
     }))
   }
 
-  const saveTrip = () => {
+  const handleSaveTrip = () => {
     const tripData = {
-      tripName: cityInfo.title,
-      dates: {...dates},
+      tripTitle: cityInfo.title,
+      imageURl: cityInfo.imageURl,
+      dates: {
+        startDate: formatDate(dates.startDate),
+        endDate: formatDate(dates.endDate)
+      },
       Flights,
       Cars,
       Lodging,
@@ -97,8 +108,15 @@ function NewTrip() {
       expenses
     }
 
-    console.log(tripData)
-    dispatch(closeNewTripForm())
+    dispatch(saveTrip(tripData))
+
+    setTimeout(() => {
+      if(isSuccess){
+        dispatch(dispatch(resetModals()))
+        dispatch(resetTripState())
+        navigate('/profile')
+      }
+    }, 1000)
   }
   
 
@@ -107,7 +125,7 @@ function NewTrip() {
       <section className='trip-background-image' style={style}>
         <div>
           <button type='submit'>
-            <SaveIcon fill='#F88747' onClick={saveTrip}/>
+            <SaveIcon fill='#F88747' onClick={handleSaveTrip}/>
           </button>
           <XIcon fill='#F88747' onClick={closeTripForm}/>
         </div>

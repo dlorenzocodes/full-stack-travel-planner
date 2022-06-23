@@ -9,7 +9,7 @@ import { resetTripState } from '../features/trip/tripSlice'
 
 function AddTrip() {
 
-  const { isError, message, isSuccess } = useSelector( state => state.trip)
+  const { isError, message, isSuccess } = useSelector( state => state.trip )
   const [destination, setDestination] = useState('')
   const dispatch = useDispatch()
 

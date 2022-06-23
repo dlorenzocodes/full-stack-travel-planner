@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import { useDispatch } from "react-redux"
 import ItineraryItem from "./ItineraryItem"
 import { addItinerary } from '../features/trip/tripSlice'
@@ -11,11 +12,17 @@ function Itinerary() {
   const handleDate = (e) => setDate(e.target.value)
 
   const handleForm = () => {
+    if(date === '') {
+      toast.error('Please provide a date')
+      return
+    }
+    
     const data = {
       date,
       activities: []
     }
     dispatch(addItinerary(data))
+    setDate('')
   }
 
   return (

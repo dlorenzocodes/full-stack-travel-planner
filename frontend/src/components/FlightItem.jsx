@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import useDate from '../hooks/useDate'
-import useTime from '../hooks/useTime';
+import useTime from '../hooks/useTime'
 import { useSelector } from 'react-redux'
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 
@@ -24,7 +24,7 @@ function FlightItem() {
 
                         <div className='arrival-info'>
                             <h3 className='section-heading'>Arrive</h3>
-                            <p>{formatDate(flight.arrivalDate)} - {flight.arrivalTime}</p>
+                            <p>{formatDate(flight.arrivalDate)} - {formatTime(flight.arrivalTime)}</p>
                         </div>
                     </div>
 

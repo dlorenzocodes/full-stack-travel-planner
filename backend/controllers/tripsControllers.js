@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { logger } = require('../config/logger');
+const { Trip } = require('../models/tripModel');
 
 const getDestinationQuery = async(req, res, next) => {
 
@@ -20,7 +21,30 @@ const getDestinationQuery = async(req, res, next) => {
     }
 }
 
+const saveTrip = async (req, res, next) => {
+    try{
+        if(req.user){
+            const trip = { ...req.body, user: req.user._id }
+            console.log(trip)
+            const newTrip = await Trip.create(trip)
+
+            if(!newTrip){
+                res.status(400);
+                throw new Error('Unable to save trip');
+            }
+
+            res.status(201);
+            res.send('Trip was successfully created')
+        }
+
+    }catch(err){
+        console.log(err)
+        next(err)
+    }
+}
+
 
 module.exports = {
-    getDestinationQuery
+    getDestinationQuery,
+    saveTrip
 }
