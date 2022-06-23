@@ -9,7 +9,9 @@ const initialState ={
     hotelModal: false,
     otherModal: false,
     notesModal: false,
-    expenseModal: false
+    expenseModal: false,
+    isEditExpense: false,
+    index: ''
 }
 
 const modalSlice = createSlice({
@@ -70,6 +72,16 @@ const modalSlice = createSlice({
         },
         closeExpenseModal: (state) => {
             state.expenseModal = false
+        },
+        editExpense: (state, action) => {
+            state.isEditExpense = true
+            state.index = action.payload
+        },
+        resetEdits: (state, action) => {
+            if(action.payload === 'expense'){
+                state.isEditExpense = false
+            }
+            state.index = ''
         }
     }
 })
@@ -93,6 +105,8 @@ export const {
     closeNoteModal,
     openExpenseModal,
     closeExpenseModal,
-    resetModals
+    resetModals,
+    editExpense,
+    resetEdits
 } = modalSlice.actions
 export default modalSlice.reducer

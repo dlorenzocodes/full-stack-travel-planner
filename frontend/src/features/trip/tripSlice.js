@@ -77,6 +77,11 @@ const tripSlice = createSlice({
         addItinerary: (state, action) => {
             state.Itinerary.push(action.payload)
         },
+        removeItinerary: (state, action) => {
+            const indexData = action.payload
+            const newItinerary = state.Itinerary.filter((item, index) => index !== indexData)
+            state.Itinerary = newItinerary
+        },
         addActivityToItinerary: (state, action) => {
             const { activity, time } = action.payload
             const indexData = action.payload.index
@@ -85,6 +90,25 @@ const tripSlice = createSlice({
         },
         addExpenses: (state, action) => {
             state.Expenses.push(action.payload)
+        },
+        addEditedExpense: (state, action) => {
+            const indexData = action.payload.expenseIndex
+            const editedExpense = action.payload.expense
+            state.Expenses.splice(indexData, 1, editedExpense)
+        },
+        removeExpense: (state, action) => {
+            state.Expenses.splice(action.payload, 1)
+        },
+        addEditedActivity: (state, action) => {
+            const activityIndex = action.payload.activityIndex
+            const itineraryIndex = action.payload.itineraryIndex
+            const data = action.payload.formData
+            state.Itinerary[itineraryIndex].activities.splice(activityIndex, 1, data)
+        },
+        removeActivity: (state, action) => {
+            const activityIndex = action.payload.activityIndex
+            const itineraryIndex = action.payload.itineraryIndex
+            state.Itinerary[itineraryIndex].activities.splice(activityIndex, 1)
         }
     },
     extraReducers: (builder) => {
@@ -127,6 +151,11 @@ export const {
     addCarReservation,
     addItinerary,
     addActivityToItinerary,
-    addExpenses
+    addExpenses,
+    addEditedExpense,
+    removeExpense,
+    addEditedActivity,
+    removeActivity,
+    removeItinerary
 } = tripSlice.actions
 export default tripSlice.reducer

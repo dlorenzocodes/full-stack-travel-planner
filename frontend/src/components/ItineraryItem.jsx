@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { PlusCircleIcon } from '@heroicons/react/solid'
 import { TrashIcon, ChevronUpIcon } from '@heroicons/react/solid'
-import { addActivityToItinerary } from '../features/trip/tripSlice'
+import { addActivityToItinerary, removeItinerary } from '../features/trip/tripSlice'
 
 function ItineraryItem() {
 
@@ -52,10 +52,14 @@ function ItineraryItem() {
       toast.error('An activity must be provided. Please enter one!')
       return
     }
-
     const activityData = { activity, time, index }
     dispatch(addActivityToItinerary(activityData))
     setFormData('')
+  }
+
+  
+  const handleRemoveItinerary = (index) => {
+    dispatch(removeItinerary(index))
   }
 
   return (
@@ -72,7 +76,10 @@ function ItineraryItem() {
               <div className='card-header'>
                 <h2>{formatDate(item.date)}</h2>
                 <div>
-                  <TrashIcon fill='#2F2E41'/>
+                  <TrashIcon 
+                    fill='#2F2E41'
+                    onClick={() => handleRemoveItinerary(index)}
+                  />
                   <ChevronUpIcon 
                     fill='#2F2E41'
                     onClick={(e) => showCardContent(e, index)}
@@ -85,11 +92,12 @@ function ItineraryItem() {
                 <div className='activities'>
                   { 
                     Itinerary[index].activities.length > 0 ?
-                    Itinerary[index].activities.map( (activity, index) => (
+                    Itinerary[index].activities.map( (activity, activityIndex) => (
                       <ActivityItem 
                         key={uuidv4()} 
                         activityValues={activity} 
-                        index={index}
+                        activityIndex={activityIndex}
+                        itineraryIndex={index}
                       />
                     )) : ''
                   }

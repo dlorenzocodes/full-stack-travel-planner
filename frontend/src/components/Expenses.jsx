@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
-import { useDispatch, useSelector } from 'react-redux'
-import { openExpenseModal } from '../features/modals/modalSlice'
-import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import useDate from '../hooks/useDate'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeExpense } from '../features/trip/tripSlice'
+import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
+import { openExpenseModal, editExpense } from '../features/modals/modalSlice'
 
 function Expenses() {
 
@@ -12,6 +13,15 @@ function Expenses() {
   const { Expenses } = useSelector( state => state.trip )
 
   const showExpenseModal = () => dispatch(openExpenseModal())
+
+  const handleExpenseEdit = (index) => {
+    dispatch(editExpense(index))
+    dispatch(openExpenseModal())
+  }
+
+  const handleRemoveExpense = (index) => {
+    dispatch(removeExpense(index))
+  }
 
   return (
     <section className='expenses-container'>
@@ -29,8 +39,16 @@ function Expenses() {
               <p id='textarea-notes'>{item.expenseNotes}</p>
 
               <div>
-                  <PencilAltIcon  fill='#2F2E41' id='Flights'/>
-                  <TrashIcon fill='#2F2E41' id='Flights' />
+                  <PencilAltIcon  
+                    fill='#2F2E41' 
+                    id='Flights'
+                    onClick={() => handleExpenseEdit(index)}
+                  />
+                  <TrashIcon 
+                    fill='#2F2E41' 
+                    id='Flights' 
+                    onClick={() => handleRemoveExpense(index)}
+                  />
               </div>
             </div>
           ))

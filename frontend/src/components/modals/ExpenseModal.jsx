@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/solid'
-import { addExpenses } from '../../features/trip/tripSlice'
-import { closeExpenseModal } from '../../features/modals/modalSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { addExpenses, addEditedExpense } from '../../features/trip/tripSlice'
+import { closeExpenseModal, resetEdits } from '../../features/modals/modalSlice'
 
 function ExpenseModal() {
 
@@ -15,6 +15,22 @@ function ExpenseModal() {
     })
 
     const { expenseDate, expensePlace, expenseAmount, expenseNotes } = formData
+
+    const { Expenses } = useSelector( state => state.trip )
+    const { isEditExpense, index: expenseIndex } = useSelector( state => state.modal )
+
+    useEffect(() => {
+        if(isEditExpense){
+            const expenseItem = Expenses.find((item, index) => expenseIndex === index)
+            setFormData({
+                expenseDate: expenseItem.expenseDate,
+                expensePlace: expenseItem.expensePlace,
+                expenseAmount: '',
+                expenseNotes: expenseItem.expenseNotes
+            })
+        }
+    },[isEditExpense, expenseIndex, Expenses])
+
 
     const closeModal = () => dispatch(closeExpenseModal())
     const handleForm = (e) => {
@@ -31,6 +47,18 @@ function ExpenseModal() {
             expenseAmount === ''
         ) {
             dispatch(closeExpenseModal())
+            return
+        }
+
+        if(isEditExpense){
+            const data = {
+                expenseIndex,
+                expense: {...formData, expenseAmount }
+            }
+
+            dispatch(addEditedExpense(data))
+            dispatch(closeExpenseModal())
+            dispatch(resetEdits('expense'))
             return
         }
 
