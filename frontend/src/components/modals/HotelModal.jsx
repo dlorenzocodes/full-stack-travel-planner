@@ -1,8 +1,9 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
-import { closeHotelModal } from '../../features/modals/modalSlice'
-import { addHotelReservation } from '../../features/trip/tripSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { closeHotelModal, resetEdits } from '../../features/modals/modalSlice'
+import { addHotelReservation, addEditedCategoryItem } from '../../features/trip/tripSlice'
+
 
 function HotelModal() {
 
@@ -27,6 +28,24 @@ function HotelModal() {
         hotelNotes
     } = formData
 
+    const { Lodging } = useSelector( state => state.trip )
+    const { isEditLodging, index: lodgingIndex} = useSelector( state => state.modal )
+
+    useEffect(() => {
+        if(isEditLodging) {
+            const lodgingItem = Lodging.find((item, index) => index === lodgingIndex)
+            setFormData({
+                hotel: lodgingItem.hotel,
+                hotelAddress: lodgingItem.hotelAddress,
+                checkinDate: lodgingItem.checkinDate,
+                checkinTime: lodgingItem.checkinTime,
+                checkoutDate: lodgingItem.checkoutDate,
+                checkoutTime: lodgingItem.checkoutTime,
+                hotelNotes: lodgingItem.hotelNotes
+            })
+        }
+    }, [isEditLodging, lodgingIndex, Lodging])
+
     const handleForm = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -39,6 +58,19 @@ function HotelModal() {
     const addHotel = () => {
         if(hotel === ''){
             dispatch(closeHotelModal())
+            return
+        }
+
+        if(isEditLodging){
+            const data = {
+                category: 'Lodging',
+                index: lodgingIndex,
+                formData
+            }
+
+            dispatch(addEditedCategoryItem(data))
+            dispatch(closeHotelModal())
+            dispatch(resetEdits())
             return
         }
         

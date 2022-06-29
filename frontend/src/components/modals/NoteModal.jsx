@@ -1,14 +1,23 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
-import { closeNoteModal } from '../../features/modals/modalSlice'
-import { addNoteReservation } from '../../features/trip/tripSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { closeNoteModal, resetEdits } from '../../features/modals/modalSlice'
+import { addNoteReservation, addEditedCategoryItem } from '../../features/trip/tripSlice'
 
 function NoteModal() {
 
   const dispatch = useDispatch()
 
   const [ note, setNote ] = useState('')
+  const { Notes } = useSelector( state => state.trip )
+  const { isEditNotes, index: noteIndex } = useSelector( state => state.modal )
+
+  useEffect(() => {
+    if(isEditNotes){
+      const noteItem = Notes.find((item, index) => index === noteIndex)
+      setNote(noteItem.note)
+    }
+  },[isEditNotes, noteIndex, Notes])
 
   const handleNote = (e) => setNote(e.target.value)
 
@@ -19,6 +28,19 @@ function NoteModal() {
       dispatch(closeNoteModal())
       return
     }
+
+    if(isEditNotes) {
+      const data = {
+        category: 'Notes',
+        index: noteIndex,
+        formData: { note }
+      }
+      dispatch(addEditedCategoryItem(data))
+      dispatch(closeNoteModal())
+      dispatch(resetEdits())
+      return
+    }
+
     dispatch(addNoteReservation({note}))
     dispatch(closeNoteModal())
   }

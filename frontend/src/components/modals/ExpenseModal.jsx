@@ -58,7 +58,7 @@ function ExpenseModal() {
 
             dispatch(addEditedExpense(data))
             dispatch(closeExpenseModal())
-            dispatch(resetEdits('expense'))
+            dispatch(resetEdits())
             return
         }
 

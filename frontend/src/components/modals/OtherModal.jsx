@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
-import { closeOtherModal } from '../../features/modals/modalSlice'
-import { addOtherReservation } from '../../features/trip/tripSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { closeOtherModal, resetEdits } from '../../features/modals/modalSlice'
+import { addOtherReservation, addEditedCategoryItem } from '../../features/trip/tripSlice'
 
 function OtherModal() {
 
@@ -25,6 +25,24 @@ function OtherModal() {
     otherNotes
 } = formData
 
+const { Other }  = useSelector( state => state.trip )
+const { isEditOthers, index: otherIndex} = useSelector( state => state.modal )
+
+useEffect(() => {
+    if(isEditOthers){
+        const otherItem = Other.find((item, index) => index === otherIndex)
+        setFormData({
+            reservationName: otherItem.reservationName,
+            otherDate: otherItem.otherDate,
+            otherTime: otherItem.otherItem,
+            otherCheckoutDate: otherItem.otherCheckoutDate,
+            otherCheckoutTime: otherItem.otherCheckoutTime,
+            otherNotes: otherItem.otherNotes
+        })
+    }
+
+}, [isEditOthers, otherIndex, Other])
+
 const handleForm = (e) => {
     setFormData((prevState) => ({
         ...prevState,
@@ -37,6 +55,19 @@ const closeModal = () => dispatch(closeOtherModal())
 const addReservation = () => {
     if(reservationName === ''){
         dispatch(closeOtherModal())
+        return
+    }
+
+    if(isEditOthers){
+        const data = {
+            category: 'Other',
+            index: otherIndex,
+            formData
+        }
+
+        dispatch(addEditedCategoryItem(data))
+        dispatch(closeOtherModal())
+        dispatch(resetEdits())
         return
     }
     

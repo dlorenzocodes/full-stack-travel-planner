@@ -1,11 +1,19 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
+import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
-import { closeFlightModal } from '../../features/modals/modalSlice'
-import { addFlightReservation } from '../../features/trip/tripSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { 
+    closeFlightModal, 
+    resetEdits 
+} from '../../features/modals/modalSlice'
+import { 
+    addFlightReservation, 
+    addEditedCategoryItem 
+} from '../../features/trip/tripSlice'
 
 function FlightModal() {
     
+    const dispatch = useDispatch()
     const [ formData, setFormData ] = useState({
         departure: '',
         arrival: '',
@@ -30,10 +38,27 @@ function FlightModal() {
         flightNotes
     } = formData
 
-    const dispatch = useDispatch()
+    const { Flights } = useSelector( state => state.trip )
+    const { isEditFlights, index: flightIndex } = useSelector( state => state.modal )
+
+    useEffect(() => {
+        if(isEditFlights){
+            const flightItem = Flights.find((item, index) => index === flightIndex)
+            setFormData({
+                departure: flightItem.departure,
+                arrival: flightItem.arrival,
+                airline: flightItem.airline,
+                flightNumber: flightItem.flightNumber,
+                departureDate: flightItem.departureDate,
+                departureTime: flightItem.departureTime,
+                arrivalDate: flightItem.arrivalDate,
+                arrivalTime: flightItem.arrivalTime,
+                flightNotes: flightItem.flightNotes
+            })
+        }
+    },[isEditFlights, flightIndex, Flights])
 
     const closeModal = () => dispatch(closeFlightModal())
-   
 
     const handleForm = (e) => {
         setFormData((prevState) => ({
@@ -44,7 +69,20 @@ function FlightModal() {
 
     const addFlight = () => {
         if(departure === '' || arrival === ''){
+            toast.error('Please provide departure and arrival details!')
             dispatch(closeFlightModal())
+            return
+        }
+
+        if(isEditFlights){
+            const data = {
+                category: 'Flights',
+                index: flightIndex,
+                formData
+            }
+            dispatch(addEditedCategoryItem(data))
+            dispatch(closeFlightModal())
+            dispatch(resetEdits())
             return
         }
         

@@ -11,6 +11,11 @@ const initialState ={
     notesModal: false,
     expenseModal: false,
     isEditExpense: false,
+    isEditFlights: false,
+    isEditCars: false,
+    isEditLodging: false,
+    isEditNotes: false,
+    isEditOthers: false,
     index: ''
 }
 
@@ -77,11 +82,24 @@ const modalSlice = createSlice({
             state.isEditExpense = true
             state.index = action.payload
         },
-        resetEdits: (state, action) => {
-            if(action.payload === 'expense'){
-                state.isEditExpense = false
-            }
+        resetEdits: (state) => {
+            state.isEditExpense = false
+            state.isEditFlights = false
+            state.isEditCars = false
+            state.isEditLodging = false
+            state.isEditNotes = false
+            state.isEditOthers = false
             state.index = ''
+        },
+        editOverviewCategories: (state, action) => {
+            const { category } = action.payload
+            if(category === 'Flights') state.isEditFlights = true
+            else if(category === 'Cars') state.isEditCars = true
+            else if(category === 'Lodging') state.isEditLodging = true
+            else if(category === 'Other') state.isEditOthers = true
+            else state.isEditNotes = true
+
+            state.index = action.payload.index
         }
     }
 })
@@ -107,6 +125,7 @@ export const {
     closeExpenseModal,
     resetModals,
     editExpense,
-    resetEdits
+    resetEdits,
+    editOverviewCategories
 } = modalSlice.actions
 export default modalSlice.reducer

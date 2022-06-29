@@ -1,18 +1,38 @@
 import { v4 as uuidv4 } from 'uuid';
 import useDate from '../hooks/useDate'
 import useTime from '../hooks/useTime'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
+import { removeCategoryItem } from '../features/trip/tripSlice'
+import { openOtherModal, editOverviewCategories } from '../features/modals/modalSlice'
 
 function OtherItem() {
 
+    const dispatch = useDispatch()
     const { Other } = useSelector( state => state.trip )
     const { formatDate } = useDate()
     const { formatTime } = useTime()
 
+    const editOther = (e, index) => {
+        const data = {
+            category: e.target.id,
+            index
+        }
+        dispatch(editOverviewCategories(data))
+        dispatch(openOtherModal())
+    }
+
+    const removeOther = (e, index) => {
+        const data = {
+            category: e.target.id,
+            index
+        }
+        dispatch(removeCategoryItem(data))
+    }
+
     return (
         <section className='other-container'>
-            {Other.map( item => (
+            {Other.map( (item, index) => (
                 <div className='other-info' key={uuidv4()}>
                     <h2>{item.reservationName}</h2>
                     <div>
@@ -30,9 +50,23 @@ function OtherItem() {
                     <h3 className='section-heading'>Notes</h3>
                     <p id='textarea-notes'>{item.otherNotes}</p>
 
-                    <div>
-                        <PencilAltIcon  fill='#2F2E41' id='Other'/>
-                        <TrashIcon fill='#2F2E41' id='Other'/>
+                    <div className='operation-icons'>
+                        <button
+                            type='button'
+                            id='Other'
+                            onClick={(e) => editOther(e, index)}
+                        >
+                            <PencilAltIcon  fill='#2F2E41' />
+                        </button>
+
+                        <button
+                            type='button'
+                            id='Other'
+                            onClick={(e) => removeOther(e, index)}
+                        >
+                            <TrashIcon fill='#2F2E41' />
+                        </button>
+                
                     </div>
                 </div>
             ))}

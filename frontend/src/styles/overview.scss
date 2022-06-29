@@ -87,7 +87,6 @@
                         .notes-container,
                         .cars-container{
                             color: $primary-color;
-                            width: 100%;
                         
                             .flight-info,
                             .lodging-info,
@@ -100,11 +99,6 @@
                                 padding: 1rem;
                                 margin-bottom: 1rem;
                                 border-radius: 10px;
-
-                                p{
-                                    padding: 0;
-                                    color: $primary-color;
-                                }
                         
                                 h2{
                                     font-weight: $semibold-weight;
@@ -114,9 +108,27 @@
                                     font-weight: $semibold-weight;
                                     text-transform: uppercase;
                                 }
+
+                                p{
+                                    padding: 0;
+                                    color: $primary-color;
+                                }
+
+                                button{
+                                    border: none;
+                                    background-color: transparent;
+                                    cursor: pointer;
+
+                                    svg{
+                                        pointer-events: none;
+                                    }
+                                }
                         
                                 div{
-                                    padding: 1rem 0;
+                                    padding: 0.5rem 0;
+                                    flex-direction: column;
+                                    align-items: flex-start;
+                                    width: 100%;
 
                                     .departure-info,
                                     .arrival-info,
@@ -124,9 +136,6 @@
                                     .checkout-info,
                                     .pickup-info,
                                     .dropoff-info{
-                                        flex-direction: column;
-                                        align-items: flex-start;
-                                        padding-right: 1.5rem;
                         
                                         p{
                                             text-align: left;
@@ -136,6 +145,11 @@
                                         }
                                     }
                         
+                                }
+
+                                .operation-icons{
+                                    flex-direction: row;
+                                    justify-content: flex-start;
                                 }
                             }
 

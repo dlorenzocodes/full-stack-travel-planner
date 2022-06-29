@@ -29,6 +29,7 @@ function Profile() {
     }
   }, [isError, message, dispatch])
 
+
   const handleLogout = () => {
       dispatch(handleUserLogout())
       navigate('/explore')
