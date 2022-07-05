@@ -1,14 +1,18 @@
 import React from 'react'
+import Past from '../components/Past'
 import { toast } from 'react-toastify'
 import NewTrip from '../components/NewTrip'
 import { useEffect, useState } from 'react'
 import MenuBar from '../components/MenuBar'
+import Ongoing from '../components/Ongoing'
+import Spinner from '../components/Spinner'
+import Upcoming from '../components/Upcoming'
 import { useNavigate } from 'react-router-dom'
 import SearchBar from '../components/SearchBar'
-import { LogoutIcon } from '@heroicons/react/solid'
-import { UserAddIcon } from '@heroicons/react/solid'
+import { getTrips } from '../features/trip/tripSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { handleUserLogout, reset } from '../features/auth/authSlice'
+import { LogoutIcon, UserAddIcon, RefreshIcon } from '@heroicons/react/solid'
 
 
 function Profile() {
@@ -16,12 +20,15 @@ function Profile() {
   const [isUpcoming, setIsUpcoming] = useState(true)
   const [isOngoing, setIsOngoing] = useState(false)
   const [isPast, setIsPast] = useState(false)
+  const [visibleTrips, setVisibleTrips] = useState(5)
 
   const { addNewTripForm } = useSelector( state => state.modal)
   const { isError, message, user } = useSelector(state => state.auth)
+  const { pagination, isLoading } = useSelector( state => state.trip )
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  // user logout
   useEffect(() => {
     if(isError) {
       toast.error(message)
@@ -29,6 +36,10 @@ function Profile() {
     }
   }, [isError, message, dispatch])
 
+  // get trips
+  useEffect(() => {
+    dispatch(getTrips({ visibleTrips }))
+  },[dispatch, visibleTrips])
 
   const handleLogout = () => {
       dispatch(handleUserLogout())
@@ -51,6 +62,8 @@ function Profile() {
     }
   }
 
+  const loadMore = () => setVisibleTrips((prevState) => prevState + 5)
+
   return (
     <div className='container'>
         <section className='profile-wrapper'>
@@ -70,7 +83,6 @@ function Profile() {
         </section>
 
         <section className='trip-profile-section section-padding'>
-          
           <aside>
             <h2>Welcome, {user.name}!</h2>
             <SearchBar />
@@ -105,8 +117,22 @@ function Profile() {
             </div>
           </section>
 
+          <section className='trip-details'>
+            { isLoading && <Spinner />}
+            { isUpcoming && <Upcoming />}
+            { isOngoing && <Ongoing />}
+            { isPast && <Past />}
+
+            <button 
+              className={ pagination ? 'refresh-btn show': 'refresh-btn'}
+              onClick={loadMore}
+            >
+              <RefreshIcon fill='#F88747'/>
+            </button>
+
+          </section>  
+
         </section>
-      
       <MenuBar />
       { addNewTripForm && <NewTrip />}
     </div>

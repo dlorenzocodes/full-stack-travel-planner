@@ -14,6 +14,10 @@ const tripSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    image: {
+        type: String,
+        required: true
+    },
     dates: {
         startDate: { type: String, required: true },
         endDate: { type: String, required: true }

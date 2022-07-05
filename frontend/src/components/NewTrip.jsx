@@ -3,7 +3,6 @@ import Overview from './Overview'
 import Expenses from './Expenses'
 import Itinerary from './Itinerary'
 import { v4 as uuidv4 } from 'uuid';
-import useDate from '../hooks/useDate'
 import CarModal from './modals/CarModal'
 import NoteModal from './modals/NoteModal'
 import OtherModal from './modals/OtherModal'
@@ -21,8 +20,6 @@ function NewTrip() {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  const { formatDate } = useDate()
 
   const [ dates, setDates ] = useState({
     startDate: '',
@@ -66,7 +63,6 @@ function NewTrip() {
     Itinerary: false,
     Expenses: false
   })
-
   const { isSuccess } = useSelector( state => state.trip )
 
   const handleActiveCat = (e, index) => {
@@ -95,9 +91,10 @@ function NewTrip() {
     const tripData = {
       tripTitle: cityInfo.title,
       imageURl: cityInfo.imageURl,
+      image: cityInfo.imageName,
       dates: {
-        startDate: formatDate(dates.startDate),
-        endDate: formatDate(dates.endDate)
+        startDate: dates.startDate,
+        endDate: dates.endDate
       },
       Flights,
       Cars,

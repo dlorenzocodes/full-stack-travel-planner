@@ -3,11 +3,13 @@ const router = express.Router();
 const validate = require('../middleware/validate');
 const { validateCityEntry } = require('../utils/tripValidations');
 const { protectPrivateRoutes } = require('../middleware/authMiddleware');
-const { getDestinationQuery, saveTrip } = require('../controllers/tripsControllers');
+const { getDestinationQuery, saveTrip, getAllTrips } = require('../controllers/tripsControllers');
 
 router.post('/city-info',validate(validateCityEntry),getDestinationQuery);
 
-router.post('/', protectPrivateRoutes, saveTrip);
+router.post('/',protectPrivateRoutes, saveTrip);
+
+router.post('/all-trips',protectPrivateRoutes, getAllTrips);
 
 
 

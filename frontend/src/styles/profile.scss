@@ -6,7 +6,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    height: 165px;
+    min-height: 165px;
     position: relative;
 
     .logout-btn{
@@ -21,7 +21,7 @@
         justify-content: center;
         border-radius: $border-radius;
         right: 0;
-        position: fixed;
+        position: absolute;
         cursor: pointer;
         transition: all 300ms ease-in-out;
 
@@ -41,7 +41,7 @@
         width: 150px;
         height: 150px;
         border-radius: 50%;
-        position: fixed;
+        position: absolute;
         left: 50%;
         top: calc(165px - 75px);
         transform: translateX(-50%);
@@ -82,6 +82,75 @@
             .icon-wrapper{
                 right: 9px;
                 top: 10px;
+            }
+        }
+    }
+
+    .trip-details{
+
+        .trip-card{
+            display: grid;
+            grid-template-columns: 1fr 5fr 1fr;
+            grid-gap: 28px;
+            margin-top: 2rem;
+            align-items: center;
+            border-bottom: 1px solid $selection-color;
+            padding-bottom: 1rem;
+            font-weight: $semibold-weight;
+
+            .trip-image{
+                width: 125px;
+                height: 125px;
+
+                img{
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 5px;
+                }
+            }
+
+            #days-left{
+                background: $section-color;
+                width: 80%;
+                border-radius: 20px;
+                padding: 0.25rem 1rem;
+                color: $accent-color;
+                margin-bottom: 0.5rem;
+            }
+
+            #dates{
+                color: $placeholder-color;
+            }
+        }
+
+        .refresh-btn{
+            background: transparent;
+            border: none;
+            width: 100%;
+            margin-top: 2rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        .refresh-btn.show{
+            display: block;
+        }
+
+        .operation-icons{
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            
+            button{
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+
+                svg{
+                    box-shadow: none;
+                    pointer-events: none;
+                }
             }
         }
     }

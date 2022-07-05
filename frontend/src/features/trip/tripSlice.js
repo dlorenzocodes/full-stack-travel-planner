@@ -13,7 +13,11 @@ const initialState = {
     Other: [],
     Notes: [],
     Itinerary: [],
-    Expenses: []
+    Expenses: [],
+    Upcoming: [],
+    Ongoing: [],
+    Past: [],
+    pagination: null
 }
 
 export const postDestination = createAsyncThunk(
@@ -33,6 +37,18 @@ export const saveTrip = createAsyncThunk(
     async(tripData, thunkAPI) => {
         try{
             return await tripService.saveTrip(tripData)
+        }catch(err){
+            const message = err.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+export const getTrips = createAsyncThunk(
+    'trip/getTrips',
+    async(paginationNumber, thunkAPI) => {
+        try{
+            return await tripService.getTrips(paginationNumber)
         }catch(err){
             const message = err.response.data.message
             return thunkAPI.rejectWithValue(message)
@@ -175,9 +191,25 @@ const tripSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
             })
-            .addCase(saveTrip.rejected, (state) => {
+            .addCase(saveTrip.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
+                state.message = action.payload
+            })
+            .addCase(getTrips.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getTrips.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.Upcoming = action.payload.upcoming
+                state.Ongoing = action.payload.ongoing
+                state.Past = action.payload.past
+                state.pagination = action.payload.pagination
+            })
+            .addCase(getTrips.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
             })
     }
 })

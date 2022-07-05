@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const users = require('../routes/userRoutes');
@@ -15,10 +16,12 @@ const corsOptions = {
     credentials: true,
 }
 
+console.log(path.join(__dirname, '../','public/assets'));
 
 module.exports = function(app){
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
+    app.use(express.static(path.join(__dirname, '../','public/assets')));
     app.use(cors(corsOptions));
     app.use(cookieParser());
     app.use('/users', users);
