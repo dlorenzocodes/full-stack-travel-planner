@@ -56,6 +56,18 @@ export const getTrips = createAsyncThunk(
     }
 )
 
+export const deleteTrip = createAsyncThunk(
+    'trip/deleteTrip',
+    async(tripId, thunkAPI) => {
+        try{
+            return await tripService.deleteTrip(tripId)
+        }catch(err){
+            const message = err.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 const tripSlice = createSlice({
     name: 'trip',
     initialState,
@@ -164,6 +176,21 @@ const tripSlice = createSlice({
                 const newNotes = state.Notes.filter((item, index) => index !== itemIndex)
                 state.Notes = newNotes
             }
+        },
+        deleteTripFromUI: (state, action) => {
+            const { tripIndex } = action.payload
+            const { profileSection } = action.payload
+
+            if(profileSection === 'Past'){
+                const trips = state.Past.filter((item, index) => index !== tripIndex )
+                state.Past = trips
+            } else if(profileSection === 'Ongoing'){
+                const trips = state.Ongoing.filter((item, index) => index !== tripIndex )
+                state.Ongoing = trips
+            } else{
+                const trips = state.Upcoming.filter((item, index) => index !== tripIndex )
+                state.Upcoming = trips
+            }
         }
 
     },
@@ -182,14 +209,15 @@ const tripSlice = createSlice({
                 state.isError = true
                 state.isLoading = false
                 state.isSuccess = false
-                state.message = action.payload || 'Invalid request!'
+                state.message = action.payload || 'Request could not be processed!'
             })
             .addCase(saveTrip.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(saveTrip.fulfilled, (state) => {
+            .addCase(saveTrip.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
+                state.message = action.payload
             })
             .addCase(saveTrip.rejected, (state, action) => {
                 state.isLoading = false
@@ -230,6 +258,7 @@ export const {
     removeActivity,
     removeItinerary,
     addEditedCategoryItem,
-    removeCategoryItem
+    removeCategoryItem,
+    deleteTripFromUI
 } = tripSlice.actions
 export default tripSlice.reducer

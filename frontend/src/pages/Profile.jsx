@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import SearchBar from '../components/SearchBar'
 import { getTrips } from '../features/trip/tripSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { resetTripState } from '../features/trip/tripSlice'
 import { handleUserLogout, reset } from '../features/auth/authSlice'
 import { LogoutIcon, UserAddIcon, RefreshIcon } from '@heroicons/react/solid'
 
@@ -24,7 +25,13 @@ function Profile() {
 
   const { addNewTripForm } = useSelector( state => state.modal)
   const { isError, message, user } = useSelector(state => state.auth)
-  const { pagination, isLoading } = useSelector( state => state.trip )
+  const { 
+    pagination, 
+    isLoading, 
+    isSuccess,
+    isError: tripError,
+    message: tripMessage
+  } = useSelector( state => state.trip )
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -36,10 +43,34 @@ function Profile() {
     }
   }, [isError, message, dispatch])
 
-  // get trips
+
+  // get trips when visileTrips change
   useEffect(() => {
-    dispatch(getTrips({ visibleTrips }))
+      dispatch(getTrips({ visibleTrips }))
   },[dispatch, visibleTrips])
+
+
+  // get trips when a trip is added
+  useEffect(() => {
+    if(isSuccess){
+      toast.info(tripMessage)
+      dispatch(getTrips({ visibleTrips }))
+      dispatch(resetTripState())
+    }
+  }, [isSuccess, dispatch, visibleTrips, tripMessage])
+
+  // get trips error message
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if(tripError){
+        toast.error(tripMessage)
+        dispatch(resetTripState())
+      }
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [tripError, tripMessage, dispatch])
+
 
   const handleLogout = () => {
       dispatch(handleUserLogout())

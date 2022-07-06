@@ -1,10 +1,12 @@
 import { v4 as uuidv4 } from 'uuid'
-import { useSelector } from 'react-redux'
 import useProfileDate from '../hooks/useProfileDate'
+import { useSelector, useDispatch } from 'react-redux'
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
+import { deleteTrip, deleteTripFromUI } from '../features/trip/tripSlice'
 
 function Upcoming() {
 
+  const dispatch = useDispatch()
   const { Upcoming } = useSelector( state => state.trip )
   const { formatProfileDates } = useProfileDate()
  
@@ -18,13 +20,23 @@ function Upcoming() {
     return `${diff} ${s} left `
   }
 
+  const handleDeleteTrip = (tripId, e, index) => {
+    const data = {
+      tripIndex: index,
+      profileSection: e.target.id
+    }
+
+    dispatch(deleteTrip(tripId))
+    dispatch(deleteTripFromUI(data))
+  }
+
   return (
     <>
      { 
       Upcoming.length === 0 ? 
       <p>No Upcoming Trips</p> :
       <> 
-        { Upcoming.map(trip => ((
+        { Upcoming.map((trip, index) => ((
           <div className='trip-card' key={uuidv4()}>
 
             <div className='trip-image'>
@@ -45,14 +57,15 @@ function Upcoming() {
             <div className='operation-icons'>
               <button
                 type='button'
-                id='Flights'
+                id='Upcoming'
               >
                 <PencilAltIcon fill='#2F2E41' />
               </button>
 
               <button
                 type='button'
-                id='Flights' 
+                id='Upcoming' 
+                onClick={(e) => handleDeleteTrip(trip._id, e, index)}
               >
                 <TrashIcon fill='#2F2E41'/>
               </button>

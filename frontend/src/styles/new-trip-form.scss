@@ -24,9 +24,27 @@
         }
 
         button{
-            background-color: transparent;
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 0.25rem 1rem;
+            border-radius: 5px;
             border: none;
+            outline: none;
             cursor: pointer;
+            font-family: $font-family;
+            font-weight: $medium-weight;
+            transition: margin 300ms ease-in-out;
+
+            svg{
+                box-shadow: none;
+                margin-left: 0.25rem;
+                background-color: transparent;
+            }
+        }
+
+        button:hover{
+            margin-left: 0.5rem;
         }
     }
 

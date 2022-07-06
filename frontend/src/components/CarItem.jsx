@@ -24,11 +24,13 @@ function FlightItem() {
     }
 
     const removeCars = (e, index) => {
-        const data = {
-            category: e.target.id,
-            index
+        if(window.confirm('Are you sure you want to delete?')){
+            const data = {
+                category: e.target.id,
+                index
+            }
+            dispatch(removeCategoryItem(data))
         }
-        dispatch(removeCategoryItem(data))
     }
 
     return (

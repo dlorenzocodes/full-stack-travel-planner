@@ -3,7 +3,8 @@ import Explore from './pages/Explore';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Profile from './pages/Profile';
-import { ToastContainer } from 'react-toastify'
+import CreateTrip from './pages/CreateTrip';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoute from './components/PrivateRoute'
 import PersistLogin from './components/PersistLogin';
@@ -29,6 +30,10 @@ function App() {
 
                 <Route path='/profile' element={ <PrivateRoute /> } >
                   <Route path='/profile' element={ <Profile /> } />
+                </Route>
+
+                <Route path='/create-trip' element={ <PrivateRoute /> } >
+                  <Route path='/create-trip' element={ <CreateTrip /> } />
                 </Route>
 
               </Route>

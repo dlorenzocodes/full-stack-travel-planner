@@ -28,11 +28,21 @@ const getTrips = async (paginationNumber) => {
     return await response.data
 }
 
+const deleteTrip = async (tripId) => {
+    const response = await axios.delete(
+        `trips/${tripId}`,
+        { withCredentials: true }
+    )
+
+    return await response.data
+}
+
 
 const tripService = {
     postCityDestination,
     saveTrip,
-    getTrips
+    getTrips,
+    deleteTrip
 }
 
 export default tripService

@@ -26,25 +26,26 @@ const addImages = async(imageTitle, url, filepath) => {
     try{
         let images;
         const data = await fsPromises.readFile(p, 'utf8');
+
         if(data === ''){
             images = [];
             images.push(imageTitle);
             await fsPromises.writeFile(p, JSON.stringify(images));
             await downloadImage(url, filepath);
-        } else{
-            const currentData = await fsPromises.readFile(p, 'utf8');
-            const parsedData = JSON.parse(currentData);
-            const img = parsedData.find(item => item === imageTitle);
-
-            if(img) {
-                console.log(img)
-                return
-            }
-
-            images = [...parsedData, imageTitle];
-            await fsPromises.writeFile(p, JSON.stringify(images));
-            await downloadImage(url, filepath);
         }
+
+        const parsedData = JSON.parse(data);
+        const img = parsedData.find(item => item === imageTitle);
+
+        if(img) {
+            console.log(img)
+            return
+        }
+
+        images = [...parsedData, imageTitle];
+        await fsPromises.writeFile(p, JSON.stringify(images));
+        await downloadImage(url, filepath);
+        
     }catch(err){
         console.log(err)
     }
@@ -52,7 +53,9 @@ const addImages = async(imageTitle, url, filepath) => {
 
 
 
-
+// @desc   Gets destination info, imageURl and downloads image
+// @route  POST /trips/city-info
+// @access Public
 const getDestinationQuery = async(req, res, next) => {
     const { city } = req.body;  
     try{
@@ -74,6 +77,9 @@ const getDestinationQuery = async(req, res, next) => {
     }
 }
 
+// @desc   Saves the trips to DB
+// @route  POST /trips
+// @access Private
 const saveTrip = async (req, res, next) => {
     try{
         const trip = { ...req.body, user: req.user._id }
@@ -93,6 +99,10 @@ const saveTrip = async (req, res, next) => {
     }
 }
 
+
+// @desc   Returns trips in sections of 5 by category: Upcoming, Ongoing, Past
+// @route  POST /trips/all-trips
+// @access Private
 const getAllTrips = async (req, res, next) => {
     const visibleTrips = parseInt(req.body.visibleTrips);
     console.log(visibleTrips)
@@ -105,7 +115,7 @@ const getAllTrips = async (req, res, next) => {
 
         if(!totalTrips || !trips){
             res.sendStatus(400);
-            throw new Error('No trips were found!')
+            throw new Error('No trips were found!');
         }
 
         const upcoming = [];
@@ -137,8 +147,35 @@ const getAllTrips = async (req, res, next) => {
     }
 }
 
+// @desc   Deletes a trip
+// @route  DELETE /trips/:tripId
+// @access Private
+const deleteTrip = async (req, res, next) => {
+    try{
+        const tripId = req.params.tripId;
+        const trip = await Trip.findById(tripId);
+
+        if(!trip){
+            res.status(404);
+            throw new Error('Trip not found');
+        }
+
+        if(trip.user.toString() !== req.user._id){
+            res.status(401);
+            throw new Error('Not authorized');
+        }
+
+        await trip.remove();
+        res.status(200).send('Trip successfully deleted!');
+    }catch(err){
+        console.log(err);
+        next(err);
+    }
+}
+
 module.exports = {
     getDestinationQuery,
     saveTrip,
-    getAllTrips
+    getAllTrips,
+    deleteTrip
 }
