@@ -3,23 +3,26 @@ import Overview from './Overview'
 import Expenses from './Expenses'
 import Itinerary from './Itinerary'
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
 import CarModal from './modals/CarModal'
 import NoteModal from './modals/NoteModal'
 import OtherModal from './modals/OtherModal'
 import HotelModal from './modals/HotelModal'
-import { useNavigate } from 'react-router-dom'
 import FlightModal from './modals/FlightModal'
 import ExpenseModal from './modals/ExpenseModal'
 import { useSelector, useDispatch } from 'react-redux'
 import { SaveIcon, XIcon } from '@heroicons/react/solid'
-import { resetTripState, saveTrip } from '../features/trip/tripSlice'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { tripSectionButtons } from '../utils/TripSectionButtons'
+import { resetTripState, saveTrip } from '../features/trip/tripSlice'
+import { resetDestinationState } from '../features/destination/destinationSlice'
 import { closeNewTripForm, closeAddTripModal, resetModals } from '../features/modals/modalSlice'
 
 function NewTrip() {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const [ dates, setDates ] = useState({
     startDate: '',
@@ -27,8 +30,10 @@ function NewTrip() {
   })
 
   const { startDate, endDate } = dates
+  const { cityInfo } = useSelector( state => state.destination )
+  const { isError, message } = useSelector( state => state.trip )
+
   const { 
-      cityInfo, 
       Flights, 
       Cars, 
       Lodging, 
@@ -63,7 +68,6 @@ function NewTrip() {
     Itinerary: false,
     Expenses: false
   })
-  const { isSuccess } = useSelector( state => state.trip )
 
   const handleActiveCat = (e, index) => {
     if(e.target.id === index.toString()){
@@ -77,6 +81,7 @@ function NewTrip() {
   const closeTripForm = () => {
     dispatch(closeNewTripForm())
     dispatch(closeAddTripModal())
+    dispatch(resetDestinationState())
     dispatch(resetTripState())
   }
 
@@ -107,13 +112,14 @@ function NewTrip() {
 
     dispatch(saveTrip(tripData))
 
-    setTimeout(() => {
-      if(isSuccess){
-        dispatch(dispatch(resetModals()))
-        dispatch(resetTripState())
-        navigate('/profile')
-      }
-    }, 1000)
+    if(isError){
+      toast.error(message)
+      return
+    }
+
+    if(location.pathname !== '/profile') navigate('/profile')
+    dispatch(resetModals())
+    dispatch(resetDestinationState())
   }
   
 
@@ -121,9 +127,12 @@ function NewTrip() {
     <section className='new-trip-container'>
       <section className='trip-background-image' style={style}>
         <div>
-          <button type='submit'>
+          <button 
+            type='submit'
+            onClick={handleSaveTrip}
+          >
             <p>Save trip</p>
-            <SaveIcon fill='#F88747' onClick={handleSaveTrip}/>
+            <SaveIcon fill='#F88747'/>
           </button>
           <XIcon fill='#F88747' onClick={closeTripForm}/>
         </div>

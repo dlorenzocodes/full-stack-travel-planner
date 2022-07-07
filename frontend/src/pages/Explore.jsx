@@ -5,19 +5,19 @@ import CityModal from '../components/CityModal'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
-import { resetTripState } from '../features/trip/tripSlice'
 import { openSearchCityModal } from '../features/modals/modalSlice'
+import { resetDestinationState } from '../features/destination/destinationSlice'
 
 function Explore() {
 
-  const { searchCityModal } = useSelector(state => state.modal)
-  const { isError, isSuccess, message } = useSelector( state => state.trip)
+  const { searchCityModal } = useSelector( state => state.modal )
+  const { isError, isSuccess, message } = useSelector( state => state.destination )
   const dispatch = useDispatch()
 
   useEffect(() => {
     if(isError) {
       toast.error(message)
-      dispatch(resetTripState())
+      dispatch(resetDestinationState())
     } 
 
     if(isSuccess) dispatch(openSearchCityModal())

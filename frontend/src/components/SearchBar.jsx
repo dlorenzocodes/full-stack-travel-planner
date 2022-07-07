@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { SearchIcon } from '@heroicons/react/solid'
-import { postDestination } from '../features/trip/tripSlice'
+import { postDestination } from '../features/destination/destinationSlice'
 
 function SearchBar() {
 
@@ -19,11 +19,9 @@ function SearchBar() {
       return
     }
 
-    if(location.pathname !== '/profile'){
-      const city = { city: destination }
-      dispatch(postDestination(city))
-      setDestination('')
-    } 
+    const city = { city: destination }
+    dispatch(postDestination(city))
+    setDestination('')
   }
 
   return (

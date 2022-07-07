@@ -1,30 +1,59 @@
 import { v4 as uuidv4 } from 'uuid'
+import { toast } from 'react-toastify'
+import { useState, useEffect } from 'react'
 import useProfileDate from '../hooks/useProfileDate'
 import { useSelector, useDispatch } from 'react-redux'
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
-import { deleteTrip, deleteTripFromUI } from '../features/trip/tripSlice'
+import { deleteTrip, deleteTripFromUI,resetTripState } from '../features/trip/tripSlice'
 
 function Ongoing() {
 
   const dispatch = useDispatch()
-  const { Ongoing } = useSelector( state => state.trip)
+  const [tripIndex, setTripIndex] = useState('')
+  const [profileSection, setProfileSection] = useState('')
+  const { Ongoing, isError, message, isSuccess } = useSelector( state => state.trip )
   const { formatProfileDates } = useProfileDate()
 
-  const handleDeleteTrip = (tripId, e, index) => {
-    const data = {
-      tripIndex: index,
-      profileSection: e.target.id
+  // alert error if trip not deleted
+  useEffect(() => {
+    if(isError){
+      toast.error(message)
+      dispatch(resetTripState())
     }
+  }, [isError, message, dispatch])
 
-    dispatch(deleteTrip(tripId))
-    dispatch(deleteTripFromUI(data))
+
+  // delete trip from UI on success
+  useEffect(() => {
+      if(isSuccess){
+        const data = { tripIndex, profileSection }
+        dispatch(deleteTripFromUI(data))
+
+        const timer =setTimeout(() => {
+          toast.info(message)
+          dispatch(resetTripState())
+        }, 1000)
+        
+        return () => clearTimeout(timer)
+      }
+
+  }, [isSuccess, dispatch, message, profileSection, tripIndex])
+
+  
+
+  const handleDeleteTrip = (tripId, e, index) => {
+    if(window.confirm('Are you sure you want to delete this trip?')){
+      dispatch(deleteTrip(tripId))
+      setTripIndex(index)
+      setProfileSection(e.target.id)
+    }
   }
 
   return (
     <>
       { 
         Ongoing.length === 0 ? 
-        <p>No Ongoing Trips</p> :
+        <p className='no-trips-placeholder'>No ongoing trips</p> :
         <> 
           { Ongoing.map((trip, index) => ((
             <div className='trip-card' key={uuidv4()}>

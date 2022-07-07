@@ -8,7 +8,6 @@ import Ongoing from '../components/Ongoing'
 import Spinner from '../components/Spinner'
 import Upcoming from '../components/Upcoming'
 import { useNavigate } from 'react-router-dom'
-import SearchBar from '../components/SearchBar'
 import { getTrips } from '../features/trip/tripSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetTripState } from '../features/trip/tripSlice'
@@ -116,7 +115,6 @@ function Profile() {
         <section className='trip-profile-section section-padding'>
           <aside>
             <h2>Welcome, {user.name}!</h2>
-            <SearchBar />
           </aside>
 
           <section className='trip-categories'>

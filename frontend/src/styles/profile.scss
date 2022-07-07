@@ -74,7 +74,6 @@
         h2{
             color: $primary-color;
             text-align: center;
-            padding-bottom: 2.3rem;
         }
 
         .search-bar{
@@ -87,6 +86,15 @@
     }
 
     .trip-details{
+
+        .no-trips-placeholder{
+            text-align: center;
+            margin-top: 3rem;
+            background: $section-color;
+            padding: 2rem;
+            border-radius: 20px;
+            color: $placeholder-color;
+        }
 
         .trip-card{
             display: grid;

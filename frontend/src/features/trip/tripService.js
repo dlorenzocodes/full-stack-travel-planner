@@ -1,14 +1,5 @@
 import axios from 'axios'
 
-const postCityDestination = async (city) => {
-    const response = await axios.post(
-        'trips/city-info', 
-        city, 
-        { withCredentials: true }
-    )
-    return await response.data
-}
-
 const saveTrip = async (tripData) => {
     const response = await axios.post(
         'trips', 
@@ -39,7 +30,6 @@ const deleteTrip = async (tripId) => {
 
 
 const tripService = {
-    postCityDestination,
     saveTrip,
     getTrips,
     deleteTrip

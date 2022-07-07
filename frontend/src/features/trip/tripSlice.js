@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import tripService from './tripService'
 
 const initialState = {
-    cityInfo: {},
     isLoading: false,
     isError: false,
     isSuccess: false,
@@ -20,17 +19,6 @@ const initialState = {
     pagination: null
 }
 
-export const postDestination = createAsyncThunk(
-    'trip/postDestination',
-    async(city, thunkAPI) => {
-        try{
-            return await tripService.postCityDestination(city)
-        }catch(err){
-            const message = err.response.data.message
-            return thunkAPI.rejectWithValue(message)
-        }
-    }
-)
 
 export const saveTrip = createAsyncThunk(
     'trip/postTrip',
@@ -73,7 +61,6 @@ const tripSlice = createSlice({
     initialState,
     reducers: {
         resetTripState: (state) => {
-            state.cityInfo = {}
             state.isError = false
             state.isSuccess = false
             state.isLoading = false
@@ -196,21 +183,6 @@ const tripSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(postDestination.pending, (state) => {
-                state.isLoading = true
-            })
-            .addCase(postDestination.fulfilled, (state, action) => {
-                state.isSuccess = true
-                state.isLoading = false
-                state.isError = false
-                state.cityInfo = action.payload
-            })
-            .addCase(postDestination.rejected, (state, action) => {
-                state.isError = true
-                state.isLoading = false
-                state.isSuccess = false
-                state.message = action.payload || 'Request could not be processed!'
-            })
             .addCase(saveTrip.pending, (state) => {
                 state.isLoading = true
             })
@@ -237,6 +209,20 @@ const tripSlice = createSlice({
             .addCase(getTrips.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
+                state.message = action.payload
+            })
+            .addCase(deleteTrip.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(deleteTrip.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(deleteTrip.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.isError = false
                 state.message = action.payload
             })
     }
