@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import useProfileDate from '../hooks/useProfileDate'
 import { useSelector, useDispatch } from 'react-redux'
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
@@ -10,9 +11,10 @@ import { deleteTrip, deleteTripFromUI, resetTripState } from '../features/trip/t
 function Upcoming() {
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [tripIndex, setTripIndex] = useState('')
   const [profileSection, setProfileSection] = useState('')
-  const { Upcoming, isError, message, isSuccess } = useSelector( state => state.trip )
+  const { Upcoming, isError, message, isDeleted } = useSelector( state => state.trip )
   const { formatProfileDates } = useProfileDate()
 
   const daysLeft = (entry) => {
@@ -35,7 +37,7 @@ function Upcoming() {
 
   // delete trip from UI on success
   useEffect(() => {
-      if(isSuccess){
+      if(isDeleted){
         const data = { tripIndex, profileSection }
         dispatch(deleteTripFromUI(data))
 
@@ -47,7 +49,7 @@ function Upcoming() {
         return () => clearTimeout(timer)
       }
 
-  }, [isSuccess, dispatch, message, profileSection, tripIndex])
+  }, [isDeleted, dispatch, message, profileSection, tripIndex])
 
 
   const handleDeleteTrip = (tripId, e, index) => {
@@ -57,6 +59,8 @@ function Upcoming() {
       setProfileSection(e.target.id)
     }
   }
+
+  const handleTripUpdate = (tripId) => navigate(`/trip/${tripId}`)
 
   return (
     <>
@@ -86,6 +90,7 @@ function Upcoming() {
               <button
                 type='button'
                 id='Upcoming'
+                onClick={() => handleTripUpdate(trip._id)}
               >
                 <PencilAltIcon fill='#2F2E41' />
               </button>

@@ -18,6 +18,7 @@ router.post('/all-trips',protectPrivateRoutes, getAllTrips);
 
 router.delete('/:tripId', protectPrivateRoutes, deleteTrip)
 
+router.put('/:tripId', protectPrivateRoutes, deleteTrip)
 
 
 module.exports = router;

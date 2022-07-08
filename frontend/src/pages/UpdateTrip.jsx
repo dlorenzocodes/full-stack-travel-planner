@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import Overview from './Overview'
-import Expenses from './Expenses'
-import Itinerary from './Itinerary'
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-import CarModal from './modals/CarModal'
-import NoteModal from './modals/NoteModal'
-import OtherModal from './modals/OtherModal'
-import HotelModal from './modals/HotelModal'
-import FlightModal from './modals/FlightModal'
-import ExpenseModal from './modals/ExpenseModal'
+import Overview from '../components/Overview'
+import Expenses from '../components/Expenses'
+import Itinerary from '../components/Itinerary'
+import CarModal from '../components/modals/CarModal'
+import NoteModal from '../components/modals/NoteModal'
+import OtherModal from '../components/modals/OtherModal'
+import HotelModal from '../components/modals/HotelModal'
+import FlightModal from '../components/modals/FlightModal'
+import ExpenseModal from '../components/modals/ExpenseModal'
 import { useSelector, useDispatch } from 'react-redux'
 import { SaveIcon, XIcon } from '@heroicons/react/solid'
 import { useNavigate, useLocation } from 'react-router-dom'
@@ -18,7 +18,7 @@ import { resetTripState, saveTrip } from '../features/trip/tripSlice'
 import { resetDestinationState } from '../features/destination/destinationSlice'
 import { closeNewTripForm, closeAddTripModal, resetModals } from '../features/modals/modalSlice'
 
-function NewTrip() {
+function UpdateTrip() {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -120,7 +120,6 @@ function NewTrip() {
     if(location.pathname !== '/profile') navigate('/profile')
     dispatch(resetModals())
     dispatch(resetDestinationState())
-    dispatch(resetTripState())
   }
   
 
@@ -196,4 +195,4 @@ function NewTrip() {
   )
 }
 
-export default NewTrip
+export default UpdateTrip

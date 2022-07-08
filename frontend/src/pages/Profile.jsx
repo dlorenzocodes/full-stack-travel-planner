@@ -7,12 +7,12 @@ import MenuBar from '../components/MenuBar'
 import Ongoing from '../components/Ongoing'
 import Spinner from '../components/Spinner'
 import Upcoming from '../components/Upcoming'
-import { useNavigate } from 'react-router-dom'
 import { getTrips } from '../features/trip/tripSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { resetTripState } from '../features/trip/tripSlice'
-import { handleUserLogout, reset } from '../features/auth/authSlice'
 import { LogoutIcon, UserAddIcon, RefreshIcon } from '@heroicons/react/solid'
+import { handleUserLogout, reset, getCurrentUser } from '../features/auth/authSlice'
 
 
 function Profile() {
@@ -21,9 +21,8 @@ function Profile() {
   const [isOngoing, setIsOngoing] = useState(false)
   const [isPast, setIsPast] = useState(false)
   const [visibleTrips, setVisibleTrips] = useState(5)
-
   const { addNewTripForm } = useSelector( state => state.modal)
-  const { isError, message, user } = useSelector(state => state.auth)
+  const { isError, message, user} = useSelector( state => state.auth )
   const { 
     pagination, 
     isLoading, 
@@ -34,31 +33,38 @@ function Profile() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  // user logout
+
+  // check for user --------
   useEffect(() => {
-    if(isError) {
-      toast.error(message)
-      dispatch(reset())
-    }
+    dispatch(getCurrentUser())
+  }, [dispatch])
+
+
+  // user logout --------
+  useEffect(() => {
+    if(isError) toast.error(message)
+    dispatch(reset())
   }, [isError, message, dispatch])
 
 
-  // get trips when visileTrips change
+  // gets trips when component loads --------
   useEffect(() => {
-      dispatch(getTrips({ visibleTrips }))
-  },[dispatch, visibleTrips])
+    dispatch(getTrips({ visibleTrips }))
+      .then(() => dispatch(resetTripState()))
+  }, [dispatch, visibleTrips])
 
 
-  // get trips when a trip is added
+  // get trips when a trip is added --------
   useEffect(() => {
     if(isSuccess){
       toast.info(tripMessage)
       dispatch(getTrips({ visibleTrips }))
-      dispatch(resetTripState())
+        .then(() => dispatch(resetTripState()))
     }
-  }, [isSuccess, dispatch, visibleTrips, tripMessage])
+  }, [isSuccess, dispatch, visibleTrips, tripMessage, user])
 
-  // get trips error message
+
+  // get trips error message --------
   useEffect(() => {
     const timer = setTimeout(() => {
       if(tripError){
@@ -71,9 +77,10 @@ function Profile() {
   }, [tripError, tripMessage, dispatch])
 
 
+
   const handleLogout = () => {
       dispatch(handleUserLogout())
-      navigate('/explore')
+        .then(() => navigate('/explore'))
   } 
 
   const handleTripSelection = (e) => {
@@ -93,6 +100,9 @@ function Profile() {
   }
 
   const loadMore = () => setVisibleTrips((prevState) => prevState + 5)
+    
+
+  if(!user) <Navigate to='/explore' />
 
   return (
     <div className='container'>
@@ -114,7 +124,7 @@ function Profile() {
 
         <section className='trip-profile-section section-padding'>
           <aside>
-            <h2>Welcome, {user.name}!</h2>
+            <h2>Welcome, {user?.name}!</h2>
           </aside>
 
           <section className='trip-categories'>

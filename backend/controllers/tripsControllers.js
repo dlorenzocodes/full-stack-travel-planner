@@ -83,7 +83,6 @@ const getDestinationQuery = async(req, res, next) => {
 const saveTrip = async (req, res, next) => {
     try{
         const trip = { ...req.body, user: req.user._id }
-        console.log(trip)
         const newTrip = await Trip.create(trip)
 
         if(!newTrip){
@@ -105,18 +104,12 @@ const saveTrip = async (req, res, next) => {
 // @access Private
 const getAllTrips = async (req, res, next) => {
     const visibleTrips = parseInt(req.body.visibleTrips);
-    console.log(visibleTrips)
     try{
         const totalTrips = await Trip.countDocuments({ user: req.user._id});
         const pagination = visibleTrips >= totalTrips ? false : true
         const trips = await Trip.find({ user: req.user._id})
         .sort({ _id: 'desc'})
         .limit(visibleTrips);
-
-        if(!totalTrips || !trips){
-            res.sendStatus(400);
-            throw new Error('No trips were found!');
-        }
 
         const upcoming = [];
         const ongoing = [];
@@ -143,7 +136,7 @@ const getAllTrips = async (req, res, next) => {
 
     }catch(err){
         console.log(err)
-        next(err)
+        next(new Error('Trips could not be loaded at this time. Try again later!'))
     }
 }
 
@@ -167,6 +160,36 @@ const deleteTrip = async (req, res, next) => {
 
         await trip.remove();
         res.status(200).send('Trip successfully deleted!');
+    }catch(err){
+        console.log(err);
+        next(err);
+    }
+}
+
+// @desc   Edit a trip
+// @route  PUT /trips/:tripId
+// @access Private
+const updateTrip = async (req, res, next) => {
+    try{
+        const tripId = req.params.tripId;
+        const trip = await Trip.findById(tripId);
+
+        if(!trip){
+            res.status(404);
+            throw new Error('Trip not found');
+        }
+
+        if(trip.user.toString() !== req.user._id){
+            res.status(401);
+            throw new Error('Not authorized');
+        }
+
+        const updatedTrip = await Trip.findByIdAndUpdate(
+            tripId,
+            req.body,
+            { new: true }
+        )
+        res.status(200).send(updatedTrip);
     }catch(err){
         console.log(err);
         next(err);

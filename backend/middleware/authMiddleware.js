@@ -11,12 +11,12 @@ const protectPrivateRoutes = (req, res, next) => {
                 next();
             }catch(err){
                 res.status(401);
-                throw new Error('Not authorized!')
+                throw new Error('No enough permissions to perform this action!')
             }
         } 
         else {
             res.status(401);
-            throw new Error('Not authorized!')
+            throw new Error('No enough permissions to perform this action!')
         }
 
     }catch(err){

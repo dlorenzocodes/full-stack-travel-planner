@@ -264,3 +264,14 @@ textarea,
     margin-top: 0.5rem;
     text-align: left;
 }
+
+
+.Toastify__progress-bar--error,
+.Toastify__progress-bar--info{
+    background: $accent-color !important;
+}
+
+
+.Toastify__toast-icon > svg{
+    fill: $accent-color !important;
+}

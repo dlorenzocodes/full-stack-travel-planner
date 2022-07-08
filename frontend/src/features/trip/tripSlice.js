@@ -5,6 +5,8 @@ const initialState = {
     isLoading: false,
     isError: false,
     isSuccess: false,
+    isDeleted: false,
+    isUpdated: false,
     message: '',
     Flights: [],
     Cars:[],
@@ -64,6 +66,8 @@ const tripSlice = createSlice({
             state.isError = false
             state.isSuccess = false
             state.isLoading = false
+            state.isDeleted = false
+            state.isUpdated = false
             state.message = ''
             state.Flights = []
             state.Cars = []
@@ -221,7 +225,7 @@ const tripSlice = createSlice({
             })
             .addCase(deleteTrip.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.isSuccess = true
+                state.isDeleted = true
                 state.isError = false
                 state.message = action.payload
             })
