@@ -66,8 +66,6 @@ function Upcoming() {
       profileSection: e.target.id
     }
 
-    console.log(tripId)
-
     dispatch(editTrip(data))
     navigate(`/trips/${tripId}`)
   }

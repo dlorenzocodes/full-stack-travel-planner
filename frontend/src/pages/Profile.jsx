@@ -46,6 +46,7 @@ function Profile() {
   }
 
 
+
   // check for user --------
   useEffect(() => {
     dispatch(getCurrentUser())
@@ -130,8 +131,10 @@ function Profile() {
   const handleProfileImageFile = () => setFile(fileInput.current.files[0])
 
   const removeProfileImage = () => {
-    dispatch(deleteProfileImage())
-      .then(() => dispatch(getCurrentUser()))
+    if(window.confirm('Are you sure you want to delete this image?')){
+      dispatch(deleteProfileImage())
+        .then(() => dispatch(getCurrentUser()))
+    }
   }
 
   if(!user) <Navigate to='/explore' />
@@ -213,7 +216,6 @@ function Profile() {
           </section>
 
           <section className='trip-details'>
-            { isLoading && <Spinner />}
             { isUpcoming && <Upcoming />}
             { isOngoing && <Ongoing />}
             { isPast && <Past />}
@@ -230,6 +232,7 @@ function Profile() {
         </section>
       <MenuBar />
       { addNewTripForm && <NewTrip />}
+      { isLoading && <Spinner />}
     </div>
   )
 }
