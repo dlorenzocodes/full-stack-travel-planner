@@ -37,6 +37,7 @@ export const login = createAsyncThunk(
     }
 )
 
+// Login user via Google
 export const getGoogleSignUrl = createAsyncThunk(
     'auth/getGoogleUrl',
     async(_, thunkAPI) => {
@@ -61,6 +62,7 @@ export const googleSignInFailure = createAsyncThunk(
     }
 )
 
+// Get current user
 export const getCurrentUser = createAsyncThunk(
     'auth/getCurrentUser',
     async(_, thunkAPI) => {
@@ -73,11 +75,38 @@ export const getCurrentUser = createAsyncThunk(
     }
 )
 
+// Logout user
 export const handleUserLogout = createAsyncThunk(
     'auth/LogoutUser',
     async(_, thunkAPI) => {
         try{
             return await authService.logoutUser()
+        }catch(err){
+            const message = err.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+// Add profile image
+export const handleProfileImage = createAsyncThunk(
+    'auth/addProfileImage',
+    async(data, thunkAPI) => {
+        try{
+            return await authService.addProfileImage(data)
+        }catch(err){
+            const message = err.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+// Delete profile image
+export const deleteProfileImage = createAsyncThunk(
+    'auth/deleteProfileImage',
+    async(_, thunkAPI) => {
+        try{
+            return await authService.deleteProfileImage()
         }catch(err){
             const message = err.response.data.message
             return thunkAPI.rejectWithValue(message)
@@ -132,6 +161,13 @@ const authSlice = createSlice({
                 state.isLoginSuccess = false
             })
             .addCase(handleUserLogout.rejected, (state, action) => {
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(handleProfileImage.fulfilled, (state, action) => {
+                state.message = action.payload
+            })
+            .addCase(handleProfileImage.rejected, (state, action) => {
                 state.isError = true
                 state.message = action.payload
             })

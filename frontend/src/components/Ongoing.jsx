@@ -1,14 +1,16 @@
 import { v4 as uuidv4 } from 'uuid'
 import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import useProfileDate from '../hooks/useProfileDate'
 import { useSelector, useDispatch } from 'react-redux'
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
-import { deleteTrip, deleteTripFromUI,resetTripState } from '../features/trip/tripSlice'
+import { deleteTrip, deleteTripFromUI, editTrip, resetTripState } from '../features/trip/tripSlice'
 
 function Ongoing() {
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [tripIndex, setTripIndex] = useState('')
   const [profileSection, setProfileSection] = useState('')
   const { Ongoing, isError, message, isSuccess } = useSelector( state => state.trip )
@@ -49,6 +51,16 @@ function Ongoing() {
     }
   }
 
+  const handleTripUpdate = (e, tripId) => {
+    const data ={
+      tripId,
+      profileSection: e.target.id
+    }
+
+    dispatch(editTrip(data))
+    navigate(`/trips/${tripId}`)
+  }
+
   return (
     <>
       { 
@@ -76,6 +88,7 @@ function Ongoing() {
                 <button
                   type='button'
                   id='Ongoing'
+                  onClick={(e) => handleTripUpdate(e, trip._id)}
                 >
                   <PencilAltIcon fill='#2F2E41' />
                 </button>

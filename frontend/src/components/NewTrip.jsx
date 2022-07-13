@@ -95,7 +95,6 @@ function NewTrip() {
   const handleSaveTrip = () => {
     const tripData = {
       tripTitle: cityInfo.title,
-      imageURl: cityInfo.imageURl,
       image: cityInfo.imageName,
       dates: {
         startDate: dates.startDate,

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import useProfileDate from '../hooks/useProfileDate'
 import { useSelector, useDispatch } from 'react-redux'
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
-import { deleteTrip, deleteTripFromUI, resetTripState } from '../features/trip/tripSlice'
+import { deleteTrip, deleteTripFromUI, resetTripState, editTrip } from '../features/trip/tripSlice'
 
 
 function Upcoming() {
@@ -60,7 +60,17 @@ function Upcoming() {
     }
   }
 
-  const handleTripUpdate = (tripId) => navigate(`/trip/${tripId}`)
+  const handleTripUpdate = (tripId, e) => {
+    const data = {
+      tripId,
+      profileSection: e.target.id
+    }
+
+    console.log(tripId)
+
+    dispatch(editTrip(data))
+    navigate(`/trips/${tripId}`)
+  }
 
   return (
     <>
@@ -90,7 +100,7 @@ function Upcoming() {
               <button
                 type='button'
                 id='Upcoming'
-                onClick={() => handleTripUpdate(trip._id)}
+                onClick={(e) => handleTripUpdate(trip._id, e)}
               >
                 <PencilAltIcon fill='#2F2E41' />
               </button>

@@ -2,7 +2,6 @@ const fs = require('fs');
 const fsPromises = require('fs/promises');
 const path = require('path');
 const axios = require('axios');
-const { v4: uuidv4 } = require('uuid');
 const { logger } = require('../config/logger');
 const { Trip } = require('../models/tripModel');
 
@@ -173,6 +172,8 @@ const updateTrip = async (req, res, next) => {
     try{
         const tripId = req.params.tripId;
         const trip = await Trip.findById(tripId);
+        console.log(tripId)
+        console.log(req.body)
 
         if(!trip){
             res.status(404);
@@ -189,6 +190,7 @@ const updateTrip = async (req, res, next) => {
             req.body,
             { new: true }
         )
+
         res.status(200).send(updatedTrip);
     }catch(err){
         console.log(err);
@@ -200,5 +202,6 @@ module.exports = {
     getDestinationQuery,
     saveTrip,
     getAllTrips,
-    deleteTrip
+    deleteTrip,
+    updateTrip
 }

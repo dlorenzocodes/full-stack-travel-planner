@@ -1,6 +1,9 @@
 const { User } = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const logger = require('../config/logger');
+const { s3Upload } = require('../config/storage');
+const { s3Delete } = require('../config/storage');
+
 
 const cookieOptions = {
     httpOnly: true,
@@ -22,6 +25,12 @@ const loginUser = async (req, res, next) => {
             const token = user.generateToken();
             res.cookie('jwt', token, cookieOptions);
             req.user = user;
+
+            if(user.profile){    
+                res.status(200).json({ id: user._id, name: user.name, profile: user.profile });
+                return;
+            }
+
             res.status(200).json({ id: user._id, name: user.name });
         } else{
             res.status(401);
@@ -75,17 +84,35 @@ const registerUser = async (req, res, next) => {
 // @desc   Gets current user
 // @route  /users/me
 // @access Private
-const getCurrentUser = (req, res, next) => {
-    const user = {
-        id: req.user._id,
-        name: req.user.name
+const getCurrentUser = async (req, res, next) => {
+    try{
+        const user = await User.findById(req.user._id);
+        
+        if(!user){
+            res.status(404);
+            throw new Error('User not found!');
+        }
+
+        req.user = user;
+        if(user.profile){    
+            res.status(200).json({ id: user._id, name: user.name, profile: user.profile });
+            return;
+        }
+        res.status(200).json({ id: user._id, name: user.name });
+
+    }catch(err){
+        console.log(err);
+        next(err);
     }
-    res.status(200).json(user);
 }
 
+
+
+// @desc   Logout user
+// @route  /users/logout
+// @access Private
 const handleUserLogout = (req, res, next) => {
     const cookies = req.cookies;
-    console.log(cookies);
 
     try{
         if(cookies.jwt){
@@ -100,9 +127,74 @@ const handleUserLogout = (req, res, next) => {
     }
 }
 
+
+// @desc   Post user profile image
+// @route  /users/profile
+// @access Private
+const getProfileImage = async (req, res, next) => {
+    try{
+        const result = await s3Upload(req.file);
+
+        if(!result.Location){
+            res.status(400)
+            throw new Error('Profile image could not be uploaded. Try again later!')
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user._id,
+            { 
+                profile: result.Location,
+                profileName: result.Key
+            }
+        )
+
+        if(!updatedUser) {
+            res.status(400)
+            throw new Error('Profile image could not be uploaded!')
+        }
+
+        res.status(200).send('Image was successfully uploaded!');
+
+    }catch(err){
+        console.log(err)
+        next(err)
+    }   
+};
+
+
+// @desc   Delete user profile image
+// @route  /users/profile/delete
+// @access Private
+const deleteProfileImage = async (req, res, next) => {
+    try{
+
+        const user = await User.findById(req.user._id);
+        const result = await s3Delete(user.profileName);
+
+        if(Object.keys(result).length !== 0){
+            res.status(400)
+            throw new Error('Profile image could not be deleted. Try again later!')
+        }
+
+        await User.updateOne(
+            { _id: user._id }, 
+            { $unset: 
+                { profile: user.profile, profileName: user.profileName }
+            }
+        );
+
+        res.status(200).send('Profile image successfully deleted!');
+    }catch(err){
+        console.log(err);
+        next(err);
+    }
+}
+
 module.exports = {
     loginUser,
     registerUser,
     getCurrentUser,
-    handleUserLogout
+    handleUserLogout,
+    getProfileImage,
+    deleteProfileImage
 }

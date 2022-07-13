@@ -38,6 +38,9 @@
 
     .profile-image-wrapper{
         background-color: $section-color;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
         width: 150px;
         height: 150px;
         border-radius: 50%;
@@ -49,16 +52,52 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        box-shadow: 3px 0px 9px 3px rgb(0 0 0 / 15%);
+        border: 4px solid $section-color;
+        border-radius: 50%;
 
-        svg{
-            background-color: transparent;
-            box-shadow: none;
-            width: 4rem;
-            padding: 0;
+        .delete-profile-btn{
+            position: absolute;
+            right: 0;
+            bottom: 10px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+
+            svg{
+                background: $section-color;
+                pointer-events: none;
+            }
+        }
+
+        .avatar{
+            position: relative;
+            display: flex;
+            flex-direction: column;
+
+            button{
+                cursor: pointer;
+                border: none;
+                background: transparent;
+                
+                svg{
+                    background-color: transparent;
+                    box-shadow: none;
+                    width: 4rem;
+                    padding: 0;
+                }
+            }
+
+            input{
+                width: 0;
+                height: 0;
+                opacity: 0;
+                position: absolute;
+            }
         }
 
         h3{
-            padding: 0.5rem 1.2rem;
+            padding: 0rem 1.2rem;
             text-align: center;
             color: $primary-color;
         }

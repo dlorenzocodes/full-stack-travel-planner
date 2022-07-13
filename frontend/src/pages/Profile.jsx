@@ -2,7 +2,7 @@ import React from 'react'
 import Past from '../components/Past'
 import { toast } from 'react-toastify'
 import NewTrip from '../components/NewTrip'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import MenuBar from '../components/MenuBar'
 import Ongoing from '../components/Ongoing'
 import Spinner from '../components/Spinner'
@@ -11,8 +11,14 @@ import { getTrips } from '../features/trip/tripSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { resetTripState } from '../features/trip/tripSlice'
-import { LogoutIcon, UserAddIcon, RefreshIcon } from '@heroicons/react/solid'
-import { handleUserLogout, reset, getCurrentUser } from '../features/auth/authSlice'
+import { LogoutIcon, UserAddIcon, RefreshIcon, TrashIcon } from '@heroicons/react/solid'
+import { 
+  handleUserLogout, 
+  reset, 
+  getCurrentUser, 
+  handleProfileImage, 
+  deleteProfileImage 
+} from '../features/auth/authSlice'
 
 
 function Profile() {
@@ -30,8 +36,14 @@ function Profile() {
     isError: tripError,
     message: tripMessage
   } = useSelector( state => state.trip )
+  const [file, setFile] = useState(null)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const fileInput = useRef(null)
+
+  const style = {
+    backgroundImage: `url(${ !user.profile ? 'none' : user.profile })`
+  }
 
 
   // check for user --------
@@ -77,10 +89,22 @@ function Profile() {
   }, [tripError, tripMessage, dispatch])
 
 
+  // sends file to server
+  useEffect(() => {
+    if( file !== null ) {
+      const formData = new FormData()
+
+      formData.append('avatar', file)
+      dispatch(handleProfileImage(formData))
+        .then(() => dispatch(getCurrentUser()))
+    }
+  }, [file, dispatch])
+
+
 
   const handleLogout = () => {
       dispatch(handleUserLogout())
-        .then(() => navigate('/explore'))
+      navigate('/explore')
   } 
 
   const handleTripSelection = (e) => {
@@ -100,16 +124,48 @@ function Profile() {
   }
 
   const loadMore = () => setVisibleTrips((prevState) => prevState + 5)
-    
+
+  const handleProfileImageBtn = () => fileInput.current.click()
+
+  const handleProfileImageFile = () => setFile(fileInput.current.files[0])
+
+  const removeProfileImage = () => {
+    dispatch(deleteProfileImage())
+      .then(() => dispatch(getCurrentUser()))
+  }
 
   if(!user) <Navigate to='/explore' />
 
   return (
     <div className='container'>
         <section className='profile-wrapper'>
-          <div className='profile-image-wrapper'>
-            <UserAddIcon fill='#CCC' />
-            <h3 className='subheading-text'>Add profile image</h3>
+          <div 
+            className='profile-image-wrapper'
+            style={style}
+          >
+             { 
+              !user.profile ?
+                <form className='avatar'>
+                  <button type='button' onClick={handleProfileImageBtn}>
+                      <UserAddIcon fill='#CCC' />
+                  </button>
+                  <input 
+                      type='file' 
+                      name='avatar' 
+                      id='avatar'
+                      hidden='hidden'
+                      ref={fileInput}
+                      onChange={handleProfileImageFile}
+                    />
+                  <h3 className='subheading-text'>Upload Image</h3>
+                </form> :
+                <button
+                  className='delete-profile-btn'
+                  onClick={removeProfileImage}
+                >
+                  <TrashIcon fill='#2F2E41'/>
+                </button>
+              }
           </div>
 
           <button 

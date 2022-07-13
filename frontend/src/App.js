@@ -31,8 +31,8 @@ function App() {
                   <Route path='/profile' element={ <Profile /> } />
                 </Route>
 
-                <Route path='/trip/:tripId' element={<PrivateRoute />}>
-                  <Route path='/trip/:tripId' element={<UpdateTrip />} />
+                <Route path='/trips/:tripId' element={<PrivateRoute />}>
+                  <Route path='/trips/:tripId' element={<UpdateTrip />} />
                 </Route>
 
               </Route>

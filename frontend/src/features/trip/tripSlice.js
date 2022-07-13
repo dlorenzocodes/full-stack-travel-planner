@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
 import tripService from './tripService'
 
 const initialState = {
@@ -7,6 +7,9 @@ const initialState = {
     isSuccess: false,
     isDeleted: false,
     isUpdated: false,
+    tripTitle: null,
+    image: null,
+    dates: {},
     message: '',
     Flights: [],
     Cars:[],
@@ -58,6 +61,21 @@ export const deleteTrip = createAsyncThunk(
     }
 )
 
+
+export const updateTrip = createAsyncThunk(
+    'trip/updateTrip',
+    async(data, thunkAPI) => {
+        try{
+            return await tripService.updateTrip(data)
+        }catch(err){
+            const message = err.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+
+
 const tripSlice = createSlice({
     name: 'trip',
     initialState,
@@ -68,6 +86,9 @@ const tripSlice = createSlice({
             state.isLoading = false
             state.isDeleted = false
             state.isUpdated = false
+            state.tripTitle = null
+            state.image = null
+            state.dates = {}
             state.message = ''
             state.Flights = []
             state.Cars = []
@@ -182,6 +203,23 @@ const tripSlice = createSlice({
                 const trips = state.Upcoming.filter((item, index) => index !== tripIndex )
                 state.Upcoming = trips
             }
+        },
+        editTrip: (state, action) => {
+            const { tripId } = action.payload
+            const { profileSection } = action.payload
+            state.isUpdated = true
+
+            const selectedTrip = state[profileSection].find(item => item._id === tripId) 
+            state.tripTitle = selectedTrip.tripTitle
+            state.image = selectedTrip.image
+            state.dates = selectedTrip.dates
+            state.Flights = selectedTrip.Flights
+            state.Cars = selectedTrip.Cars
+            state.Lodging = selectedTrip.Lodging
+            state.Notes = selectedTrip.Notes
+            state.Other = selectedTrip.Other
+            state.Itinerary = selectedTrip.Itinerary
+            state.Expenses = selectedTrip.Expenses
         }
 
     },
@@ -229,6 +267,20 @@ const tripSlice = createSlice({
                 state.isError = false
                 state.message = action.payload
             })
+            .addCase(updateTrip.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(updateTrip.fulfilled, (state) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.message = 'Trip succesfully updated!'
+                
+            })
+            .addCase(updateTrip.rejected, (state, action) => {
+                state.isError = true
+                state.isLoading = false
+                state.message = action.payload
+            })
     }
 })
 
@@ -249,6 +301,7 @@ export const {
     removeItinerary,
     addEditedCategoryItem,
     removeCategoryItem,
-    deleteTripFromUI
+    deleteTripFromUI,
+    editTrip
 } = tripSlice.actions
 export default tripSlice.reducer

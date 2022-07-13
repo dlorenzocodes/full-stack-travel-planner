@@ -10,10 +10,6 @@ const tripSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    imageURl: {
-        type: String,
-        required: true
-    },
     image: {
         type: String,
         required: true

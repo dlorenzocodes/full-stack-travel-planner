@@ -24,6 +24,12 @@ const userSchema = mongoose.Schema({
             return this.strategy === 'local';
         },
         min: 8
+    },
+    profile: {
+        type: String
+    },
+    profileName:{
+        type: String
     }
 },
 {

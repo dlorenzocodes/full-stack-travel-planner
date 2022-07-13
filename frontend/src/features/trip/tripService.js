@@ -11,7 +11,7 @@ const saveTrip = async (tripData) => {
 
 const getTrips = async (paginationNumber) => {
     const response = await axios.post(
-        'trips/all-trips', 
+        '/trips/all-trips', 
         paginationNumber, 
         { withCredentials: true} 
     )
@@ -21,7 +21,18 @@ const getTrips = async (paginationNumber) => {
 
 const deleteTrip = async (tripId) => {
     const response = await axios.delete(
-        `trips/${tripId}`,
+        `/trips/${tripId}`,
+        { withCredentials: true }
+    )
+
+    return await response.data
+}
+
+const updateTrip = async (data) => {
+    const { tripData } = data
+    const response = await axios.put(
+        `/trips/${data.tripId}`,
+        tripData,
         { withCredentials: true }
     )
 
@@ -32,7 +43,8 @@ const deleteTrip = async (tripId) => {
 const tripService = {
     saveTrip,
     getTrips,
-    deleteTrip
+    deleteTrip,
+    updateTrip
 }
 
 export default tripService

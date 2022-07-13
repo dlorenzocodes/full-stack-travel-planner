@@ -38,13 +38,37 @@ const logoutUser = async () => {
     return await response.data
 }
 
+const addProfileImage = async (data) => {
+    const response = await axios.post(
+        '/users/profile',
+        data,
+        {
+            headers: { 'Content-Type': 'multipart/form-data'},
+            withCredentials: true
+        }
+    )
+
+    return await response.data
+}
+
+const deleteProfileImage = async() => {
+    const response = await axios.delete(
+        '/users/profile/delete',
+        { withCredentials: true }
+    )
+
+    return await response.data
+}
+
 const authService = {
     register,
     login,
     getGoogleUrl,
     googleSignInFailure,
     getCurrentUser,
-    logoutUser
+    logoutUser,
+    addProfileImage,
+    deleteProfileImage
 }
 
 export default authService

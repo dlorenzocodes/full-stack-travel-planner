@@ -7,7 +7,8 @@ const {
     getDestinationQuery, 
     saveTrip, 
     getAllTrips,
-    deleteTrip 
+    deleteTrip,
+    updateTrip
 } = require('../controllers/tripsControllers');
 
 router.post('/city-info',validate(validateCityEntry),getDestinationQuery);
@@ -18,7 +19,7 @@ router.post('/all-trips',protectPrivateRoutes, getAllTrips);
 
 router.delete('/:tripId', protectPrivateRoutes, deleteTrip)
 
-router.put('/:tripId', protectPrivateRoutes, deleteTrip)
+router.put('/:tripId', protectPrivateRoutes, updateTrip)
 
 
 module.exports = router;
