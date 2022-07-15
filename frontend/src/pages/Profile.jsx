@@ -28,11 +28,11 @@ function Profile() {
   const [isPast, setIsPast] = useState(false)
   const [visibleTrips, setVisibleTrips] = useState(5)
   const { addNewTripForm } = useSelector( state => state.modal)
-  const { isError, message, user} = useSelector( state => state.auth )
+  const { isSuccess, isError, message, user} = useSelector( state => state.auth )
   const { 
     pagination, 
     isLoading, 
-    isSuccess,
+    isSuccess: tripSuccess,
     isError: tripError,
     message: tripMessage
   } = useSelector( state => state.trip )
@@ -53,11 +53,20 @@ function Profile() {
   }, [dispatch])
 
 
-  // user logout --------
+  // user reducer error & success messages
   useEffect(() => {
-    if(isError) toast.error(message)
-    dispatch(reset())
+    if(isError) {
+      toast.error(message)
+      dispatch(reset())
+    }
   }, [isError, message, dispatch])
+
+  useEffect(() => {
+    if(isSuccess){
+      toast.info(message)
+      dispatch(reset())
+    }
+  }, [isSuccess, message, dispatch])
 
 
   // gets trips when component loads --------
@@ -69,12 +78,12 @@ function Profile() {
 
   // get trips when a trip is added --------
   useEffect(() => {
-    if(isSuccess){
+    if(tripSuccess){
       toast.info(tripMessage)
       dispatch(getTrips({ visibleTrips }))
         .then(() => dispatch(resetTripState()))
     }
-  }, [isSuccess, dispatch, visibleTrips, tripMessage, user])
+  }, [tripSuccess, dispatch, visibleTrips, tripMessage, user])
 
 
   // get trips error message --------
@@ -92,7 +101,7 @@ function Profile() {
 
   // sends file to server
   useEffect(() => {
-    if( file !== null ) {
+    if(file !== null) {
       const formData = new FormData()
 
       formData.append('avatar', file)

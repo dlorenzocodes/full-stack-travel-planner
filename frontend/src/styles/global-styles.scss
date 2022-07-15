@@ -147,11 +147,6 @@ textarea,
 }
 
 .spinner{
-    // background: url('../assets/loader.gif');
-    // background-repeat: no-repeat;
-    // background-size: cover;
-    // width: 60px;
-    // height: 60px;
     width: 64px;
     height: 64px;
     border: 5px solid;
@@ -282,7 +277,7 @@ textarea,
     text-align: left;
 }
 
-
+// Messages Styles
 .Toastify__progress-bar--error,
 .Toastify__progress-bar--info{
     background: $accent-color !important;
@@ -291,4 +286,36 @@ textarea,
 
 .Toastify__toast-icon > svg{
     fill: $accent-color !important;
+}
+
+// Not Found Page
+.not-found-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+
+    p{
+        color: $primary-color;
+        font-weight: $semibold-weight;
+    }
+
+    img{
+        width: 80%;
+    }
+
+    a{
+        background: $accent-color;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        color: #fff;
+        transition: all 300ms ease-in-out;
+
+        &:hover{
+            background: #fff;
+            border: 1px solid $accent-color;
+            color: $accent-color;
+        }
+    }
 }

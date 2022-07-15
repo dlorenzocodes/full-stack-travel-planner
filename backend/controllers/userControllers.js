@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const logger = require('../config/logger');
 const { s3Upload } = require('../config/storage');
 const { s3Delete } = require('../config/storage');
+const multer = require('multer');
 
 
 const cookieOptions = {
@@ -133,11 +134,17 @@ const handleUserLogout = (req, res, next) => {
 // @access Private
 const getProfileImage = async (req, res, next) => {
     try{
+
+        if(!req.file){
+            res.status(400);
+            throw new Error('File must be an image!');
+        }
+
         const result = await s3Upload(req.file);
 
         if(!result.Location){
-            res.status(400)
-            throw new Error('Profile image could not be uploaded. Try again later!')
+            res.status(500);
+            throw new Error('Profile image could not be uploaded. Try again later!');
         }
 
         const updatedUser = await User.findByIdAndUpdate(
@@ -149,16 +156,15 @@ const getProfileImage = async (req, res, next) => {
         )
 
         if(!updatedUser) {
-            res.status(400)
-            throw new Error('Profile image could not be uploaded!')
+            res.status(500);
+            throw new Error('Profile image could not be uploaded. Try again later!');
         }
 
-        res.status(200).send('Image was successfully uploaded!');
+        res.sendStatus(200);
 
     }catch(err){
-        console.log(err)
         next(err)
-    }   
+    } 
 };
 
 
@@ -172,8 +178,8 @@ const deleteProfileImage = async (req, res, next) => {
         const result = await s3Delete(user.profileName);
 
         if(Object.keys(result).length !== 0){
-            res.status(400)
-            throw new Error('Profile image could not be deleted. Try again later!')
+            res.status(500);
+            throw new Error('Profile image could not be deleted. Try again later!');
         }
 
         await User.updateOne(
@@ -183,7 +189,7 @@ const deleteProfileImage = async (req, res, next) => {
             }
         );
 
-        res.status(200).send('Profile image successfully deleted!');
+        res.status(200).send('Profile image was successfully deleted!');
     }catch(err){
         console.log(err);
         next(err);

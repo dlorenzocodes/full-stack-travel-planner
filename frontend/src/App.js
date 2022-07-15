@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Profile from './pages/Profile';
 import UpdateTrip from './pages/UpdateTrip';
+import NotFound from './components/NotFound';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoute from './components/PrivateRoute'
@@ -20,6 +21,7 @@ function App() {
               <Route path='/explore' element={ <Explore />} />
               <Route path='/login' element={ <Login />} />
               <Route path='/register' element={ <SignUp />} />
+              <Route path='*' element={ <NotFound /> } />
 
               <Route element={ <PersistLogin /> }>
 

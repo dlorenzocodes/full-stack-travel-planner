@@ -7,6 +7,7 @@ const initialState = {
     isLoading: false,
     isLoginSuccess: false,
     isError: false,
+    isSuccess: false,
     message: ''
 }
 
@@ -123,6 +124,7 @@ const authSlice = createSlice({
             state.isLoading = false
             state.isLoginSuccess = false
             state.isAccountCreated = false
+            state.isSuccess =  false
             state.message = ''
         }
     },
@@ -164,10 +166,19 @@ const authSlice = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
-            .addCase(handleProfileImage.fulfilled, (state, action) => {
+            .addCase(handleProfileImage.rejected, (state, action) => {
+                state.isError = true
                 state.message = action.payload
             })
-            .addCase(handleProfileImage.rejected, (state, action) => {
+            .addCase(deleteProfileImage.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(deleteProfileImage.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.message = action.payload
+            })
+            .addCase(deleteProfileImage.rejected, (state, action) => {
                 state.isError = true
                 state.message = action.payload
             })
