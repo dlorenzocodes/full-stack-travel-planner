@@ -79,10 +79,12 @@ function NewTrip() {
   }
 
   const closeTripForm = () => {
-    dispatch(closeNewTripForm())
-    dispatch(closeAddTripModal())
-    dispatch(resetDestinationState())
-    dispatch(resetTripState())
+    if(window.confirm('Are you sure you want to stop planning this trip?')){
+      dispatch(closeNewTripForm())
+      dispatch(closeAddTripModal())
+      dispatch(resetDestinationState())
+      dispatch(resetTripState())
+    }
   }
 
   const handleTripDates = (e) => {
@@ -114,17 +116,20 @@ function NewTrip() {
       return;
     }
 
-    dispatch(saveTrip(tripData))
+      if(window.confirm('Ready to save trip?')){
+        dispatch(saveTrip(tripData))
 
-    if(isError){
-      toast.error(message)
-      return
+
+      if(isError){
+        toast.error(message)
+        return
+      }
+
+      if(location.pathname !== '/profile') navigate('/profile')
+      dispatch(resetModals())
+      dispatch(resetDestinationState())
+      dispatch(resetTripState())
     }
-
-    if(location.pathname !== '/profile') navigate('/profile')
-    dispatch(resetModals())
-    dispatch(resetDestinationState())
-    dispatch(resetTripState())
   }
   
 
