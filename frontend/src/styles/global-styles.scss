@@ -60,17 +60,11 @@ input:focus{
 // CLASES
 .container{
     position: relative;
-}
-
-.container.isModal{
-    overflow: hidden;
-}
-
-.container{
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
+
 
 .section-padding{
     padding: 2rem 2.3rem;
@@ -117,10 +111,9 @@ textarea,
 }
 
 .error{
-    background-color: #f8ceb3;
-    padding: 0.8rem 0.5rem;
-    border: 1px solid $accent-color;
-    border-radius: $border-radius;
+    background-color: #fef1e8;
+    padding: 0.5rem 0.25rem;
+    border-radius: 5px;
 }
 
 .arrow-left,
@@ -162,6 +155,8 @@ textarea,
       transform: rotate(360deg);
     }
 }
+
+
 
 // Category Buttons
 .trip-categories{
@@ -276,6 +271,13 @@ textarea,
     margin-top: 0.5rem;
     text-align: left;
 }
+
+.required-field{
+    color: $accent-color;
+    font-style: italic;
+    margin-bottom: 0.8rem;
+}
+
 
 // Messages Styles
 .Toastify__progress-bar--error,

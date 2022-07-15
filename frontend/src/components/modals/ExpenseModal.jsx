@@ -3,6 +3,7 @@ import { XIcon } from '@heroicons/react/solid'
 import { useDispatch, useSelector } from 'react-redux'
 import { addExpenses, addEditedExpense } from '../../features/trip/tripSlice'
 import { closeExpenseModal, resetEdits } from '../../features/modals/modalSlice'
+import { toast } from 'react-toastify'
 
 function ExpenseModal() {
 
@@ -40,13 +41,17 @@ function ExpenseModal() {
         }))
     }
 
+
     const addExpense = () => {
         if( 
             expenseDate === '' ||
             expensePlace === '' ||
             expenseAmount === ''
         ) {
-            dispatch(closeExpenseModal())
+            toast.error('Please make sure date, place and amount fields have been filled!')
+            return
+        } else if(expenseAmount < 0){
+            toast.error('Amount entered is not a valid entry!')
             return
         }
 
@@ -71,6 +76,9 @@ function ExpenseModal() {
                 <form>
                     <XIcon onClick={closeModal}/>
                     <h3>Add an expense</h3>
+                    <span className='required-field error'>
+                        Note: date, place, and amount fields are required
+                    </span>
                     <div className='trip-form-control'>
                         <input 
                             type='date' 

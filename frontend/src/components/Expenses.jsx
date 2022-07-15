@@ -20,7 +20,9 @@ function Expenses() {
   }
 
   const handleRemoveExpense = (index) => {
-    dispatch(removeExpense(index))
+    if(window.confirm('Are you sure you want to delete it?')){
+      dispatch(removeExpense(index))
+    }
   }
 
   return (

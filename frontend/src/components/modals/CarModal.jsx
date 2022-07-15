@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
 import { useDispatch, useSelector } from 'react-redux'
@@ -53,7 +54,7 @@ function CarModal() {
 
     const addCar = () => { 
         if(rental === ''){
-            dispatch(closeCarModal())
+            toast.error('Please fill rental field!')
             return
         }
 
@@ -95,6 +96,9 @@ function CarModal() {
         <form>
             <XIcon onClick={closeModal}/>
             <h3>Add rental car</h3>
+            <span className='required-field error'>
+                Note: rental field is required
+            </span>
             <div className='trip-form-control'>
                 <input 
                     type='text' 

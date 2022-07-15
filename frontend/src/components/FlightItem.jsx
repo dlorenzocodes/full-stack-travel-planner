@@ -23,7 +23,7 @@ function FlightItem() {
     }
 
     const removeFlight = (e, index) => {
-        if(window.confirm('Are you sure you want to delete?')){
+        if(window.confirm('Are you sure you want to delete it?')){
             const data = {
                 category: e.target.id,
                 index

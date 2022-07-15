@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
 import { useDispatch, useSelector } from 'react-redux'
@@ -57,7 +58,7 @@ function HotelModal() {
 
     const addHotel = () => {
         if(hotel === ''){
-            dispatch(closeHotelModal())
+            toast.error('Please fill hotel or lodging field')
             return
         }
 
@@ -83,6 +84,9 @@ function HotelModal() {
                 <form>
                     <XIcon onClick={closeModal}/>
                     <h3>Add a hotel or lodging</h3>
+                    <span className='required-field error'>
+                        Notes: hotel or lodging field is required
+                    </span>
                     <div className='trip-form-control'>
                         <input 
                             type='text' 

@@ -109,6 +109,11 @@ function NewTrip() {
       expenses
     }
 
+    if(startDate === '' || endDate === ''){
+      toast.error('Trip dates must be provided!')
+      return;
+    }
+
     dispatch(saveTrip(tripData))
 
     if(isError){

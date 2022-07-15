@@ -59,7 +59,9 @@ function ItineraryItem() {
 
   
   const handleRemoveItinerary = (index) => {
-    dispatch(removeItinerary(index))
+    if(window.confirm('Are you sure you want to delete it?')){
+      dispatch(removeItinerary(index))
+    }
   }
 
   return (

@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
 import { useDispatch, useSelector } from 'react-redux'
@@ -25,7 +26,7 @@ function NoteModal() {
 
   const addNote = () => {
     if(note === ''){
-      dispatch(closeNoteModal())
+      toast.error('Please fill note field!')
       return
     }
 
@@ -50,6 +51,9 @@ function NoteModal() {
         <form>
           <XIcon onClick={closeModal}/>
           <h3>Add note</h3>
+          <span className='required-field error'>
+            Note field is required
+          </span>
           <div className='trip-form-control'>
           <textarea 
               name='note' 

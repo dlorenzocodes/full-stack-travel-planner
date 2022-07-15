@@ -42,10 +42,8 @@ function Profile() {
   const fileInput = useRef(null)
 
   const style = {
-    backgroundImage: `url(${ !user.profile ? 'none' : user.profile })`
+    backgroundImage: `url(${ !user?.profile ? 'none' : user?.profile })`
   }
-
-
 
   // check for user --------
   useEffect(() => {

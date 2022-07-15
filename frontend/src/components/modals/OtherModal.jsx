@@ -3,6 +3,7 @@ import { XIcon } from '@heroicons/react/outline'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeOtherModal, resetEdits } from '../../features/modals/modalSlice'
 import { addOtherReservation, addEditedCategoryItem } from '../../features/trip/tripSlice'
+import { toast } from 'react-toastify'
 
 function OtherModal() {
 
@@ -54,7 +55,7 @@ const closeModal = () => dispatch(closeOtherModal())
 
 const addReservation = () => {
     if(reservationName === ''){
-        dispatch(closeOtherModal())
+        toast.error('Please fill reservation name field!')
         return
     }
 
@@ -80,6 +81,9 @@ const addReservation = () => {
         <form>
             <XIcon onClick={closeModal}/>
             <h3>Add reservation</h3>
+            <span className='required-field error'>
+                Note: reservation name field is required
+            </span>
             <div className='trip-form-control'>
                 <input 
                     type='text' 

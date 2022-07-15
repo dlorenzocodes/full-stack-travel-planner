@@ -14,7 +14,6 @@ import { openSearchCityModal, closedSearchCityModel } from '../features/modals/m
 function Home() {
 
   const { 
-    addTripModal, 
     addNewTripForm, 
     searchCityModal 
   } = useSelector( state => state.modal )
@@ -55,7 +54,7 @@ function Home() {
 
   return (
     <div 
-      className={ addTripModal ? 'container isModal' : 'container'}
+      className='container'
     >
       <Search />
       <Suggestions />

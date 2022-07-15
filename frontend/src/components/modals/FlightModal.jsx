@@ -70,7 +70,6 @@ function FlightModal() {
     const addFlight = () => {
         if(departure === '' || arrival === ''){
             toast.error('Please provide departure and arrival details!')
-            dispatch(closeFlightModal())
             return
         }
 
@@ -95,6 +94,9 @@ function FlightModal() {
             <form>
                 <XIcon onClick={closeModal}/>
                 <h3>Add a flight</h3>
+                <span className='required-field error'>
+                    Note: arrival and departure are required
+                </span>
                 <div className='trip-form-control'>
                     <input 
                         type='text' 
