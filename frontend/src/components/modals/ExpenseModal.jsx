@@ -1,9 +1,10 @@
+import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/solid'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTripValidation } from '../../hooks/useTripValidation'
 import { addExpenses, addEditedExpense } from '../../features/trip/tripSlice'
 import { closeExpenseModal, resetEdits } from '../../features/modals/modalSlice'
-import { toast } from 'react-toastify'
 
 function ExpenseModal() {
 
@@ -19,6 +20,7 @@ function ExpenseModal() {
 
     const { Expenses } = useSelector( state => state.trip )
     const { isEditExpense, index: expenseIndex } = useSelector( state => state.modal )
+    const{ validateTrip, errors } = useTripValidation(formData)
 
     useEffect(() => {
         if(isEditExpense){
@@ -34,11 +36,14 @@ function ExpenseModal() {
 
 
     const closeModal = () => dispatch(closeExpenseModal())
+
     const handleForm = (e) => {
         setFormData((prevState) => ({
             ...prevState,
             [e.target.id]: e.target.value
         }))
+
+        validateTrip(e.target)
     }
 
 
@@ -87,6 +92,7 @@ function ExpenseModal() {
                             value={expenseDate}
                             onChange={handleForm}
                         />
+                        {errors.expenseDate !== '' && <span>{errors.expenseDate}</span>}
                     </div>
 
                     <div className='trip-form-control'>
@@ -98,6 +104,7 @@ function ExpenseModal() {
                             value={expensePlace}
                             onChange={handleForm}
                         />
+                        {errors.expensePlace !== '' && <span>{errors.expensePlace}</span>}
                     </div>
 
                     <div className='trip-form-control'>

@@ -1,9 +1,10 @@
+import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTripValidation } from '../../hooks/useTripValidation'
 import { closeOtherModal, resetEdits } from '../../features/modals/modalSlice'
 import { addOtherReservation, addEditedCategoryItem } from '../../features/trip/tripSlice'
-import { toast } from 'react-toastify'
 
 function OtherModal() {
 
@@ -28,6 +29,7 @@ function OtherModal() {
 
 const { Other }  = useSelector( state => state.trip )
 const { isEditOthers, index: otherIndex} = useSelector( state => state.modal )
+const { validateTrip, errors } = useTripValidation(formData)
 
 useEffect(() => {
     if(isEditOthers){
@@ -49,6 +51,8 @@ const handleForm = (e) => {
         ...prevState,
         [e.target.id]: e.target.value
     }))
+
+    validateTrip(e.target)
 }
 
 const closeModal = () => dispatch(closeOtherModal())
@@ -93,47 +97,62 @@ const addReservation = () => {
                     onChange={handleForm}
                     placeholder='Reservation name'
                 />
+                {errors.reservationName !== '' && <span>{errors.reservationName}</span>}
             </div>
 
             <div className='trip-form-control'>
                 <label>Check in:</label>
                 <div className='db-input'>
-                    <input 
-                        type='date' 
-                        name='otherDate' 
-                        id='otherDate' 
-                        value={otherDate}
-                        onChange={handleForm}
-                    />
 
-                    <input 
-                        type='time' 
-                        name='otherTime' 
-                        id='otherTime' 
-                        value={otherTime}
-                        onChange={handleForm}
-                    />
+                    <div>
+                        <input 
+                            type='date' 
+                            name='otherDate' 
+                            id='otherDate' 
+                            value={otherDate}
+                            onChange={handleForm}
+                        />
+                         {errors.otherDate !== '' && <span>{errors.otherDate}</span>}
+                    </div>
+
+                    <div>
+                        <input 
+                            type='time' 
+                            name='otherTime' 
+                            id='otherTime' 
+                            value={otherTime}
+                            onChange={handleForm}
+                        />
+                         {errors.otherTime !== '' && <span>{errors.otherTime}</span>}
+                    </div>
                 </div>
             </div>
 
             <div className='trip-form-control'>
                 <label>Check out:</label>
                 <div className='db-input'>
-                    <input 
-                        type='date' 
-                        name='otherCheckoutDate' 
-                        id='otherCheckoutDate'
-                        value={otherCheckoutDate}
-                        onChange={handleForm}
-                    />
 
-                    <input 
-                        type='time' 
-                        name='otherCheckoutTime' 
-                        id='otherCheckoutTime'
-                        value={otherCheckoutTime}
-                        onChange={handleForm} 
-                    />
+                    <div>
+                        <input 
+                            type='date' 
+                            name='otherCheckoutDate' 
+                            id='otherCheckoutDate'
+                            value={otherCheckoutDate}
+                            onChange={handleForm}
+                        />
+                         {errors.otherCheckoutDate !== '' && <span>{errors.otherCheckoutDate}</span>}
+                    </div>
+
+                    <div>
+                        <input 
+                            type='time' 
+                            name='otherCheckoutTime' 
+                            id='otherCheckoutTime'
+                            value={otherCheckoutTime}
+                            onChange={handleForm} 
+                        />
+                         {errors.otherCheckoutTime !== '' && <span>{errors.otherCheckoutTime}</span>}
+                    </div>
                 </div>
             </div>
 

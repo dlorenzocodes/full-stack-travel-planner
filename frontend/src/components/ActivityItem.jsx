@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import useTime from '../hooks/useTime'
+import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { addEditedActivity, removeActivity } from '../features/trip/tripSlice'
@@ -7,7 +7,6 @@ import { addEditedActivity, removeActivity } from '../features/trip/tripSlice'
 function ActivityItem({ activityValues, activityIndex, itineraryIndex }) {
 
     const dispatch = useDispatch()
-    const { formatTime } = useTime()
     const [ formData, setFormData ] = useState({
         activity: activityValues.activity,
         time: activityValues.time
@@ -23,22 +22,36 @@ function ActivityItem({ activityValues, activityIndex, itineraryIndex }) {
     }
 
     const handleEditActivity = (activityIndex, itineraryIndex) => {
+        const rgx = /^[A-Za-z\s]*$/
+    
+        if(activity === ''){
+          toast.error('An activity must be provided. Please enter one!')
+          return
+        } else if(!rgx.test(activity)){
+          toast.error('Activity must only contain letters and spaces!')
+          return
+        }
+
         const data = { 
             activityIndex, 
             itineraryIndex,
             formData
         }
+
         dispatch(addEditedActivity(data))
+        toast.info('Activity was edited!')
     }
 
     const handleRemoveActivity = (activityIndex, itineraryIndex) => {
-        const data = { activityIndex, itineraryIndex }
-        dispatch(removeActivity(data))
+        if(window.confirm('Are you sure you want to delete this item?')){
+            const data = { activityIndex, itineraryIndex }
+            dispatch(removeActivity(data))
+        }
     }
 
     return (
         <div className='activity-card' id={activityIndex}>
-            <form>
+            <form className='itinerary-form'>
                 <fieldset>
                     <input 
                         type='text' 
@@ -49,17 +62,19 @@ function ActivityItem({ activityValues, activityIndex, itineraryIndex }) {
                         placeholder='Activity'
                     />
                     <input 
-                        type='timeEdit' 
-                        id='timeEdit'
-                        value={formatTime(time)}
+                        type='time' 
+                        name='time'
+                        id='time'
+                        value={time}
                         onChange={handleForm}
                     />
                 </fieldset>
-                <div>
+                <div className='tooltip'>
                     <PencilAltIcon 
                         fill='#2F2E41' 
                         onClick={() => handleEditActivity(activityIndex, itineraryIndex)}
                     />
+                    <span className='tooltipText'>Edit fields first, then click edit icon when editing</span>
                     <TrashIcon 
                         fill='#2F2E41'
                         onClick={() => handleRemoveActivity(activityIndex, itineraryIndex)}

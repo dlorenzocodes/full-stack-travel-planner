@@ -20,6 +20,7 @@ function ItineraryItem() {
   const { activity, time } = formData
   const { formatDate } = useDate()
 
+
   useEffect(() => {
     if(Itinerary.length !== 0){
       let stateObj = {}
@@ -29,6 +30,7 @@ function ItineraryItem() {
       setIsClicked(stateObj)
     }
   }, [Itinerary.length])
+
 
   const showCardContent = (e, index) => {
     const parent = e.target.parentNode.parentNode.parentNode
@@ -40,6 +42,7 @@ function ItineraryItem() {
     }
   }
 
+
   const handleActivityForm = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -47,14 +50,24 @@ function ItineraryItem() {
     }))
   }
 
+
   const addActivity = (index) => {
+    const rgx = /^[A-Za-z\s]*$/
+   
     if(activity === ''){
       toast.error('An activity must be provided. Please enter one!')
       return
-    }
+    } else if(!rgx.test(activity) && activity !== ''){
+      toast.error('Activity must only contain letters and spaces!')
+      return
+    } 
+
     const activityData = { activity, time, index }
     dispatch(addActivityToItinerary(activityData))
-    setFormData('')
+    setFormData({
+      activity: '',
+      time: ''
+    })
   }
 
   
@@ -104,7 +117,7 @@ function ItineraryItem() {
                     )) : ''
                   }
                 </div>
-                <form>
+                <form className='itinerary-form'>
                   <fieldset>
                     <input 
                       type='text' 
@@ -117,11 +130,12 @@ function ItineraryItem() {
                     />
                     <input 
                       type='time' 
+                      name='time'
                       id='time'
                       value={time}
                       onChange={handleActivityForm}
                     />
-                    <button type='button'>
+                    <button type='button' className='add-btn'>
                       <PlusCircleIcon 
                         fill='#F88747'
                         onClick={() => addActivity(index)}

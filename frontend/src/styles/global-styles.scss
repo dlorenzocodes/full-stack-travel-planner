@@ -156,6 +156,33 @@ textarea,
     }
 }
 
+.itinerary-form{
+    padding: 2rem 1rem 1rem; 
+    background-color: $section-color;
+    border-radius: 20px;
+    justify-content: space-evenly;
+
+    fieldset{
+        border: none;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 1rem;
+
+        .add-btn{
+            background-color: transparent;
+            transition: transform 300ms ease-in-out;
+
+            svg{
+                width: 2.8rem;
+            }
+
+            &:hover{
+                transform: scale(1.1);
+            }
+        }
+    }
+}
+
 
 
 // Category Buttons
@@ -200,13 +227,13 @@ textarea,
 }
 
 // Trip Modals
-.flight-modal-container{
+.flight-modal-container,
+.hotel-modal-container,
+.other-modal-container{
     padding-top: 2rem;
 }
 
-.hotel-modal-container{
-    padding-top: 6rem;
-}
+
 
 .car-modal-container{
     padding-top: 3rem;
@@ -241,9 +268,6 @@ textarea,
     }
 }
 
-.other-modal-container{
-    padding-top: 8rem;
-}
 
 .note-modal-container{
     padding-top: 15rem;
@@ -321,3 +345,4 @@ textarea,
         }
     }
 }
+

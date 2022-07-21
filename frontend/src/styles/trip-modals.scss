@@ -7,6 +7,8 @@
     width: 100%;
     height: 100%;
     color: $primary-color;
+    overflow: auto;
+    padding-bottom: 2rem;
 
     form{
         padding: 2rem;
@@ -26,37 +28,11 @@
             cursor: pointer;
         }
 
-        .trip-form-control{
-
-            #departureDate,
-            #arrivalDate,
-            #checkinDate,
-            #checkoutDate,
-            #pickupDate,
-            #dropoffDate,
-            #otherDate,
-            #otherCheckoutDate{
-                margin-right: 0.5rem;
-            }
-
-            #departureTime,
-            #arrivalTime,
-            #checkinTime,
-            #checkoutTime,
-            #pickupTime,
-            #dropoffTime,
-            #otherTime,
-            #otherCheckoutTime{
-                margin-left: 0.5rem;
-            }
-        }
-
         .db-input{
-            display: flex;
-            margin-top: 0.5rem;
-
             input{
                 color: $placeholder-color;
+                padding-left: 1rem;
+                margin-top: 1rem;
             }
         }
 

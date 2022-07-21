@@ -85,7 +85,7 @@ const saveTrip = async (req, res, next) => {
         const newTrip = await Trip.create(trip)
 
         if(!newTrip){
-            res.sendStatus(400);
+            res.status(400);
             throw new Error('Unable to save trip');
         }
 

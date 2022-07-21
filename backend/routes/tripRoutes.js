@@ -10,12 +10,20 @@ const {
     deleteTrip,
     updateTrip
 } = require('../controllers/tripsControllers');
+const { tripSanitizer } = require('../config/tripSanitizer');
+const { validateRequestTripSchema } = require('../middleware/validateTripSanitizer');
 
 router.post('/city-info',validate(validateCityEntry),getDestinationQuery);
 
-router.post('/',protectPrivateRoutes, saveTrip);
+router.post(
+    '/',
+    protectPrivateRoutes, 
+    tripSanitizer,
+    validateRequestTripSchema,
+    saveTrip
+);
 
-router.post('/all-trips',protectPrivateRoutes, getAllTrips);
+router.post('/all-trips', protectPrivateRoutes, getAllTrips);
 
 router.delete('/:tripId', protectPrivateRoutes, deleteTrip)
 

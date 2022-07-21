@@ -2,6 +2,7 @@ import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTripValidation } from '../../hooks/useTripValidation'
 import { closeCarModal, resetEdits } from '../../features/modals/modalSlice'
 import { addCarReservation, addEditedCategoryItem } from '../../features/trip/tripSlice'
 
@@ -32,6 +33,7 @@ function CarModal() {
 
     const { Cars } = useSelector( state => state.trip )
     const { isEditCars, index: itemIndex } = useSelector( state => state.modal )
+    const { validateTrip, errors } = useTripValidation(formData)
 
     useEffect(() => {
         if(isEditCars){
@@ -83,12 +85,13 @@ function CarModal() {
             ...prevState,
             [e.target.id]: e.target.value
         }))
+
+        validateTrip(e.target)
     }
     
     const onChange = (e) => {
-        if(e.target.checked) {
-            setIsChecked((prevState) => !prevState)
-        }
+        if(e.target.checked) setIsChecked(true)
+        else setIsChecked(false)
     }
 
     return (
@@ -108,6 +111,7 @@ function CarModal() {
                     onChange={handleForm}
                     placeholder='Rental car name'
                 />
+                {errors.rental !== '' && <span>{errors.rental}</span>}
             </div>
 
             <div className='trip-form-control'>
@@ -119,6 +123,7 @@ function CarModal() {
                     onChange={handleForm}
                     placeholder='Pick up address'
                 />
+                {errors.pickupAddress !== '' && <span>{errors.pickupAddress}</span>}
             </div>
 
             <div className='address-question'>
@@ -127,7 +132,7 @@ function CarModal() {
                     id='same-address' 
                     onChange={onChange}
                 />
-                <label>Is drop off the same address?</label>
+                <label htmlFor='same-address'>Is drop off the same address?</label>
             </div>
 
             <div className='trip-form-control'>
@@ -140,47 +145,61 @@ function CarModal() {
                     onChange={handleForm}
                     placeholder='Drop off address'
                 />
+                {errors.dropoffAddress !== '' && <span>{errors.dropoffAddress}</span>}
             </div>
 
             <div className='trip-form-control'>
                 <label>Pick up:</label>
                 <div className='db-input'>
-                    <input 
-                        type='date' 
-                        name='pickupDate' 
-                        id='pickupDate'
-                        value={pickupDate}
-                        onChange={handleForm} 
-                    />
+                    <div>
+                        <input 
+                            type='date' 
+                            name='pickupDate' 
+                            id='pickupDate'
+                            value={pickupDate}
+                            onChange={handleForm} 
+                        />
+                        {errors.pickupDate !== '' && <span>{errors.pickupDate}</span>}
+                    </div>
 
-                    <input 
-                        type='time' 
-                        name='pickupTime' 
-                        id='pickupTime'
-                        value={pickupTime}
-                        onChange={handleForm} 
-                    />
+                    <div>
+                        <input 
+                            type='time' 
+                            name='pickupTime' 
+                            id='pickupTime'
+                            value={pickupTime}
+                            onChange={handleForm} 
+                        />
+                        {errors.pickupTime !== '' && <span>{errors.pickupTime}</span>}
+                    </div>
                 </div>
             </div>
 
             <div className='trip-form-control'>
                 <label>Drop off:</label>
                 <div className='db-input'>
-                    <input 
-                        type='date' 
-                        name='dropoffDate' 
-                        id='dropoffDate'
-                        value={dropoffDate}
-                        onChange={handleForm} 
-                    />
 
-                    <input 
-                        type='time' 
-                        name='dropoffTime' 
-                        id='dropoffTime'
-                        value={dropoffTime}
-                        onChange={handleForm} 
-                    />
+                    <div>
+                        <input 
+                            type='date' 
+                            name='dropoffDate' 
+                            id='dropoffDate'
+                            value={dropoffDate}
+                            onChange={handleForm} 
+                        />
+                        {errors.dropoffDate !== '' && <span>{errors.dropoffDate}</span>}
+                    </div>
+
+                    <div>
+                        <input 
+                            type='time' 
+                            name='dropoffTime' 
+                            id='dropoffTime'
+                            value={dropoffTime}
+                            onChange={handleForm} 
+                        />
+                        {errors.dropoffTime !== '' && <span>{errors.dropoffTime}</span>}
+                    </div>
                 </div>
             </div>
 

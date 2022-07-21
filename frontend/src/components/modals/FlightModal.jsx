@@ -2,14 +2,9 @@ import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
 import { useDispatch, useSelector } from 'react-redux'
-import { 
-    closeFlightModal, 
-    resetEdits 
-} from '../../features/modals/modalSlice'
-import { 
-    addFlightReservation, 
-    addEditedCategoryItem 
-} from '../../features/trip/tripSlice'
+import { useTripValidation } from '../../hooks/useTripValidation'
+import { closeFlightModal, resetEdits } from '../../features/modals/modalSlice'
+import { addFlightReservation, addEditedCategoryItem } from '../../features/trip/tripSlice'
 
 function FlightModal() {
     
@@ -40,6 +35,8 @@ function FlightModal() {
 
     const { Flights } = useSelector( state => state.trip )
     const { isEditFlights, index: flightIndex } = useSelector( state => state.modal )
+    const { validateTrip, errors } = useTripValidation(formData)
+
 
     useEffect(() => {
         if(isEditFlights){
@@ -58,14 +55,20 @@ function FlightModal() {
         }
     },[isEditFlights, flightIndex, Flights])
 
+
     const closeModal = () => dispatch(closeFlightModal())
+
 
     const handleForm = (e) => {
         setFormData((prevState) => ({
             ...prevState,
             [e.target.id]: e.target.value
         }))
+
+        validateTrip(e.target)
     }
+
+
 
     const addFlight = () => {
         if(departure === '' || arrival === ''){
@@ -95,7 +98,7 @@ function FlightModal() {
                 <XIcon onClick={closeModal}/>
                 <h3>Add a flight</h3>
                 <span className='required-field error'>
-                    Note: arrival and departure are required
+                    Note: arrival and departure fields are required
                 </span>
                 <div className='trip-form-control'>
                     <input 
@@ -106,6 +109,7 @@ function FlightModal() {
                         value={departure}
                         onChange={handleForm}
                     />
+                    {errors.departure !== '' && <span>{errors.departure}</span>}
                 </div>
 
                 <div className='trip-form-control'>
@@ -117,6 +121,7 @@ function FlightModal() {
                         value={arrival}
                         onChange={handleForm}
                     />
+                    {errors.arrival !== '' && <span>{errors.arrival}</span>}
                 </div>
 
                 <div className='trip-form-control'>
@@ -128,6 +133,7 @@ function FlightModal() {
                         value={airline}
                         onChange={handleForm}
                     />
+                    {errors.airline !== '' && <span>{errors.airline}</span>}
                 </div>
 
                 <div className='trip-form-control'>
@@ -139,47 +145,62 @@ function FlightModal() {
                         value={flightNumber}
                         onChange={handleForm}
                     />
+                    {errors.flightNumber !== '' && <span>{errors.flightNumber}</span>}
                 </div>
 
                 <div className='trip-form-control'>
                     <label>Departure:</label>
                     <div className='db-input'>
-                        <input 
-                            type='date' 
-                            name='departuredDate' 
-                            id='departureDate'
-                            value={departureDate}
-                            onChange={handleForm}
-                        />
+                        <div>
+                            <input 
+                                type='date' 
+                                name='departureDate' 
+                                id='departureDate'
+                                value={departureDate}
+                                onChange={handleForm}
+                            />
+                            {errors.departureDate !== '' && <span>{errors.departureDate}</span>}
+                        </div>
 
-                        <input 
-                            type='time' 
-                            name='departureTime' 
-                            id='departureTime'
-                            value={departureTime}
-                            onChange={handleForm}
-                        />
+                        <div>
+                            <input 
+                                type='time' 
+                                name='departureTime' 
+                                id='departureTime'
+                                value={departureTime}
+                                onChange={handleForm}
+                            />
+                            {errors.departureTime !== '' && <span>{errors.departureTime}</span>}
+                        </div>
+
                     </div>
                 </div>
 
                 <div className='trip-form-control'>
                     <label>Arrival:</label>
                     <div className='db-input'>
-                        <input 
-                            type='date' 
-                            name='arrivalDate' 
-                            id='arrivalDate'
-                            value={arrivalDate}
-                            onChange={handleForm}
-                        />
+                        <div>
+                            <input 
+                                type='date' 
+                                name='arrivalDate' 
+                                id='arrivalDate'
+                                value={arrivalDate}
+                                onChange={handleForm}
+                            />
+                            {errors.arrivalDate !== '' && <span>{errors.arrivalDate}</span>}
+                        </div>
 
-                        <input 
-                            type='time' 
-                            name='arrivalTime' 
-                            id='arrivalTime'
-                            value={arrivalTime}
-                            onChange={handleForm}
-                        />
+                        <div>
+                            <input 
+                                type='time' 
+                                name='arrivalTime' 
+                                id='arrivalTime'
+                                value={arrivalTime}
+                                onChange={handleForm}
+                            />
+                            {errors.arrivalTime !== '' && <span>{errors.arrivalTime}</span>}
+                        </div>
+
                     </div>
                 </div>
 

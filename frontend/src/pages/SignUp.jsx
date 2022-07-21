@@ -47,6 +47,7 @@ function SignUp() {
     }, [isError, isAccountCreated, message, navigate, dispatch])
 
 
+    // If no errors?
     useEffect(() => {
         if(
             name !== '' &&
