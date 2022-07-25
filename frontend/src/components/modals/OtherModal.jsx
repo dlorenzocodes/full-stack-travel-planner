@@ -63,6 +63,17 @@ const addReservation = () => {
         return
     }
 
+    if(
+        errors.reservationName !== '' ||
+        errors.otherDate !== '' ||
+        errors.otherTime !== '' ||
+        errors.otherCheckoutDate !== '' ||
+        errors.otherCheckoutTime !== ''
+    ){
+        toast.error('Please fix errors before submitting')
+        return
+    }
+
     if(isEditOthers){
         const data = {
             category: 'Other',

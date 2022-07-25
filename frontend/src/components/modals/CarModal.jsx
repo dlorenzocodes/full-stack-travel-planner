@@ -60,6 +60,19 @@ function CarModal() {
             return
         }
 
+        if(
+            errors.rental !== '' ||
+            errors.pickupAddress !== '' ||
+            errors.dropoffAddress !== '' ||
+            errors.pickupDate !== '' ||
+            errors.pickupTime !== '' ||
+            errors.dropoffDate !== '' ||
+            errors.dropoffTime !== ''
+        ){
+            toast.error('Please fix errors before submitting!')
+            return
+        }
+
         const address = isChecked ? pickupAddress : dropoffAddress
         const data = { ...formData, dropoffAddress: address } 
 

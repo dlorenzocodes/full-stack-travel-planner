@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Overview from './Overview'
 import Expenses from './Expenses'
 import Itinerary from './Itinerary'
@@ -6,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 import CarModal from './modals/CarModal'
 import NoteModal from './modals/NoteModal'
+import { useState, useEffect } from 'react'
 import OtherModal from './modals/OtherModal'
 import HotelModal from './modals/HotelModal'
 import FlightModal from './modals/FlightModal'
@@ -32,6 +32,7 @@ function NewTrip() {
   const { startDate, endDate } = dates
   const { cityInfo } = useSelector( state => state.destination )
   const { isError, message } = useSelector( state => state.trip )
+  const [isDateSmaller, setIsDateSmaller] = useState(null)
 
   const { 
       Flights, 
@@ -60,6 +61,11 @@ function NewTrip() {
 
   const style = {
     backgroundImage: `url(${cityInfo.imageURl || 'http://localhost:3000/static/media/fieldimage.9771d9277256011ffd97.jpg'})`
+  }
+
+  const errorStyle = {
+    textAlign: 'left',
+    marginTop: '0'
   }
 
   const [activeComponent, setActiveComponent ] = useState(buttonComponents.Overview)
@@ -94,6 +100,25 @@ function NewTrip() {
     }))
   }
 
+
+  useEffect(() => {
+    if(startDate !== '' && endDate !== ''){
+      compareDates(startDate, endDate)
+    }
+  }, [startDate, endDate])
+
+
+  const compareDates = (startDate, endDate) => {
+    const startD = new Date(startDate.replace(/-/g, '/')).getTime()
+    const endD = new Date(endDate.replace(/-/g, '/')).getTime()
+    console.log(startD, endD)
+
+    const isReturnDateBefore = endD < startD ? true : false
+    setIsDateSmaller(isReturnDateBefore)
+  }
+
+
+
   const handleSaveTrip = () => {
     const tripData = {
       tripTitle: cityInfo.title,
@@ -116,9 +141,14 @@ function NewTrip() {
       return;
     }
 
-      if(window.confirm('Ready to save trip?')){
-        dispatch(saveTrip(tripData))
+    if(isDateSmaller){
+      toast.error('Please fix errors before submitting')
+      return
+    }
 
+    if(window.confirm('Ready to save trip?')){
+      dispatch(saveTrip(tripData))
+      console.log(tripData)
 
       if(isError){
         toast.error(message)
@@ -167,6 +197,7 @@ function NewTrip() {
                 onChange={handleTripDates}
               />
             </div>
+            { isDateSmaller && <span style={errorStyle}>Return date must come after</span>}
         </div>
 
         <section className='trip-categories section-padding'>

@@ -55,8 +55,18 @@ function ExpenseModal() {
         ) {
             toast.error('Please make sure date, place and amount fields have been filled!')
             return
-        } else if(expenseAmount < 0){
+        } 
+        
+        if(expenseAmount < 0){
             toast.error('Amount entered is not a valid entry!')
+            return
+        }
+
+        if( 
+            errors.expensePlace !== '' || 
+            errors.expenseDate !== ''
+        ) {
+            toast.error('Please fix errors before sumbitting')
             return
         }
 

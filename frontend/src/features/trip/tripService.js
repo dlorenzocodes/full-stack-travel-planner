@@ -28,7 +28,7 @@ const deleteTrip = async (tripId) => {
     return await response.data
 }
 
-const updateTrip = async (data) => {
+const updateTrip = async(data) => {
     const { tripData } = data
     const response = await axios.put(
         `/trips/${data.tripId}`,
@@ -40,11 +40,22 @@ const updateTrip = async (data) => {
 }
 
 
+const getTrip = async(tripId) => {
+    const response = await axios.get(
+        `/trips/${tripId}`,
+        { withCredentials: true }
+    )
+
+    return await response.data
+}
+ 
+
 const tripService = {
     saveTrip,
     getTrips,
     deleteTrip,
-    updateTrip
+    updateTrip,
+    getTrip
 }
 
 export default tripService

@@ -66,6 +66,18 @@ function HotelModal() {
             return
         }
 
+        if(
+            errors.hotel !== '' ||
+            errors.hotelAddress !== '' ||
+            errors.checkinDate !== '' ||
+            errors.checkinTime !== '' ||
+            errors.checkoutDate !== '' ||
+            errors.checkinTime !== ''
+        ){
+            toast.error('Please fix errors before submitting')
+            return
+        }
+
         if(isEditLodging){
             const data = {
                 category: 'Lodging',

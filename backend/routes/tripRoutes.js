@@ -8,7 +8,8 @@ const {
     saveTrip, 
     getAllTrips,
     deleteTrip,
-    updateTrip
+    updateTrip,
+    getTrip
 } = require('../controllers/tripsControllers');
 const { tripSanitizer } = require('../config/tripSanitizer');
 const { validateRequestTripSchema } = require('../middleware/validateTripSanitizer');
@@ -25,9 +26,11 @@ router.post(
 
 router.post('/all-trips', protectPrivateRoutes, getAllTrips);
 
-router.delete('/:tripId', protectPrivateRoutes, deleteTrip)
+router.delete('/:tripId', protectPrivateRoutes, deleteTrip);
 
-router.put('/:tripId', protectPrivateRoutes, updateTrip)
+router.put('/:tripId', protectPrivateRoutes, updateTrip);
+
+router.get('/:tripId', protectPrivateRoutes, getTrip);
 
 
 module.exports = router;

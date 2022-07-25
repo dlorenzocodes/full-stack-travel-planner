@@ -172,8 +172,6 @@ const updateTrip = async (req, res, next) => {
     try{
         const tripId = req.params.tripId;
         const trip = await Trip.findById(tripId);
-        console.log(tripId)
-        console.log(req.body)
 
         if(!trip){
             res.status(404);
@@ -198,10 +196,39 @@ const updateTrip = async (req, res, next) => {
     }
 }
 
+
+
+// @desc   Edit a trip
+// @route  GET /trips/:tripId
+// @access Private
+const getTrip = async (req, res, next) => {
+    try{
+        const tripId = req.params.tripId;
+        const trip = await Trip.findById(tripId);
+
+        if(!trip){
+            res.status(404);
+            throw new Error('Trip not found');
+        }
+
+        if(trip.user.toString() !== req.user._id){
+            res.status(401);
+            throw new Error('Not authorized');
+        }
+
+        res.status(200).send(trip);
+    }catch(err){
+        console.log(err);
+        next(err);
+    }
+}
+
+
 module.exports = {
     getDestinationQuery,
     saveTrip,
     getAllTrips,
     deleteTrip,
-    updateTrip
+    updateTrip,
+    getTrip
 }

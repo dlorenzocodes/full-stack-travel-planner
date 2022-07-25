@@ -36,7 +36,7 @@ const tripSchema = mongoose.Schema({
         pickupDate: { type: String },
         pickupTime: { type: String },
         dropoffDate: { type: String },
-        dropffTime: { type: String },
+        dropoffTime: { type: String },
         carNotes: { type: String, min: 3 }
     }],
     Lodging: [{
@@ -57,16 +57,16 @@ const tripSchema = mongoose.Schema({
         otherNotes: { type: String, min: 3 }
     }],
     Notes: [{
-        notes: { type: String, min: 3 }
+        note: { type: String, min: 3 }
     }],
-    Itinerary: [{
+    itinerary: [{
         date: { type: String },
         activities: [{
             activity: { type: String, min: 3 },
             time: { type: String }
         }]
     }],
-    Expenses:[{
+    expenses:[{
         expenseDate: { type: String },
         expensePlace: { type: String, min: 3 },
         expenseAmount: { type: String },

@@ -7,54 +7,57 @@ const tripSanitizer = [
         'Cars.*.rental',
         'Lodging.*.hotel',
         'Other.*.reservationName',
-        'Expenses.*.expensePlace',
-        'Itinerary.*.activities.*.activity'
+        'expenses.*.expensePlace',
+        'itinerary.*.activities.*.activity'
     ])
         .notEmpty()
-        .isAlpha()
+        .isAlpha('en-US', {ignore: '\s\/.'})
         .trim(),
+    check('Flights.*.airline')
+        .optional({ checkFalsy: true })
+        .isAlpha('en-US', {ignore: '\s\/.'})
+        .trim(),
+    check('Flights.*.flightNumber')
+        .optional({ checkFalsy: true })
+        .isAlphanumeric()
+        .trim(),
+    check([
+        'Cars.*.pickupAddress',
+        'Cars.*.dropoffAddress',
+        'Lodging.*.hotelAddress',
+    ])
+        .optional({ checkFalsy: true })
+        .isAlphanumeric('en-US', {ignore: '\s\/.'}),
     check('Notes.*.note')
         .notEmpty()
         .trim()
         .escape(),
     check([
-        'Itinerary.*.date',
-        'Expenses.*.expenseDate',
+        'itinerary.*.date',
+        'expenses.*.expenseDate',
+        'dates.startDate',
+        'dates.endDate'
     ])
         .notEmpty()
         .isDate({ format: 'YYYY/MM/DD'})
         .trim(),
-    check('Expenses.*.expenseAmount')
+    check('expenses.*.expenseAmount')
         .notEmpty()
         .trim()
         .custom(value => {
             if(value < 0 ) throw new Error('Expense amount must be bigger that 0!')
             return true
         }),
-    check('Flights.*.airline')
-        .optional({ checkFalsy: true })
-        .isAlpha()
-        .trim(),
     check([
         'Flights.*.flightNotes',
         'Cars.*.carNotes',
         'Lodging.*.hotelNotes',
         'Other.*.otherNotes',
-        'Expenses.*.expenseNotes'
+        'expenses.*.expenseNotes'
     ])
         .optional({ checkFalsy: true })
         .trim()
         .escape(),
-    check([
-        'Flights.*.flightNumber',
-        'Cars.*.pickupAddress',
-        'Cars.*.dropoffAddress',
-        'Lodging.*.hotelAddress',
-    ])
-        .optional({ checkFalsy: true })
-        .trim()
-        .escape()
-        .isAlphanumeric(),
     check([
         'Flights.*.departureDate',
         'Flights.*.arrivalDate',
@@ -77,7 +80,7 @@ const tripSanitizer = [
         'Lodging.*.checkoutTime',
         'Other.*.otherTime',
         'Other.*.otherCheckoutTime',
-        'Itinerary.*.activities.*.time'
+        'itinerary.*.activities.*.time'
     ])
         .optional({ checkFalsy: true })
         .trim()

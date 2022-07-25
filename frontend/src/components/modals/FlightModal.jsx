@@ -76,6 +76,20 @@ function FlightModal() {
             return
         }
 
+        if(
+            errors.departure !== '' ||
+            errors.arrival !== '' ||
+            errors.airline !== '' ||
+            errors.flightNumber !== '' ||
+            errors.departureDate !== '' ||
+            errors.departureTime !== '' ||
+            errors.arrivalTime !== '' ||
+            errors.arrivalDate !== ''
+        ){
+           toast.error('Please fix errors befoe submitting')
+           return
+        }
+
         if(isEditFlights){
             const data = {
                 category: 'Flights',

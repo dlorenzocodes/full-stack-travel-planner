@@ -21,7 +21,6 @@ function App() {
               <Route path='/explore' element={ <Explore />} />
               <Route path='/login' element={ <Login />} />
               <Route path='/register' element={ <SignUp />} />
-              <Route path='*' element={ <NotFound /> } />
 
               <Route element={ <PersistLogin /> }>
 
@@ -33,11 +32,13 @@ function App() {
                   <Route path='/profile' element={ <Profile /> } />
                 </Route>
 
-                <Route path='/trips/:tripId' element={<PrivateRoute />}>
-                  <Route path='/trips/:tripId' element={<UpdateTrip />} />
+                <Route  exact path='/trips/:tripId' element={<PrivateRoute />}>
+                  <Route exact path='/trips/:tripId' element={<UpdateTrip />} />
                 </Route>
 
               </Route>
+
+              <Route path='*' element={ <NotFound /> } />
 
             </Routes>
         </div>

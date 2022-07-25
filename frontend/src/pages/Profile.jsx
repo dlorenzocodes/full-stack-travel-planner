@@ -51,7 +51,8 @@ function Profile() {
   }, [dispatch])
 
 
-  // user reducer error & success messages
+  // user reducer error & success messages --------
+  // profile image
   useEffect(() => {
     if(isError) {
       toast.error(message)

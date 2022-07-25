@@ -1,20 +1,21 @@
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
 import { useState, useEffect } from 'react'
+import Spinner from '../components/Spinner'
 import Overview from '../components/Overview'
 import Expenses from '../components/Expenses'
 import Itinerary from '../components/Itinerary'
+import { SaveIcon } from '@heroicons/react/solid'
 import CarModal from '../components/modals/CarModal'
+import { useSelector, useDispatch } from 'react-redux'
 import NoteModal from '../components/modals/NoteModal'
 import OtherModal from '../components/modals/OtherModal'
 import HotelModal from '../components/modals/HotelModal'
+import { useNavigate, useParams } from 'react-router-dom'
 import FlightModal from '../components/modals/FlightModal'
 import ExpenseModal from '../components/modals/ExpenseModal'
-import { useSelector, useDispatch } from 'react-redux'
-import { SaveIcon } from '@heroicons/react/solid'
-import { useNavigate, useParams } from 'react-router-dom'
 import { tripSectionButtons } from '../utils/TripSectionButtons'
-import { resetTripState, updateTrip } from '../features/trip/tripSlice'
-import { toast } from 'react-toastify';
+import { resetTripState, updateTrip, getTrip } from '../features/trip/tripSlice'
 
 
 function UpdateTrip() {
@@ -34,8 +35,10 @@ function UpdateTrip() {
     tripTitle, 
     isUpdated,
     isSuccess,
+    isError,
     message,
-    dates: tripDates 
+    dates: tripDates,
+    isLoading 
   } = useSelector( state => state.trip )
 
   const { 
@@ -64,7 +67,7 @@ function UpdateTrip() {
   }
 
   const style = {
-    backgroundImage: `url( ${`http://localhost:5000/${image}` || 'http://localhost:3000/static/media/fieldimage.9771d9277256011ffd97.jpg'})`
+    backgroundImage: `url( ${`http://localhost:5000/${image}`})`
   }
 
   const [activeComponent, setActiveComponent ] = useState(buttonComponents.Overview)
@@ -74,9 +77,21 @@ function UpdateTrip() {
     Expenses: false
   })
 
+
   useEffect(() => {
     if(isUpdated) setDates(tripDates)
   }, [isUpdated, tripDates])
+
+
+  // gets trip
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(getTrip(param.tripId))
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  },[dispatch, param.tripId])
+
 
   // Display msg on successfully updated trip
   useEffect(() => {
@@ -85,6 +100,16 @@ function UpdateTrip() {
       dispatch(resetTripState())
     }
   }, [ isSuccess, message, dispatch])
+
+  
+  // Display msg on error getting single trip
+  useEffect(() => {
+    if(isError){
+      toast.error(message)
+      dispatch(resetTripState())
+      navigate('/profile')
+    }
+  }, [dispatch, navigate, isError, message])
 
 
   const handleActiveCat = (e, index) => {
@@ -103,6 +128,7 @@ function UpdateTrip() {
       [e.target.id]: e.target.value
     }))
   }
+
 
   const handleUpdateTrip = () => {
     const tripId = param.tripId
@@ -126,9 +152,8 @@ function UpdateTrip() {
     dispatch(updateTrip(data))
     dispatch(resetTripState())
     navigate('/profile')
-   
   }
-  
+ 
 
   return (
     <section className='new-trip-container'>
@@ -197,6 +222,7 @@ function UpdateTrip() {
       { otherModal && <OtherModal /> }
       { notesModal && <NoteModal /> }
       { expenseModal && <ExpenseModal />}
+      { isLoading && <Spinner />}
     </section>
   )
 }
