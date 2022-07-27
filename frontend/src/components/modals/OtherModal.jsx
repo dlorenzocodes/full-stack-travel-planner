@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
+import { useDecode } from '../../hooks/useDecode'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTripValidation } from '../../hooks/useTripValidation'
 import { closeOtherModal, resetEdits } from '../../features/modals/modalSlice'
@@ -27,6 +28,7 @@ function OtherModal() {
     otherNotes
 } = formData
 
+const { decodeString } = useDecode()
 const { Other }  = useSelector( state => state.trip )
 const { isEditOthers, index: otherIndex} = useSelector( state => state.modal )
 const { validateTrip, errors } = useTripValidation(formData)
@@ -37,7 +39,7 @@ useEffect(() => {
         setFormData({
             reservationName: otherItem.reservationName,
             otherDate: otherItem.otherDate,
-            otherTime: otherItem.otherItem,
+            otherTime: otherItem.otherTime,
             otherCheckoutDate: otherItem.otherCheckoutDate,
             otherCheckoutTime: otherItem.otherCheckoutTime,
             otherNotes: otherItem.otherNotes
@@ -73,6 +75,8 @@ const addReservation = () => {
         toast.error('Please fix errors before submitting')
         return
     }
+
+    formData.otherNotes = decodeString(otherNotes)
 
     if(isEditOthers){
         const data = {

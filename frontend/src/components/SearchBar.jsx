@@ -1,14 +1,12 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
 import { SearchIcon } from '@heroicons/react/solid'
 import { postDestination } from '../features/destination/destinationSlice'
 
 function SearchBar() {
 
   const [destination, setDestination] = useState('')
-  const location = useLocation()
   const dispatch = useDispatch()
 
   const getDestination = (e) => setDestination(e.target.value)
@@ -30,10 +28,7 @@ function SearchBar() {
           type='text' 
           onChange={getDestination}
           value={destination}
-          placeholder={ location.pathname !== '/profile' ? 
-            'Search for places' : 
-            'Search for trips'
-          } 
+          placeholder='Search for places'
         />
         <div className='icon-wrapper search-icon'>
             <SearchIcon className='icon' fill='#F88747' onClick={handleDestination}/>

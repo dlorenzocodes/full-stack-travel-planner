@@ -111,7 +111,6 @@ function NewTrip() {
   const compareDates = (startDate, endDate) => {
     const startD = new Date(startDate.replace(/-/g, '/')).getTime()
     const endD = new Date(endDate.replace(/-/g, '/')).getTime()
-    console.log(startD, endD)
 
     const isReturnDateBefore = endD < startD ? true : false
     setIsDateSmaller(isReturnDateBefore)
@@ -148,7 +147,6 @@ function NewTrip() {
 
     if(window.confirm('Ready to save trip?')){
       dispatch(saveTrip(tripData))
-      console.log(tripData)
 
       if(isError){
         toast.error(message)

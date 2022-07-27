@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTripValidation } from '../../hooks/useTripValidation'
 import { addExpenses, addEditedExpense } from '../../features/trip/tripSlice'
 import { closeExpenseModal, resetEdits } from '../../features/modals/modalSlice'
+import { useDecode } from '../../hooks/useDecode'
 
 function ExpenseModal() {
 
@@ -21,6 +22,7 @@ function ExpenseModal() {
     const { Expenses } = useSelector( state => state.trip )
     const { isEditExpense, index: expenseIndex } = useSelector( state => state.modal )
     const{ validateTrip, errors } = useTripValidation(formData)
+    const { decodeString } = useDecode()
 
     useEffect(() => {
         if(isEditExpense){
@@ -69,6 +71,8 @@ function ExpenseModal() {
             toast.error('Please fix errors before sumbitting')
             return
         }
+
+        formData.expenseNotes = decodeString(expenseNotes)
 
         if(isEditExpense){
             const data = {

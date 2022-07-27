@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { check } = require('express-validator');
 const validate = require('../middleware/validate');
 const { validateCityEntry } = require('../utils/tripValidations');
 const { protectPrivateRoutes } = require('../middleware/authMiddleware');
@@ -28,9 +29,15 @@ router.post('/all-trips', protectPrivateRoutes, getAllTrips);
 
 router.delete('/:tripId', protectPrivateRoutes, deleteTrip);
 
-router.put('/:tripId', protectPrivateRoutes, updateTrip);
+router.put(
+    '/:tripId', 
+    protectPrivateRoutes,
+    tripSanitizer,
+    validateRequestTripSchema, 
+    updateTrip
+);
 
-router.get('/:tripId', protectPrivateRoutes, getTrip);
+router.get('/:tripId',protectPrivateRoutes, getTrip);
 
 
 module.exports = router;

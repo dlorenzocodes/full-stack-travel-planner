@@ -2,16 +2,16 @@ import { v4 as uuidv4 } from 'uuid';
 import useDate from '../hooks/useDate'
 import useTime from '../hooks/useTime'
 import { useSelector, useDispatch } from 'react-redux'
-import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { removeCategoryItem } from '../features/trip/tripSlice'
+import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { openOtherModal, editOverviewCategories } from '../features/modals/modalSlice'
 
 function OtherItem() {
 
     const dispatch = useDispatch()
-    const { Other } = useSelector( state => state.trip )
     const { formatDate } = useDate()
     const { formatTime } = useTime()
+    const { Other } = useSelector( state => state.trip )
 
     const editOther = (e, index) => {
         const data = {

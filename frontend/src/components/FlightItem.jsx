@@ -2,16 +2,16 @@ import { v4 as uuidv4 } from 'uuid';
 import useDate from '../hooks/useDate'
 import useTime from '../hooks/useTime'
 import { useSelector, useDispatch } from 'react-redux'
-import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { removeCategoryItem } from '../features/trip/tripSlice'
+import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { editOverviewCategories, openFlightModal } from '../features/modals/modalSlice'
 
 function FlightItem() {
 
     const dispatch = useDispatch()
-    const { Flights } = useSelector( state => state.trip )
     const { formatDate } = useDate()
     const { formatTime } = useTime()
+    const { Flights } = useSelector( state => state.trip )
 
     const editFlight = (e, index) => {
         const data = {

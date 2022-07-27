@@ -2,16 +2,16 @@ import { v4 as uuidv4 } from 'uuid';
 import useDate from '../hooks/useDate'
 import useTime from '../hooks/useTime'
 import { useSelector, useDispatch } from 'react-redux'
-import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { removeCategoryItem } from '../features/trip/tripSlice'
+import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { openHotelModal, editOverviewCategories } from '../features/modals/modalSlice'
 
 function LodgingItem() {
 
     const dispatch = useDispatch()
-    const { Lodging } = useSelector( state => state.trip )
     const { formatDate } = useDate()
     const { formatTime } = useTime()
+    const { Lodging } = useSelector( state => state.trip )
 
     const editHotel = (e, index) => {
         const data = {

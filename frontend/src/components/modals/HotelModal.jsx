@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTripValidation } from '../../hooks/useTripValidation'
 import { closeHotelModal, resetEdits } from '../../features/modals/modalSlice'
 import { addHotelReservation, addEditedCategoryItem } from '../../features/trip/tripSlice'
+import { useDecode } from '../../hooks/useDecode'
 
 
 function HotelModal() {
@@ -33,6 +34,7 @@ function HotelModal() {
     const { Lodging } = useSelector( state => state.trip )
     const { isEditLodging, index: lodgingIndex} = useSelector( state => state.modal )
     const { validateTrip, errors } = useTripValidation(formData)
+    const { decodeString } = useDecode()
 
     useEffect(() => {
         if(isEditLodging) {
@@ -77,6 +79,8 @@ function HotelModal() {
             toast.error('Please fix errors before submitting')
             return
         }
+
+        formData.hotelNotes = decodeString(hotelNotes)
 
         if(isEditLodging){
             const data = {

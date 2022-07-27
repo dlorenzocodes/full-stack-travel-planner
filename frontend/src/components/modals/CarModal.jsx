@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTripValidation } from '../../hooks/useTripValidation'
 import { closeCarModal, resetEdits } from '../../features/modals/modalSlice'
 import { addCarReservation, addEditedCategoryItem } from '../../features/trip/tripSlice'
+import { useDecode } from '../../hooks/useDecode'
 
 function CarModal() {
 
@@ -34,6 +35,7 @@ function CarModal() {
     const { Cars } = useSelector( state => state.trip )
     const { isEditCars, index: itemIndex } = useSelector( state => state.modal )
     const { validateTrip, errors } = useTripValidation(formData)
+    const { decodeString } = useDecode()
 
     useEffect(() => {
         if(isEditCars){
@@ -74,6 +76,7 @@ function CarModal() {
         }
 
         const address = isChecked ? pickupAddress : dropoffAddress
+        formData.carNotes = decodeString(carNotes)
         const data = { ...formData, dropoffAddress: address } 
 
         if(isEditCars){

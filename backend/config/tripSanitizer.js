@@ -8,10 +8,20 @@ const tripSanitizer = [
         'Lodging.*.hotel',
         'Other.*.reservationName',
         'expenses.*.expensePlace',
-        'itinerary.*.activities.*.activity'
+        'itinerary.*.activities.*.activity',
+        'tripTitle'
     ])
         .notEmpty()
         .isAlpha('en-US', {ignore: '\s\/.'})
+        .trim(),
+    check([
+        'itinerary.*.date',
+        'expenses.*.expenseDate',
+        'dates.startDate',
+        'dates.endDate'
+    ])
+        .notEmpty()
+        .isDate({ format: 'YYYY/MM/DD'})
         .trim(),
     check('Flights.*.airline')
         .optional({ checkFalsy: true })
@@ -32,15 +42,6 @@ const tripSanitizer = [
         .notEmpty()
         .trim()
         .escape(),
-    check([
-        'itinerary.*.date',
-        'expenses.*.expenseDate',
-        'dates.startDate',
-        'dates.endDate'
-    ])
-        .notEmpty()
-        .isDate({ format: 'YYYY/MM/DD'})
-        .trim(),
     check('expenses.*.expenseAmount')
         .notEmpty()
         .trim()

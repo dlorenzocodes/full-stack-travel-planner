@@ -36,10 +36,7 @@ const addImages = async(imageTitle, url, filepath) => {
         const parsedData = JSON.parse(data);
         const img = parsedData.find(item => item === imageTitle);
 
-        if(img) {
-            console.log(img)
-            return
-        }
+        if(img) return;
 
         images = [...parsedData, imageTitle];
         await fsPromises.writeFile(p, JSON.stringify(images));
@@ -113,14 +110,14 @@ const getAllTrips = async (req, res, next) => {
         const upcoming = [];
         const ongoing = [];
         const past = [];
-        const today = Date.now()
+        const today = new Date().getTime()
 
         trips.forEach( trip => {
-            const startDate = new Date(trip.dates.startDate).getTime()
-            const endDate = new Date(trip.dates.endDate).getTime()
+            const startDate = new Date(trip.dates.startDate.replace(/-/g, '/')).getTime()
+            const endDate = new Date(trip.dates.endDate.replace(/-/g, '/')).getTime()
 
             if(startDate > today) upcoming.push(trip)
-            else if(startDate <= today && endDate >= today ) ongoing.push(trip)
+            else if(startDate <= today && endDate >= today) ongoing.push(trip)
             else if(endDate < today) past.push(trip)
         })
 
@@ -171,7 +168,7 @@ const deleteTrip = async (req, res, next) => {
 const updateTrip = async (req, res, next) => {
     try{
         const tripId = req.params.tripId;
-        const trip = await Trip.findById(tripId);
+        const trip = await Trip.findById(tripId); 
 
         if(!trip){
             res.status(404);

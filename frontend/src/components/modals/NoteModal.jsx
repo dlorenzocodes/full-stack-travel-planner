@@ -4,6 +4,7 @@ import { XIcon } from '@heroicons/react/outline'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeNoteModal, resetEdits } from '../../features/modals/modalSlice'
 import { addNoteReservation, addEditedCategoryItem } from '../../features/trip/tripSlice'
+import { useDecode } from '../../hooks/useDecode'
 
 function NoteModal() {
 
@@ -12,6 +13,7 @@ function NoteModal() {
   const [ note, setNote ] = useState('')
   const { Notes } = useSelector( state => state.trip )
   const { isEditNotes, index: noteIndex } = useSelector( state => state.modal )
+  const { decodeString } = useDecode()
 
   useEffect(() => {
     if(isEditNotes){
@@ -30,11 +32,13 @@ function NoteModal() {
       return
     }
 
+    
+
     if(isEditNotes) {
       const data = {
         category: 'Notes',
         index: noteIndex,
-        formData: { note }
+        formData: { note: decodeString(note) }
       }
       dispatch(addEditedCategoryItem(data))
       dispatch(closeNoteModal())
@@ -42,7 +46,7 @@ function NoteModal() {
       return
     }
 
-    dispatch(addNoteReservation({note}))
+    dispatch(addNoteReservation({ note: decodeString(note) }))
     dispatch(closeNoteModal())
   }
 

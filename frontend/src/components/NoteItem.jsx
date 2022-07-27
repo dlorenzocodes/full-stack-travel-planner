@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux'
-import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { removeCategoryItem } from '../features/trip/tripSlice'
+import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { openNoteModal ,editOverviewCategories } from '../features/modals/modalSlice'
 
 function NoteItem() {

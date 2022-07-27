@@ -49,7 +49,7 @@ const tripSchema = mongoose.Schema({
         hotelNotes: { type: String, min: 3 }
     }],
     Other: [{
-        reservatioName: { type: String, min: 3 },
+        reservationName: { type: String, min: 3 },
         otherDate: { type: String },
         otherTime: { type: String },
         otherCheckoutDate: { type: String },
