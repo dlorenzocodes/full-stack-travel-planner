@@ -7,6 +7,7 @@ const { Trip } = require('../models/tripModel');
 
 const p = path.join(__dirname, '../', 'uploads/images.json');
 
+
 const downloadImage = async(url, filepath) => {
     const response = await axios({
         url,

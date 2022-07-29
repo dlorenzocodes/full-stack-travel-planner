@@ -68,6 +68,47 @@ const deleteProfileImage = async() => {
 }
 
 
+const forgotPassword = async(email) => {
+    const response = await axios.post(
+        '/users/forgot-password',
+        email,
+        {
+            headers: { 'Content-Type': 'application/json '},
+            withCredentials: true
+        }
+    )
+
+    return await response.data
+}
+
+
+const resetPassword = async (formData) => {
+    const response = await axios.post(
+        '/users/reset-password',
+        formData,
+        {
+            headers: { 'Content-Type': 'application/json '},
+            withCredentials: true
+        }
+    )
+
+    return await response.data
+}
+
+
+const verifyToken = async (data) => {
+    const response = await axios.post(
+        '/users/verify-token',
+        data,
+        {
+            headers: { 'Content-Type': 'application/json '},
+            withCredentials: true
+        }
+    )
+
+    return await response.data
+}
+
 const authService = {
     register,
     login,
@@ -76,7 +117,10 @@ const authService = {
     getCurrentUser,
     logoutUser,
     addProfileImage,
-    deleteProfileImage
+    deleteProfileImage,
+    forgotPassword,
+    resetPassword,
+    verifyToken
 }
 
 export default authService

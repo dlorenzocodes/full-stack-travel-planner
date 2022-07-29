@@ -22,6 +22,10 @@ const getUserCoordinates = async () => {
     }
 };
 
+
+// @desc   Gets places recomendations
+// @route  GET /places/recomendations
+// @access Public
 const getPlacesRecomendations = async (req, res, next) => {
     try{
         const response = await getUserCoordinates();

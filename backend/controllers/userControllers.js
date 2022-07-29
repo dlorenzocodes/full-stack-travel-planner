@@ -199,6 +199,9 @@ const deleteProfileImage = async (req, res, next) => {
 }
 
 
+// @desc   Receives email from user to reset pw
+// @route  /users/forgot-password
+// @access Public
 const forgotPassword = async(req, res, next) => {
     const { email } = req.body;
 
@@ -227,13 +230,12 @@ const forgotPassword = async(req, res, next) => {
 
         try{
             await sendEmail(email, user.name, url);
+            res.status(200).send('Email was succesfully sent to entered address!')
         }catch(err){
             res.status(500)
             throw new Error('Email could not been sent. Please try again later!')
         }
 
-        
-        res.status(200).send('Email was succesfully sent to entered address!')
     }catch(err){
         console.log(err)
         next(err);
@@ -241,6 +243,9 @@ const forgotPassword = async(req, res, next) => {
 };
 
 
+// @desc   Resets user password
+// @route  /users/reset-password
+// @access Private
 const resetPassword = async (req, res, next) => {
     const { password } = req.body;
 
@@ -255,6 +260,7 @@ const resetPassword = async (req, res, next) => {
 
         try{
             await User.findByIdAndUpdate(req.user._id, { password: hashedPassword });
+            await Token.findOneAndDelete({ userId: req.user._id});
             res.status(200).send('Password was succesfully updated!')
         }catch(err){
             res.status(500);
@@ -266,6 +272,14 @@ const resetPassword = async (req, res, next) => {
     }
 }
 
+
+// @desc   Verifies reset pw token and id
+// @route  /users/verify-token
+// @access Private
+const verifyToken = (req, res, next) => {
+    res.status(200).json({ isTokenValid: true })
+}   
+
 module.exports = {
     loginUser,
     registerUser,
@@ -274,5 +288,6 @@ module.exports = {
     getProfileImage,
     deleteProfileImage,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    verifyToken
 }

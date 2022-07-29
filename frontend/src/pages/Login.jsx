@@ -133,7 +133,7 @@ function Login() {
                     </div>
 
                     <div className='pw-recovery'>
-                    <Link to='/'>Forgot password?</Link>
+                    <Link to='/forgot-password'>Forgot password?</Link>
                     </div>
 
                     <div className='form-control'>

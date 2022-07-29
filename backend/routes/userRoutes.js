@@ -14,7 +14,8 @@ const {
     getProfileImage,
     deleteProfileImage,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    verifyToken
 } = require('../controllers/userControllers');
 
 const storage = multer.memoryStorage();
@@ -65,5 +66,7 @@ router.delete('/profile/delete', protectPrivateRoutes, deleteProfileImage);
 router.post('/forgot-password', forgotPassword);
 
 router.post('/reset-password', isResetTokenValid, validate(validateResetPassword), resetPassword);
+
+router.post('/verify-token', isResetTokenValid, verifyToken)
 
 module.exports = router;

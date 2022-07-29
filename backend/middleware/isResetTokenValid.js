@@ -5,6 +5,7 @@ const { Token } = require('../models/tokenModel');
 
 const isResetTokenValid = async (req, res, next) => {
     const { token, id } = req.body;
+    
 
     try{
         if(!token || !id){
