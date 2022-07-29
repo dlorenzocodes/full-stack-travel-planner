@@ -16,6 +16,7 @@ router.get('/url', (req, res) => {
     return res.send(getGoogleAuthUrl());
 });
 
+// Google callback route
 router.get('/', async (req, res, next) => {
     const code = String(req.query.code);
    
@@ -59,6 +60,7 @@ router.get('/', async (req, res, next) => {
         logger.error(err);
     }
 });
+
 
 router.get('/failed', (req, res, next) => {
 

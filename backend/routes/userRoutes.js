@@ -4,13 +4,17 @@ const multer = require('multer');
 const validate = require('../middleware/validate');
 const { protectPrivateRoutes } = require('../middleware/authMiddleware');
 const { validateUser, validateUserLogin } = require('../models/userModel');
+const { isResetTokenValid } = require('../middleware/isResetTokenValid');
+const { validateResetPassword } = require('../utils/resetPasswordValidation');
 const { 
     loginUser, 
     registerUser, 
     getCurrentUser,
     handleUserLogout,
     getProfileImage,
-    deleteProfileImage
+    deleteProfileImage,
+    forgotPassword,
+    resetPassword
 } = require('../controllers/userControllers');
 
 const storage = multer.memoryStorage();
@@ -57,5 +61,9 @@ router.get('/logout', handleUserLogout);
 router.post('/profile', protectPrivateRoutes, multerErrorHandeling, getProfileImage);
 
 router.delete('/profile/delete', protectPrivateRoutes, deleteProfileImage);
+
+router.post('/forgot-password', forgotPassword);
+
+router.post('/reset-password', isResetTokenValid, validate(validateResetPassword), resetPassword);
 
 module.exports = router;

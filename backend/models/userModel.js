@@ -30,7 +30,9 @@ const userSchema = mongoose.Schema({
     },
     profileName:{
         type: String
-    }
+    },
+    resetToken: String,
+    resetTokenExpiration: Date
 },
 {
     timestamps: true,

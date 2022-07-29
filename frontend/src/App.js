@@ -1,12 +1,14 @@
 import Home from './pages/Home';
-import Explore from './pages/Explore';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import Explore from './pages/Explore';
 import Profile from './pages/Profile';
 import UpdateTrip from './pages/UpdateTrip';
 import NotFound from './components/NotFound';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ResetPassword from './pages/ResetPassword';
+import ForgotPassword from './pages/ForgotPassword'
 import PrivateRoute from './components/PrivateRoute'
 import PersistLogin from './components/PersistLogin';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -21,6 +23,8 @@ function App() {
               <Route path='/explore' element={ <Explore />} />
               <Route path='/login' element={ <Login />} />
               <Route path='/register' element={ <SignUp />} />
+              <Route path='/forgot-password' element={<ForgotPassword />} />
+              <Route path='/reset-password' element={<ResetPassword />} />
 
               <Route element={ <PersistLogin /> }>
 

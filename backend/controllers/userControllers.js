@@ -3,7 +3,9 @@ const bcrypt = require('bcrypt');
 const logger = require('../config/logger');
 const { s3Upload } = require('../config/storage');
 const { s3Delete } = require('../config/storage');
-const multer = require('multer');
+const { Token } = require('../models/tokenModel');
+const crypto = require('crypto');
+const { sendEmail } = require('../utils/sendEmail');
 
 
 const cookieOptions = {
@@ -196,11 +198,81 @@ const deleteProfileImage = async (req, res, next) => {
     }
 }
 
+
+const forgotPassword = async(req, res, next) => {
+    const { email } = req.body;
+
+    try{
+        const user = await User.findOne({ email });
+
+        if(!user){
+            res.status(400);
+            throw new Error('Entered email does not match our records!');
+        }
+
+        const token = await Token.findOne({ userId: user._id });
+        if(token) await token.deleteOne();
+
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const salt = await bcrypt.genSalt(12);
+        const hashedToken = await bcrypt.hash(resetToken, salt);
+
+        await Token.create({
+            userId: user._id,
+            token: hashedToken,
+            createdAt: Date.now()
+        });
+
+        const url = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}&id=${user._id}`;
+
+        try{
+            await sendEmail(email, user.name, url);
+        }catch(err){
+            res.status(500)
+            throw new Error('Email could not been sent. Please try again later!')
+        }
+
+        
+        res.status(200).send('Email was succesfully sent to entered address!')
+    }catch(err){
+        console.log(err)
+        next(err);
+    }
+};
+
+
+const resetPassword = async (req, res, next) => {
+    const { password } = req.body;
+
+    try{
+        if(req.user.strategy !== 'local'){
+            res.status(400);
+            throw new Error('Your signed up method does not allow password reset this way!')
+        }
+
+        const salt = await bcrypt.genSalt(12);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        try{
+            await User.findByIdAndUpdate(req.user._id, { password: hashedPassword });
+            res.status(200).send('Password was succesfully updated!')
+        }catch(err){
+            res.status(500);
+            throw new Error('Password could not be updated at this moment. Try again later!');
+        }
+    }catch(err){
+        console.log(err);
+        next(err);
+    }
+}
+
 module.exports = {
     loginUser,
     registerUser,
     getCurrentUser,
     handleUserLogout,
     getProfileImage,
-    deleteProfileImage
+    deleteProfileImage,
+    forgotPassword,
+    resetPassword
 }
