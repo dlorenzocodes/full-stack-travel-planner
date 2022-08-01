@@ -4,6 +4,11 @@
     margin-top: 2.25rem;
     flex-grow: 2;
     color: $primary-color;
+    @include tablet{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 
     .suggestions-results{
         position: relative;

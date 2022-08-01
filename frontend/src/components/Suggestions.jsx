@@ -3,9 +3,11 @@ import Arrows from './Arrows'
 import Spinner from './Spinner'
 import CityItem from './CityItem'
 import { v4 as uuidv4 } from 'uuid'
+import Error from '../components/Error'
 import { useEffect, useState } from 'react'
 import useCounter from '../hooks/useCounter'
 import AttractionItem from './AttractionItem'
+import badRequest from '../assets/badRequest.jpg'
 import { useSelector, useDispatch } from 'react-redux'
 import { getCityRecomendations } from '../features/recomendations/recomendationSlice.js'
 
@@ -66,7 +68,10 @@ function Suggestions() {
     <section className='suggestions-container section-padding'>
 
       { cities === null ? 
-        <p> Suggestions can't be provided at this time</p> 
+        <div className='error-container' style={{ height: 'auto', padding: '3rem 0'}}>
+          <p> Suggestions can't be provided at this time</p> 
+          <img src={badRequest} alt='bad request graphic' />
+        </div>
         : (
           <>
             <div className='suggestions-results' id='cities'>

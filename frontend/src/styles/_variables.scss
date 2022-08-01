@@ -24,5 +24,15 @@ $subheading-size: 0.8rem;
 // Font-Family
 $font-family: 'Poppins', sans-serif;
 
+
+// Others
 $border-radius: 5px;
 $box-shadow: 0 1px 5px 1px rgb(0 0 0 / 10%);
+
+
+// Media Queries
+$iphoneSE-width: 23.4375em;               // 375px
+$tablet-width: 37.5em;                  // 768px
+$ipad-width: 51.25em;                  // 820px
+$desktop-width: 64em;                // 1024px
+$large-desktop-width: 75rem         // 1200px

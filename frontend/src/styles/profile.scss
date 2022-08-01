@@ -8,6 +8,12 @@
     background-position: center;
     min-height: 165px;
     position: relative;
+    @include desktop{
+        min-height: 200px;
+    }
+    // @include large-desktop{
+    //     min-height: 300px;
+    // }
 
     .logout-btn{
         margin: 1rem;
@@ -55,6 +61,15 @@
         box-shadow: 3px 0px 9px 3px rgb(0 0 0 / 15%);
         border: 4px solid $section-color;
         border-radius: 50%;
+        @include desktop{
+            top: calc(200px - 75px);
+        }
+        @include large-desktop{
+            width: 200px;
+            height: 200px;
+            top: calc(200px - 100px);
+            background-position: top;
+        }
 
         .delete-profile-btn{
             position: absolute;
@@ -63,6 +78,9 @@
             background: transparent;
             border: none;
             cursor: pointer;
+            @include large-desktop{
+                bottom: 27px;
+            }
 
             svg{
                 background: $section-color;
@@ -106,6 +124,9 @@
 
 .trip-profile-section{
     flex-grow: 2;
+    @include large-desktop{
+        padding-top: 4rem;
+    }
 
     aside{
         margin-top: 5rem;
@@ -125,6 +146,19 @@
     }
 
     .trip-details{
+        max-width: 600px;
+        margin: 0 auto;
+        @include desktop{
+            max-width: 800px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            padding-bottom: 3rem;
+        }
+        @include large-desktop{
+            max-width: 1100px;
+            grid-template-columns: repeat(3, 1fr);
+        }
 
         .no-trips-placeholder{
             text-align: center;
