@@ -9,7 +9,7 @@
         flex-direction: column;
         justify-content: center;
     }
-    @include sm-desktop{
+    @include ipad{
         margin-top: 5rem;
         padding-bottom: 5rem;
     }
@@ -36,7 +36,8 @@
             .arrow-right{
                 margin-right: 1rem;
             }
-            @include sm-desktop{
+
+            @include tablet{
                 display: none;
             }
         }
@@ -45,15 +46,17 @@
             display: grid;
             overflow: hidden;
             grid-template-columns: repeat(4, 1fr);
-            grid-gap: 21px;
 
             .city-item,
             .attraction-item{
                 transition: transform 300ms ease-in-out;
 
                 & >div{
-                    width: 180px;
-                    @include sm-desktop{
+                    width: 175px;
+                    @include small-screen{
+                        width: 165px;
+                    }
+                    @include ipad{
                         width: auto;
                     }
                 }
@@ -104,7 +107,7 @@
         .arrows{
             .arrow-left,
             .arrow-right{
-                top: 35%;
+                top: 25%;
                 transform: translateX(-35%);
             }
 
@@ -116,7 +119,7 @@
                 margin-right: 0.5rem;
             }
 
-            @include sm-desktop{
+            @include tablet{
                 display: none;
             }
         }

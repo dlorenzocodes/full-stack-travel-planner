@@ -17,6 +17,9 @@
         max-width: 435px;
         margin: 0 auto;
         border-radius: 5px;
+        @include small-screen{
+            width: 85%;
+        }
 
         h3{
             text-align: center;

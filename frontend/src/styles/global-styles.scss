@@ -304,6 +304,9 @@ textarea,
 
 .expense-modal-container{
     padding-top: 9rem;
+    @include small-screen{
+        padding-top: 4rem;
+    }
 }
 
 .trip-form-control{
@@ -355,6 +358,10 @@ textarea,
     p{
         color: $primary-color;
         font-weight: $semibold-weight;
+        text-align: center;
+        @include small-screen{
+            font-size: 0.8rem;
+        }
     }
 
     img{

@@ -7,6 +7,9 @@
     background-position: left bottom;
     min-height: 216px;
     color: #fff;
+    @include small-screen{
+        min-height: 260px;
+    }
     @include tablet{
         min-height: 260px;
         background-position: left;

@@ -29,6 +29,9 @@
         width: 400px;
         margin: 0 auto;
         align-self: center;
+        @include small-screen{
+            width: 100%;
+        }
 
         h1{
             text-align: center;

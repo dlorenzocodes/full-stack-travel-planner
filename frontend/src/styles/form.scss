@@ -8,6 +8,9 @@
     height: 100vh;
     max-width: 395px;
     margin: 0 auto;
+    @include small-screen{
+        margin: 2rem;
+    }
 
     form{   
         margin-top: 1rem;
@@ -27,6 +30,9 @@
 
         p{
             color: $placeholder-color;
+            @include small-screen{
+                font-size: 0.8rem;
+            }
         }
 
         a{
