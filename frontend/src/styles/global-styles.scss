@@ -169,7 +169,8 @@ textarea,
     padding: 2rem 1rem 1rem; 
     background-color: $section-color;
     border-radius: 20px;
-    justify-content: space-evenly;
+    display: block !important;
+
 
     fieldset{
         border: none;
@@ -231,6 +232,9 @@ textarea,
             padding-bottom: 0.5rem;
             cursor: pointer;
             font-weight: $semibold-weight;
+            @include large-desktop{
+                font-size: 1.2rem;
+            }
         }
 
         button.active{

@@ -87,6 +87,7 @@ function UpdateTrip() {
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(getTrip(param.tripId))
+      console.log(param.tripId)
     }, 1000)
 
     return () => clearTimeout(timer)

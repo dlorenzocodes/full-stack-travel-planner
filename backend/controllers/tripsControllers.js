@@ -4,6 +4,7 @@ const path = require('path');
 const axios = require('axios');
 const { logger } = require('../config/logger');
 const { Trip } = require('../models/tripModel');
+const { default: mongoose } = require('mongoose');
 
 const p = path.join(__dirname, '../', 'uploads/images.json');
 
@@ -143,6 +144,12 @@ const getAllTrips = async (req, res, next) => {
 const deleteTrip = async (req, res, next) => {
     try{
         const tripId = req.params.tripId;
+
+        if(!mongoose.Types.ObjectId.isValid(tripId)){
+            res.status(500);
+            throw new Error('Trip could not be fetched. Please try again later!');
+        }
+
         const trip = await Trip.findById(tripId);
 
         if(!trip){
@@ -169,6 +176,12 @@ const deleteTrip = async (req, res, next) => {
 const updateTrip = async (req, res, next) => {
     try{
         const tripId = req.params.tripId;
+
+        if(!mongoose.Types.ObjectId.isValid(tripId)){
+            res.status(500);
+            throw new Error('Your trip could not be updated at this moment. Try again');
+        }
+
         const trip = await Trip.findById(tripId); 
 
         if(!trip){
@@ -202,6 +215,12 @@ const updateTrip = async (req, res, next) => {
 const getTrip = async (req, res, next) => {
     try{
         const tripId = req.params.tripId;
+             
+        if(!mongoose.Types.ObjectId.isValid(tripId)){
+            res.status(500);
+            throw new Error('Trip could not be fetched. Please try again later!');
+        }
+
         const trip = await Trip.findById(tripId);
 
         if(!trip){

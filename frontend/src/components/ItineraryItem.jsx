@@ -96,6 +96,7 @@ function ItineraryItem() {
                     onClick={() => handleRemoveItinerary(index)}
                   />
                   <ChevronUpIcon 
+                    className={ isClicked[index] ? 'chevron-arrow rotate' : 'chevron arrow'}
                     fill='#2F2E41'
                     onClick={(e) => showCardContent(e, index)}
                   />

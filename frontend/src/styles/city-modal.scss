@@ -1,13 +1,12 @@
 @import 'variables.scss';
 
 .city-modal-container{
-    position: absolute;
+    position: fixed;
     background: rgba(0, 0, 0, 0.5);
-    height: 100vh;
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 4fr 1fr;
-    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-rows: 100px 3fr 1fr;
 
     .city-modal-wrapper{
         background: #fff;
@@ -19,6 +18,7 @@
         grid-column: 2/3;
         grid-row: 2/3;
         box-shadow: 0px 0px 27px 12px rgb(0 0 0 / 10%);
+        max-width: 425px;
 
         .modal-header{
             display: flex;
@@ -43,6 +43,7 @@
                     background-color: rgba(0, 0, 0, 0.5);
                     border-radius: 5px;
                     padding: 0.5rem;
+                    max-width: 300px;
                 }
 
                 .btn{

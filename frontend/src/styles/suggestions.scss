@@ -9,6 +9,10 @@
         flex-direction: column;
         justify-content: center;
     }
+    @include sm-desktop{
+        margin-top: 5rem;
+        padding-bottom: 5rem;
+    }
 
     .suggestions-results{
         position: relative;
@@ -32,6 +36,9 @@
             .arrow-right{
                 margin-right: 1rem;
             }
+            @include sm-desktop{
+                display: none;
+            }
         }
 
         .carousel{
@@ -44,11 +51,15 @@
             .attraction-item{
                 transition: transform 300ms ease-in-out;
 
-                div > img{
+                & >div{
                     width: 180px;
+                    @include sm-desktop{
+                        width: auto;
+                    }
                 }
+
                 img{ 
-                    width: 100%;
+                    max-width: 80%;
                     border-radius: $border-radius;
                 }
 
@@ -61,6 +72,9 @@
                     p{
                         margin: 0;
                         color: $accent-color;
+                        @include sm-desktop{
+                            font-size: 0.8rem;
+                        }
                     }
 
                     svg{
@@ -100,6 +114,10 @@
 
             .arrow-right{
                 margin-right: 0.5rem;
+            }
+
+            @include sm-desktop{
+                display: none;
             }
         }
     }

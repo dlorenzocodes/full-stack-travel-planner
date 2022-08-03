@@ -10,12 +10,24 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
+        @include desktop{
+            height: 300px;
+        }
+        @include large-desktop{
+            height: 350px;
+        }
 
         & > div {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 1rem;
+            @include desktop{
+                padding-top: 2rem;
+            }
+            @include large-desktop{
+                padding: 3rem;
+            }
         }
 
         svg{
@@ -53,8 +65,20 @@
         top: 25%;
         width: 100%;
         border-radius: 25px;
+        min-height: 100vh;
+        @include desktop{
+            top: 30%;
+        }
+        @include large-desktop{
+            top: 40%;
+        }
 
         .trip-header{
+            max-width: 600px;
+            margin: 0 auto;
+            @include desktop{
+                max-width: 750px;
+            }
 
             h1{
                 font-size: 2rem;
@@ -76,7 +100,9 @@
         .trip-categories{
             margin-top: 0;
             position: relative;
-            min-height: 100vh;
+            @include desktop{
+                max-width: 750px;
+            }
 
             .trip-details{
                 margin-top: 2rem;

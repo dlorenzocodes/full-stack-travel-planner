@@ -5,7 +5,7 @@
     min-height: 100vh;
     position: fixed;
     background-image: url('../assets/pattern.jpg');
-    background-position: bottom;
+    background-position: top center;
     background-repeat: no-repeat;
     background-size: cover;
     color: $primary-color;
@@ -26,6 +26,9 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        width: 400px;
+        margin: 0 auto;
+        align-self: center;
 
         h1{
             text-align: center;

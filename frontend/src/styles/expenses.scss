@@ -1,6 +1,13 @@
 @import 'variables.scss';
 
 .expenses-container{
+    & > div{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        padding: 2rem 0;
+    }
+
     .btn{
         width: 40%;
         margin: 0 auto;

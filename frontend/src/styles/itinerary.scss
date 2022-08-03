@@ -10,6 +10,12 @@
     }
 
     .itinerary-items{
+        @include desktop{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 3rem;
+        }
         .itinerary-card{
             margin-bottom: 3rem;
             border-bottom: 1px solid $primary-color;
@@ -22,6 +28,14 @@
                 display: flex;
                 justify-content: space-between;
                 margin-bottom: 1rem;
+
+                .chevron-arrow{
+                    transition: transform 300ms ease-in-out;
+                }
+
+                .chevron-arrow.rotate{
+                    transform: rotateX(180deg);
+                }
             }
 
             .card-content{
@@ -68,6 +82,12 @@
                                 border-width: 5px;
                                 border-style: solid;
                                 border-color: $placeholder-color transparent transparent transparent;
+                                @include tablet{
+                                    left: 30%;
+                                }
+                                @include desktop{
+                                    left: 50%;
+                                }
                             }
                         }
                     }
@@ -98,6 +118,7 @@
             color: #fff;
             padding: 0;
             font-size: 0.8rem;
+            margin: 0;
         }
     }
 }

@@ -155,7 +155,7 @@ function Profile() {
             style={style}
           >
              { 
-              !user.profile ?
+              !user?.profile ?
                 <form className='avatar'>
                   <button type='button' onClick={handleProfileImageBtn}>
                       <UserAddIcon fill='#CCC' />

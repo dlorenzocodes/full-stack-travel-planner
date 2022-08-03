@@ -13,7 +13,7 @@ function Past() {
   const navigate = useNavigate()
   const [tripIndex, setTripIndex] = useState('')
   const [profileSection, setProfileSection] = useState('')
-  const { Past, isError, message, isSuccess } = useSelector( state => state.trip)
+  const { Past, isError, message, isDeleted } = useSelector( state => state.trip)
   const { formatProfileDates } = useProfileDate()
 
   // alert error if trip not deleted
@@ -26,7 +26,7 @@ function Past() {
 
   // delete trip from UI on success
   useEffect(() => {
-    if(isSuccess){
+    if(isDeleted){
       const data = { tripIndex, profileSection }
       dispatch(deleteTripFromUI(data))
 
@@ -38,7 +38,7 @@ function Past() {
       return () => clearTimeout(timer)
     }
 
-  }, [isSuccess, dispatch, message, profileSection, tripIndex])
+  }, [isDeleted, dispatch, message, profileSection, tripIndex])
 
 
   const handleDeleteTrip = (tripId, e, index) => {
@@ -49,7 +49,7 @@ function Past() {
     }
   }
 
-  const handleTripUpdate = (e, tripId) => navigate(`/trips/${tripId}`)
+  const handleTripUpdate = (tripId) => navigate(`/trips/${tripId}`)
 
   return (
     <>

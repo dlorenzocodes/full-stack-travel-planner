@@ -31,3 +31,9 @@
         @content
     }
 };
+
+@mixin sm-desktop {
+    @media only screen and (min-width: 870px){
+        @content
+    }
+}
