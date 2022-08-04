@@ -62,7 +62,7 @@ function Past() {
 
               <div className='trip-image'>
                 <img 
-                  src={`http://localhost:5000/${trip.image}`} 
+                  src={`/${trip.image}`} 
                   alt='trip destination' 
                 />
               </div>

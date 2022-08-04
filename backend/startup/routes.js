@@ -8,15 +8,12 @@ const tripRoutes = require('../routes/tripRoutes');
 const cors = require('cors');
 const errorHandler = require('../middleware/errorMiddleware');
 
-
 const corsOptions = {
     origin: 'http://localhost:3000',
     methods: 'PUT, POST, DELETE, GET',
     allowedHeaders: ['Content-Type', 'Set-Cookie'],
     credentials: true,
 }
-
-console.log(path.join(__dirname, '../','public/assets'));
 
 module.exports = function(app){
     app.use(express.json());
