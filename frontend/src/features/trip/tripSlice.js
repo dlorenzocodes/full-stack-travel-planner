@@ -168,54 +168,22 @@ const tripSlice = createSlice({
             const { index } = action.payload
             const { formData } = action.payload
 
-            if(category === 'Flights'){
-                state.Flights.splice(index, 1, formData)
-            } else if(category === 'Cars'){
-                state.Cars.splice(index, 1, formData)
-            }else if(category === 'Lodging'){
-                state.Lodging.splice(index, 1, formData)
-            }else if(category === 'Other'){
-                state.Other.splice(index, 1, formData)
-            }else{
-                state.Notes.splice(index, 1, formData)
-            }
+            state[category].splice(index, 1, formData)
 
         },
         removeCategoryItem: (state, action) => {
             const { category } = action.payload
             const { index: itemIndex } = action.payload
 
-            if( category === 'Flights'){
-                const newFlights = state.Flights.filter((item, index) => index !== itemIndex)
-                state.Flights = newFlights
-            } else if( category === 'Cars'){
-                const newCars = state.Cars.filter((item, index) => index !== itemIndex)
-                state.Cars = newCars
-            } else if( category === 'Lodging'){
-                const newLodging = state.Lodging.filter((item, index) => index !== itemIndex)
-                state.Lodging = newLodging
-            }else if( category === 'Other'){
-                const newOther = state.Other.filter((item, index) => index !== itemIndex)
-                state.Other = newOther
-            }else{
-                const newNotes = state.Notes.filter((item, index) => index !== itemIndex)
-                state.Notes = newNotes
-            }
+            const newCategoryItem = state[category].filter((item, index) => index !== itemIndex)
+            state[category] = newCategoryItem
         },
         deleteTripFromUI: (state, action) => {
             const { tripIndex } = action.payload
             const { profileSection } = action.payload
 
-            if(profileSection === 'Past'){
-                const trips = state.Past.filter((item, index) => index !== tripIndex )
-                state.Past = trips
-            } else if(profileSection === 'Ongoing'){
-                const trips = state.Ongoing.filter((item, index) => index !== tripIndex )
-                state.Ongoing = trips
-            } else{
-                const trips = state.Upcoming.filter((item, index) => index !== tripIndex )
-                state.Upcoming = trips
-            }
+            const trips = state[profileSection].filter((item, index) => index !== tripIndex )
+            state[profileSection] = trips
         }
 
     },

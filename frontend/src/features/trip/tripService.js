@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const saveTrip = async (tripData) => {
     const response = await axios.post(
-        'trips', 
+        '/trips', 
         tripData, 
         { withCredentials: true}
     )

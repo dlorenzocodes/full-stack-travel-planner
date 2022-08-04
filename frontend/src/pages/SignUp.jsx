@@ -47,7 +47,7 @@ function SignUp() {
     }, [isError, isAccountCreated, message, navigate, dispatch])
 
 
-    // If no errors?
+    
     useEffect(() => {
         if(
             name !== '' &&
@@ -65,6 +65,16 @@ function SignUp() {
         e.preventDefault();
 
         if(btnDisabled) return
+
+        if(
+            errors.name !== null ||
+            errors.email !== null ||
+            errors.password !== null ||
+            errors.confirmPassword !== null
+        ){
+            toast.error('Please fix errors before submitting!')
+            return
+        }
      
         const userData = { name, email, password, confirmPassword }
 

@@ -76,7 +76,11 @@ function Login() {
     const onBlur = (e) => validate(e.target)
 
     const validatePassword = (e) => {
-        if(e.target.value === '') setErrorMessage('Input is not valid')
+        if(e.target.value !== ''){
+            setErrorMessage('')
+        } else{
+            setErrorMessage('Input is not valid')
+        }
     }
 
     const socialSignIn = () => dispatch(getGoogleSignUrl())
@@ -92,6 +96,14 @@ function Login() {
         e.preventDefault()
 
         if(btnDisabled) return
+
+        if(
+            errors.name !== null ||
+            errorMessage !== ''
+        ){
+            toast.error('Please fix errors before submitting!')
+            return
+        }
 
         dispatch(login(formData))
         setFormData({

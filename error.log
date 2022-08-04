@@ -698,3 +698,6 @@
 {"level":"error","service":"user-service"}
 {"level":"error","service":"user-service"}
 {"level":"error","message":"Error: querySrv ETIMEOUT _mongodb._tcp.travelplanner.fzlr2.mongodb.net","service":"user-service"}
+{"level":"error","service":"user-service"}
+{"level":"error","service":"user-service"}
+{"level":"error","service":"user-service"}

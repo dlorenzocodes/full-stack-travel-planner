@@ -2,7 +2,7 @@ import axios from "axios"
 
 const postCityDestination = async (city) => {
     const response = await axios.post(
-        'trips/city-info', 
+        '/trips/city-info', 
         city, 
         { withCredentials: true }
     )

@@ -9,7 +9,7 @@ const { default: mongoose } = require('mongoose');
 const p = path.join(__dirname, '../', 'uploads/images.json');
 
 
-const downloadImage = async(url, filepath) => {
+const downloadImage = async (url, filepath) => {
     const response = await axios({
         url,
         method: 'GET',
@@ -17,9 +17,13 @@ const downloadImage = async(url, filepath) => {
     });
 
     return new Promise((resolve, reject) => {
-        response.data.pipe(fs.createWriteStream(filepath))
-            .one('error', reject)
-            .once('closed', resolve(filepath))
+        const fileStream = fs.createWriteStream(filepath);
+        response.data.pipe(fileStream)
+            .on('error', (error) => reject(error))
+            .on('finish', () => {
+                resolve(filepath);
+                fileStream.close();
+            })
     });
 }
 
@@ -33,19 +37,21 @@ const addImages = async(imageTitle, url, filepath) => {
             images.push(imageTitle);
             await fsPromises.writeFile(p, JSON.stringify(images));
             await downloadImage(url, filepath);
+
+        } else{
+            const parsedData = JSON.parse(data);
+            const img = parsedData.find(item => item === imageTitle);
+    
+            if(img) return;
+    
+            images = [...parsedData, imageTitle];
+            await fsPromises.writeFile(p, JSON.stringify(images));
+           
+            await downloadImage(url, filepath);
         }
-
-        const parsedData = JSON.parse(data);
-        const img = parsedData.find(item => item === imageTitle);
-
-        if(img) return;
-
-        images = [...parsedData, imageTitle];
-        await fsPromises.writeFile(p, JSON.stringify(images));
-        await downloadImage(url, filepath);
         
     }catch(err){
-        console.log(err)
+       logger.error(err);
     }
 }
 
@@ -61,15 +67,15 @@ const getDestinationQuery = async(req, res, next) => {
         const cityResponse = await axios.get(`https://en.wikipedia.org/w/api.php?format=json&formatversion=2&action=query&prop=extracts&exlimit=max&explaintext&exintro&titles=${city}`)
 
         const imageURl = imageResponse.data.hits[0]?.webformatURL;
-
         const cityInfo = cityResponse.data.query?.pages[0]?.extract;
         const title = cityResponse.data.query?.pages[0]?.title;
         const imageName = `${title}.jpg`;
         const imagePath = path.join(__dirname, '../', 'public/assets', imageName);
-
+        
         await addImages(imageName, imageURl, imagePath);
-
+        
         res.send({ imageURl, cityInfo, title, imageName });
+
     }catch(error){
         logger.error(error)
         next(error)
