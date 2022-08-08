@@ -10,21 +10,18 @@ const p = path.join(__dirname, '../', 'uploads/images.json');
 
 
 const downloadImage = async (url, filepath) => {
-    const response = await axios({
-        url,
-        method: 'GET',
-        responseType: 'stream'
-    });
+    try{
+        const response = await axios({
+            url,
+            method: 'GET',
+            responseType: 'stream'
+        });
 
-    return new Promise((resolve, reject) => {
-        const fileStream = fs.createWriteStream(filepath);
-        response.data.pipe(fileStream)
-            .on('error', (error) => reject(error))
-            .on('finish', () => {
-                resolve(filepath);
-                fileStream.close();
-            })
-    });
+        const file = response.data.pipe(fs.createWriteStream(filepath));
+        file.on('finsih', () => console.log('Image downloaded!'));
+    }catch(err){
+        throw new Error(err)
+    }
 }
 
 const addImages = async(imageTitle, url, filepath) => {
@@ -52,6 +49,8 @@ const addImages = async(imageTitle, url, filepath) => {
         
     }catch(err){
        logger.error(err);
+       console.log(err);
+       throw new Error(err);
     }
 }
 

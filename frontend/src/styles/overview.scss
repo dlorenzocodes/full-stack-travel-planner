@@ -26,6 +26,7 @@
             border: none;
             background-color: transparent;
             cursor: pointer;
+            transition: transform 300ms ease-in-out;
 
             p{
                 font-weight: $medium-weight;
@@ -41,6 +42,10 @@
                 @include large-desktop{
                     width: 2.5rem;
                 }
+            }
+
+            &:hover{
+                transform: scale(1.05);
             }
         }
     }

@@ -29,6 +29,7 @@ function UpdateTrip() {
     endDate: ''
   })
   const { startDate, endDate } = dates
+  const [urlImage, setUrlImage] = useState(null)
 
   const { 
     image, 
@@ -67,7 +68,7 @@ function UpdateTrip() {
   }
 
   const style = {
-    backgroundImage: `url( ${`http://localhost:5000/${image}`})`
+    backgroundImage: `url(/${urlImage})`
   }
 
   const [activeComponent, setActiveComponent ] = useState(buttonComponents.Overview)
@@ -76,6 +77,13 @@ function UpdateTrip() {
     Itinerary: false,
     Expenses: false
   })
+
+  useEffect(() => {
+    if(image) {
+      const newImage = image.replace(/\s/, '%20')
+      setUrlImage(newImage)
+    }
+  }, [image])
 
 
   useEffect(() => {
@@ -154,7 +162,6 @@ function UpdateTrip() {
     navigate('/profile')
   }
  
-
   return (
     <section className='new-trip-container'>
       <section className='trip-background-image' style={style}>

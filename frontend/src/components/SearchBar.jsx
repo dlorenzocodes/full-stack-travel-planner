@@ -11,7 +11,7 @@ function SearchBar() {
 
   const getDestination = (e) => setDestination(e.target.value)
 
-  const handleDestination = () => {
+  const handleDestination = (e) => {
     if( destination === '') {
       toast.error('A destination must be provided!')
       return
