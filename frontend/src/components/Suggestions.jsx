@@ -39,9 +39,9 @@ function Suggestions() {
     transform: `translateX(-${attrSlide}%)`,
   }
 
-  // useEffect(() => {
-  //   dispatch(getCityRecomendations())
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(getCityRecomendations())
+  }, [dispatch])
 
   useEffect(() => {
     const slideNumber = cityCounter * 100
