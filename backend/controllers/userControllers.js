@@ -1,11 +1,11 @@
 const { User } = require('../models/userModel');
 const bcrypt = require('bcrypt');
-const logger = require('../config/logger');
 const { s3Upload } = require('../config/storage');
 const { s3Delete } = require('../config/storage');
 const { Token } = require('../models/tokenModel');
 const crypto = require('crypto');
 const { sendEmail } = require('../utils/sendEmail');
+const { logger } = require('../config/logger');
 
 
 const cookieOptions = {
@@ -40,7 +40,8 @@ const loginUser = async (req, res, next) => {
             throw new Error('Invalid credentials')
         }
    }catch(err){
-       next(err);
+        logger.error(err);
+        next(err);
    }
 };
 
@@ -79,7 +80,8 @@ const registerUser = async (req, res, next) => {
         }
 
     }catch(err){
-        next(err)
+        logger.error(err);
+        next(err);
     }
 };
 
@@ -104,7 +106,7 @@ const getCurrentUser = async (req, res, next) => {
         res.status(200).json({ id: user._id, name: user.name });
 
     }catch(err){
-        console.log(err);
+        logger.error(err);
         next(err);
     }
 }
@@ -165,7 +167,8 @@ const getProfileImage = async (req, res, next) => {
         res.sendStatus(200);
 
     }catch(err){
-        next(err)
+        logger.error(err);
+        next(err);
     } 
 };
 
@@ -193,7 +196,7 @@ const deleteProfileImage = async (req, res, next) => {
 
         res.status(200).send('Profile image was successfully deleted!');
     }catch(err){
-        console.log(err);
+        logger.error(err);
         next(err);
     }
 }
@@ -237,7 +240,7 @@ const forgotPassword = async(req, res, next) => {
         }
 
     }catch(err){
-        console.log(err)
+        logger.error(err);
         next(err);
     }
 };
@@ -267,7 +270,7 @@ const resetPassword = async (req, res, next) => {
             throw new Error('Password could not be updated at this moment. Try again later!');
         }
     }catch(err){
-        console.log(err);
+        logger.error(err);
         next(err);
     }
 }

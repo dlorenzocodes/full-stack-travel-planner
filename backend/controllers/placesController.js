@@ -32,7 +32,6 @@ const getPlacesRecomendations = async (req, res, next) => {
 
         if(response.hasOwnProperty('messages')){
             res.status(response.code);
-            // Server Error?
             throw new Error(response.messages);
         }
 
@@ -54,6 +53,7 @@ const getPlacesRecomendations = async (req, res, next) => {
         }
 
     }catch(err){
+        logger.error(err);
         next(err);
     }
 }

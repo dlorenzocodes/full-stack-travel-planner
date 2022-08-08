@@ -49,7 +49,6 @@ const addImages = async(imageTitle, url, filepath) => {
         
     }catch(err){
        logger.error(err);
-       console.log(err);
        throw new Error(err);
     }
 }
@@ -97,7 +96,7 @@ const saveTrip = async (req, res, next) => {
         res.status(201).send('Trip was successfully created');
 
     }catch(err){
-        console.log(err)
+        logger.error(err)
         next(err)
     }
 }
@@ -139,7 +138,7 @@ const getAllTrips = async (req, res, next) => {
         res.status(200).send(data);
 
     }catch(err){
-        console.log(err)
+        logger.error(err)
         next(new Error('Trips could not be loaded at this time. Try again later!'))
     }
 }
@@ -171,7 +170,7 @@ const deleteTrip = async (req, res, next) => {
         await trip.remove();
         res.status(200).send('Trip successfully deleted!');
     }catch(err){
-        console.log(err);
+        logger.error(err);
         next(err);
     }
 }
@@ -208,7 +207,7 @@ const updateTrip = async (req, res, next) => {
 
         res.status(200).send(updatedTrip);
     }catch(err){
-        console.log(err);
+        logger.error(err);
         next(err);
     }
 }
@@ -241,7 +240,7 @@ const getTrip = async (req, res, next) => {
 
         res.status(200).send(trip);
     }catch(err){
-        console.log(err);
+        logger.error(err);
         next(err);
     }
 }
