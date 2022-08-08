@@ -4,6 +4,15 @@
     margin-top: 2.25rem;
     flex-grow: 2;
     color: $primary-color;
+    @include tablet{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    @include ipad{
+        margin-top: 5rem;
+        padding-bottom: 5rem;
+    }
 
     .suggestions-results{
         position: relative;
@@ -27,23 +36,33 @@
             .arrow-right{
                 margin-right: 1rem;
             }
+
+            @include tablet{
+                display: none;
+            }
         }
 
         .carousel{
             display: grid;
             overflow: hidden;
             grid-template-columns: repeat(4, 1fr);
-            grid-gap: 21px;
 
             .city-item,
             .attraction-item{
                 transition: transform 300ms ease-in-out;
 
-                div > img{
-                    width: 180px;
+                & >div{
+                    width: 175px;
+                    @include small-screen{
+                        width: 165px;
+                    }
+                    @include ipad{
+                        width: auto;
+                    }
                 }
+
                 img{ 
-                    width: 100%;
+                    max-width: 80%;
                     border-radius: $border-radius;
                 }
 
@@ -56,6 +75,9 @@
                     p{
                         margin: 0;
                         color: $accent-color;
+                        @include sm-desktop{
+                            font-size: 0.8rem;
+                        }
                     }
 
                     svg{
@@ -85,7 +107,7 @@
         .arrows{
             .arrow-left,
             .arrow-right{
-                top: 35%;
+                top: 25%;
                 transform: translateX(-35%);
             }
 
@@ -95,6 +117,10 @@
 
             .arrow-right{
                 margin-right: 0.5rem;
+            }
+
+            @include tablet{
+                display: none;
             }
         }
     }

@@ -4,7 +4,7 @@ const validateCityEntry = (city) => {
     const schema = Joi.object({
         city: Joi.string()
         .trim()
-        .pattern(/^[A-Z a-z]+$/)
+        .pattern(/^[A-Za-z\s\.]+$/)
         .required()
     });
 

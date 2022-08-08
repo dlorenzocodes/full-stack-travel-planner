@@ -1,13 +1,13 @@
 import { XIcon } from '@heroicons/react/solid'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { resetTripState } from '../features/trip/tripSlice'
+import { resetDestinationState } from '../features/destination/destinationSlice'
 import { openNewTripForm, closedSearchCityModel } from '../features/modals/modalSlice'
 
 function CityModal() {
 
     const { user } = useSelector( state => state.auth )
-    const { cityInfo } = useSelector( state => state.trip)
+    const { cityInfo } = useSelector( state => state.destination )
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -18,7 +18,7 @@ function CityModal() {
 
     const handleCloseModal = () => {
         dispatch(closedSearchCityModel())
-        dispatch(resetTripState())
+        dispatch(resetDestinationState())
     }
 
     const handleStartTrip = () => {

@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useEffect, useState } from 'react'
 import useCounter from '../hooks/useCounter'
 import AttractionItem from './AttractionItem'
+import badRequest from '../assets/badRequest.jpg'
 import { useSelector, useDispatch } from 'react-redux'
 import { getCityRecomendations } from '../features/recomendations/recomendationSlice.js'
 
@@ -38,9 +39,9 @@ function Suggestions() {
     transform: `translateX(-${attrSlide}%)`,
   }
 
-  // useEffect(() => {
-  //   dispatch(getCityRecomendations())
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(getCityRecomendations())
+  }, [dispatch])
 
   useEffect(() => {
     const slideNumber = cityCounter * 100
@@ -66,7 +67,10 @@ function Suggestions() {
     <section className='suggestions-container section-padding'>
 
       { cities === null ? 
-        <p> Suggestions can't be provided at this time</p> 
+        <div className='error-container' style={{ height: 'auto', padding: '3rem 0'}}>
+          <p> Suggestions can't be provided at this time</p> 
+          <img src={badRequest} alt='bad request graphic' />
+        </div>
         : (
           <>
             <div className='suggestions-results' id='cities'>

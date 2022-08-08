@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { useDispatch, useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/solid'
-import { postDestination } from '../features/trip/tripSlice'
+import { useDispatch, useSelector } from 'react-redux'
 import { closeAddTripModal, openNewTripForm } from '../features/modals/modalSlice'
-import { resetTripState } from '../features/trip/tripSlice'
+import { postDestination, resetDestinationState } from '../features/destination/destinationSlice'
 
 
 function AddTrip() {
 
-  const { isError, message, isSuccess } = useSelector( state => state.trip)
+  const { isError, message, isSuccess } = useSelector( state => state.destination )
   const [destination, setDestination] = useState('')
   const dispatch = useDispatch()
 
@@ -20,7 +19,7 @@ function AddTrip() {
     const timer = setTimeout(() => {   
       if(isError){
         toast.error(message)
-        dispatch(resetTripState())
+        dispatch(resetDestinationState())
       }
     }, 1000);
 
@@ -55,7 +54,8 @@ function AddTrip() {
             <h1>Plan a new trip</h1>
             <div className='form-control'>
                 <input 
-                  type="text" name='' 
+                  type="text" 
+                  name='destination' 
                   placeholder='Enter destination city'
                   onChange={handleDestination}
                   value={destination}

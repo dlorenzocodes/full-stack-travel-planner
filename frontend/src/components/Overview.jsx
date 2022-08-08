@@ -44,7 +44,6 @@ function Overview() {
 
     const onClick = (e, index) => {
         if(e.target.id === index.toString()){
-            console.log(index)
             setIsClicked((prevState) => ({
                 ...prevState,
                 [e.target.dataset.cat]: !prevState[e.target.dataset.cat]

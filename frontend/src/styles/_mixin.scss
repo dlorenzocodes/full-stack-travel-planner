@@ -1,0 +1,39 @@
+@use 'variables.scss';
+
+
+@mixin small-screen {
+    @media only screen and (max-width: $iphoneSE-width){
+        @content
+    }
+};
+
+@mixin tablet {
+    @media only screen and (min-width: $tablet-width){
+        @content;  
+    }
+};
+
+
+@mixin ipad {
+    @media only screen and (min-width: $ipad-width){
+        @content
+    }
+};
+
+@mixin desktop {
+    @media only screen and (min-width: $desktop-width){
+        @content
+    }
+};
+
+@mixin large-desktop {
+    @media only screen and (min-width: $large-desktop-width){
+        @content
+    }
+};
+
+@mixin sm-desktop {
+    @media only screen and (min-width: 870px){
+        @content
+    }
+};

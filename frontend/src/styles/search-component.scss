@@ -7,21 +7,63 @@
     background-position: left bottom;
     min-height: 216px;
     color: #fff;
+    @include small-screen{
+        min-height: 260px;
+    }
+    @include tablet{
+        min-height: 260px;
+        background-position: left;
+    }
+    @include ipad{
+        min-height: 300px;
+    }
+    @include desktop{
+        min-height: 334px;
+    }
 
     .search-wrapper{
         height: 100%;
         position: relative;
+        @include tablet{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
         .main-title{
             line-height: 1.2;
             margin-top: 2rem;
             letter-spacing: 0.03rem;
+            width: 70%;
+            @include tablet{
+                margin-top: 1rem;
+                width: 50%;
+                h1{
+                    font-size: 2.2rem;
+                }
+            }
+            @include ipad{
+                h1{
+                    font-size: 2.5rem;
+                }
+            }
+            @include desktop{
+                width: 40%;
+                h1{
+                    font-size: 3rem;
+                }
+            }
         }
 
         .search-bar{
             width: 100%;
             position: absolute;
             top: 100%;
+            @include tablet{
+                max-width: 600px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
 
             input{
                 padding: 1.2rem 0.5rem;

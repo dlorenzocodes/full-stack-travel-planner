@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import GoogleBtn from '../components/GoogleBtn'
 import { useSelector, useDispatch } from 'react-redux'
 import { useAuthValidation } from '../hooks/useAuthValidation'
-import { invalidInputError } from '../features/error/errorSlice'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { reset, login, googleSignInFailure, getGoogleSignUrl } from '../features/auth/authSlice'
 
@@ -19,9 +18,9 @@ function Login() {
 
     const [btnDisabled, setBtnDisbaled] = useState(true)
     const [searchParams] = useSearchParams()
+    const [errorMessage, setErrorMessage] = useState('')
 
     const { email, password } = formData
-    const { errorMessage } = useSelector(state => state.error)
     const { isError, isAccountCreated, isLoginSuccess, message } = useSelector( state => state.auth)
 
     const { validate, errors } = useAuthValidation()
@@ -76,7 +75,13 @@ function Login() {
     // EVENTS
     const onBlur = (e) => validate(e.target)
 
-    const validatePassword = (e) => dispatch(invalidInputError(e.target.value))
+    const validatePassword = (e) => {
+        if(e.target.value !== ''){
+            setErrorMessage('')
+        } else{
+            setErrorMessage('Input is not valid')
+        }
+    }
 
     const socialSignIn = () => dispatch(getGoogleSignUrl())
 
@@ -91,6 +96,14 @@ function Login() {
         e.preventDefault()
 
         if(btnDisabled) return
+
+        if(
+            errors.name !== null ||
+            errorMessage !== ''
+        ){
+            toast.error('Please fix errors before submitting!')
+            return
+        }
 
         dispatch(login(formData))
         setFormData({
@@ -132,7 +145,7 @@ function Login() {
                     </div>
 
                     <div className='pw-recovery'>
-                    <Link to='/'>Forgot password?</Link>
+                    <Link to='/forgot-password'>Forgot password?</Link>
                     </div>
 
                     <div className='form-control'>

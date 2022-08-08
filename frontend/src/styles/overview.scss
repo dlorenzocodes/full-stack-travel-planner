@@ -3,6 +3,12 @@
 .trip-overview{
     font-family: $font-family;
 
+    @include large-desktop{
+        .section-heading{
+            font-size: 1.2rem;
+        }
+    }
+
     .reservation-icons{
         background-color: $section-color;
         border-radius: 10px;
@@ -11,21 +17,35 @@
         justify-content: space-between;
         padding: 1.5rem 0.8rem;
         margin-top: 0.8rem;
+        @include large-desktop{
+            margin-top: 1.5rem;
+        }
 
         button{
             width: 25%;
             border: none;
             background-color: transparent;
             cursor: pointer;
+            transition: transform 300ms ease-in-out;
 
             p{
                 font-weight: $medium-weight;
                 margin-top: 0.5rem;
+                @include large-desktop{
+                    font-size: 1rem;
+                }
             }
 
             svg{
                 width: 2rem;
                 height: 100%;
+                @include large-desktop{
+                    width: 2.5rem;
+                }
+            }
+
+            &:hover{
+                transform: scale(1.05);
             }
         }
     }
@@ -40,6 +60,10 @@
                 margin-top: 1rem;
                 border-bottom: 1px solid $primary-color;
                 padding-bottom: 0.8rem;
+                @include large-desktop{
+                    margin-top: 1.5rem;
+                    padding-bottom: 1.2rem;
+                }
 
                 div{
                     display: flex;
@@ -87,7 +111,11 @@
                         .notes-container,
                         .cars-container{
                             color: $primary-color;
-                            width: 100%;
+                            @include desktop{
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                                gap: 20px;
+                            }
                         
                             .flight-info,
                             .lodging-info,
@@ -100,10 +128,12 @@
                                 padding: 1rem;
                                 margin-bottom: 1rem;
                                 border-radius: 10px;
+                                @include tablet{
+                                    padding: 2rem;
+                                }
 
-                                p{
-                                    padding: 0;
-                                    color: $primary-color;
+                                @include desktop{
+                                    margin-bottom: 0;
                                 }
                         
                                 h2{
@@ -114,9 +144,27 @@
                                     font-weight: $semibold-weight;
                                     text-transform: uppercase;
                                 }
+
+                                p{
+                                    padding: 0;
+                                    color: $primary-color;
+                                }
+
+                                button{
+                                    border: none;
+                                    background-color: transparent;
+                                    cursor: pointer;
+
+                                    svg{
+                                        pointer-events: none;
+                                    }
+                                }
                         
                                 div{
-                                    padding: 1rem 0;
+                                    padding: 0.5rem 0;
+                                    flex-direction: column;
+                                    align-items: flex-start;
+                                    width: 100%;
 
                                     .departure-info,
                                     .arrival-info,
@@ -124,9 +172,6 @@
                                     .checkout-info,
                                     .pickup-info,
                                     .dropoff-info{
-                                        flex-direction: column;
-                                        align-items: flex-start;
-                                        padding-right: 1.5rem;
                         
                                         p{
                                             text-align: left;
@@ -136,6 +181,11 @@
                                         }
                                     }
                         
+                                }
+
+                                .operation-icons{
+                                    flex-direction: row;
+                                    justify-content: flex-start;
                                 }
                             }
 

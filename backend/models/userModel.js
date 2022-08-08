@@ -24,7 +24,15 @@ const userSchema = mongoose.Schema({
             return this.strategy === 'local';
         },
         min: 8
-    }
+    },
+    profile: {
+        type: String
+    },
+    profileName:{
+        type: String
+    },
+    resetToken: String,
+    resetTokenExpiration: Date
 },
 {
     timestamps: true,
@@ -41,13 +49,16 @@ userSchema.methods.generateToken = function() {
 const validateUser = (userData) => {
     const schema = Joi.object({
         name: Joi.string()
+        .trim()
         .min(3)
         .pattern(/^[A-Za-z]+$/)
         .required(),
         email: Joi.string()
+        .trim()
         .pattern(/^[^@]+@[^@.]+\.[a-z]+$/)
         .required(),
         password: Joi.string()
+            .trim()
             .min(8)
             .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
             .required(),

@@ -13,8 +13,7 @@ function Search() {
             <div className='search-wrapper'>
                 <h3 className='subheading-text'>{date}</h3>
                 <div className='main-title'>
-                    <h1>Where do</h1>
-                    <h1>you want to go?</h1>
+                    <h1>Where do you want to go?</h1>
                 </div>
                 <SearchBar />
             </div>

@@ -1,20 +1,52 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
+import { useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
-import { closeNoteModal } from '../../features/modals/modalSlice'
-import { addNoteReservation } from '../../features/trip/tripSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { closeNoteModal, resetEdits } from '../../features/modals/modalSlice'
+import { addNoteReservation, addEditedCategoryItem } from '../../features/trip/tripSlice'
+import { useDecode } from '../../hooks/useDecode'
 
 function NoteModal() {
 
   const dispatch = useDispatch()
 
   const [ note, setNote ] = useState('')
+  const { Notes } = useSelector( state => state.trip )
+  const { isEditNotes, index: noteIndex } = useSelector( state => state.modal )
+  const { decodeString } = useDecode()
+
+  useEffect(() => {
+    if(isEditNotes){
+      const noteItem = Notes.find((item, index) => index === noteIndex)
+      setNote(noteItem.note)
+    }
+  },[isEditNotes, noteIndex, Notes])
 
   const handleNote = (e) => setNote(e.target.value)
 
   const closeModal = () => dispatch(closeNoteModal())
+
   const addNote = () => {
-    dispatch(addNoteReservation({note}))
+    if(note === ''){
+      toast.error('Please fill note field!')
+      return
+    }
+
+    
+
+    if(isEditNotes) {
+      const data = {
+        category: 'Notes',
+        index: noteIndex,
+        formData: { note: decodeString(note) }
+      }
+      dispatch(addEditedCategoryItem(data))
+      dispatch(closeNoteModal())
+      dispatch(resetEdits())
+      return
+    }
+
+    dispatch(addNoteReservation({ note: decodeString(note) }))
     dispatch(closeNoteModal())
   }
 
@@ -23,6 +55,9 @@ function NoteModal() {
         <form>
           <XIcon onClick={closeModal}/>
           <h3>Add note</h3>
+          <span className='required-field error'>
+            Note field is required
+          </span>
           <div className='trip-form-control'>
           <textarea 
               name='note' 

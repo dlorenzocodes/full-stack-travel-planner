@@ -22,13 +22,16 @@ const getUserCoordinates = async () => {
     }
 };
 
+
+// @desc   Gets places recomendations
+// @route  GET /places/recomendations
+// @access Public
 const getPlacesRecomendations = async (req, res, next) => {
     try{
         const response = await getUserCoordinates();
 
         if(response.hasOwnProperty('messages')){
             res.status(response.code);
-            // Server Error?
             throw new Error(response.messages);
         }
 
@@ -50,6 +53,7 @@ const getPlacesRecomendations = async (req, res, next) => {
         }
 
     }catch(err){
+        logger.error(err);
         next(err);
     }
 }

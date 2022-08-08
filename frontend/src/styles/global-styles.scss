@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 @import 'variables.scss';
+@import 'mixin.scss';
 
 *,
 *::before,
@@ -60,17 +61,11 @@ input:focus{
 // CLASES
 .container{
     position: relative;
-}
-
-.container.isModal{
-    overflow: hidden;
-}
-
-.container{
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
+
 
 .section-padding{
     padding: 2rem 2.3rem;
@@ -87,6 +82,9 @@ input:focus{
 .subheading-text{
     font-size: $subheading-size;
     font-weight: $medium-weight;
+    @include ipad{
+        font-size: 1rem;
+    }
 }
 
 .form-control{
@@ -109,18 +107,22 @@ textarea,
     font-size: $base-size;
     cursor: pointer;
     transition: all 300ms ease-in-out;
+
+    @include tablet{
+        max-width: 400px;
+        margin: auto;
+    }
 }
 
 .btn:hover{
-    margin-left: 0.6rem;
-    margin-right: 0.6rem;
+    transform: scale(1.025);
+    box-shadow: $box-shadow;
 }
 
 .error{
-    background-color: #f8ceb3;
-    padding: 0.8rem 0.5rem;
-    border: 1px solid $accent-color;
-    border-radius: $border-radius;
+    background-color: #fef1e8;
+    padding: 0.5rem 0.25rem;
+    border-radius: 5px;
 }
 
 .arrow-left,
@@ -138,22 +140,80 @@ textarea,
 .spinner-container{
     flex-grow: 2;
     width: 100%;
+    min-height: 100vh;
+    position: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: rgba(0,0,0,0.5);
 }
 
 .spinner{
-    background: url('../assets/loader.gif');
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 60px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
+    border: 5px solid;
+    border-color: $section-color transparent $section-color transparent;
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
 }
+
+.itinerary-form{
+    padding: 2rem 1rem 1rem; 
+    background-color: $section-color;
+    border-radius: 20px;
+    display: block !important;
+
+
+    fieldset{
+        border: none;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 1rem;
+
+        .add-btn{
+            background-color: transparent;
+            transition: transform 300ms ease-in-out;
+
+            svg{
+                width: 2.8rem;
+            }
+
+            &:hover{
+                transform: scale(1.1);
+            }
+        }
+    }
+}
+
+.no-pt{
+    padding-top: 0;
+}
+
+.pb-1{
+    padding-bottom: 1rem;
+}
+
+
 
 // Category Buttons
 .trip-categories{
-    margin-top: 2.75rem;
+    margin-top: 2.75rem ;
+    max-width: 600px;
+    margin: 2.75rem auto;
+    @include desktop{
+        max-width: 800px;
+    }
+    @include large-desktop{
+        max-width: 1100px;
+    }
 
     .categories{
         display: flex;
@@ -172,6 +232,9 @@ textarea,
             padding-bottom: 0.5rem;
             cursor: pointer;
             font-weight: $semibold-weight;
+            @include large-desktop{
+                font-size: 1.2rem;
+            }
         }
 
         button.active{
@@ -193,13 +256,13 @@ textarea,
 }
 
 // Trip Modals
-.flight-modal-container{
+.flight-modal-container,
+.hotel-modal-container,
+.other-modal-container{
     padding-top: 2rem;
 }
 
-.hotel-modal-container{
-    padding-top: 6rem;
-}
+
 
 .car-modal-container{
     padding-top: 3rem;
@@ -234,9 +297,6 @@ textarea,
     }
 }
 
-.other-modal-container{
-    padding-top: 8rem;
-}
 
 .note-modal-container{
     padding-top: 15rem;
@@ -244,6 +304,9 @@ textarea,
 
 .expense-modal-container{
     padding-top: 9rem;
+    @include small-screen{
+        padding-top: 4rem;
+    }
 }
 
 .trip-form-control{
@@ -264,3 +327,65 @@ textarea,
     margin-top: 0.5rem;
     text-align: left;
 }
+
+.required-field{
+    color: $accent-color;
+    font-style: italic;
+    margin-bottom: 0.8rem;
+}
+
+
+// Messages Styles
+.Toastify__progress-bar--error,
+.Toastify__progress-bar--info{
+    background: $accent-color !important;
+}
+
+
+.Toastify__toast-icon > svg{
+    fill: $accent-color !important;
+}
+
+// Not Found Page
+.not-found-container,
+.error-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+
+    p{
+        color: $primary-color;
+        font-weight: $semibold-weight;
+        text-align: center;
+        @include small-screen{
+            font-size: 0.8rem;
+        }
+    }
+
+    img{
+        width: 80%;
+        @include tablet{
+            width: 50%;
+        }
+        @include desktop{
+            width: 25%;
+        }
+    }
+
+    a{
+        background: $accent-color;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        color: #fff;
+        transition: all 300ms ease-in-out;
+
+        &:hover{
+            background: #fff;
+            border: 1px solid $accent-color;
+            color: $accent-color;
+        }
+    }
+}
+

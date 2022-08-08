@@ -8,17 +8,16 @@ import { useSearchParams } from 'react-router-dom'
 import Suggestions from '../components/Suggestions'
 import { useSelector, useDispatch } from 'react-redux'
 import { getCurrentUser } from '../features/auth/authSlice'
-import { resetTripState } from '../features/trip/tripSlice'
+import { resetDestinationState } from '../features/destination/destinationSlice'
 import { openSearchCityModal, closedSearchCityModel } from '../features/modals/modalSlice'
 
 function Home() {
 
   const { 
-    addTripModal, 
     addNewTripForm, 
     searchCityModal 
   } = useSelector( state => state.modal )
-  const { isError, isSuccess, message } = useSelector( state => state.trip )
+  const { isError, isSuccess, message } = useSelector( state => state.destination )
 
   const [searchParams] = useSearchParams()
   const dispatch = useDispatch()
@@ -46,7 +45,7 @@ function Home() {
   useEffect(() => {
     if(isError) {
       toast.error(message)
-      dispatch(resetTripState())
+      dispatch(resetDestinationState())
     } 
 
     if(isSuccess) dispatch(openSearchCityModal())
@@ -55,7 +54,7 @@ function Home() {
 
   return (
     <div 
-      className={ addTripModal ? 'container isModal' : 'container'}
+      className='container'
     >
       <Search />
       <Suggestions />

@@ -28,9 +28,9 @@ function useTime() {
             }
 
             return `${hour}:${minutes} AM`
-        } else{
-            return ''
-        }
+        } 
+
+        return ''
     }
 
     return { formatTime }

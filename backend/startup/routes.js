@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const users = require('../routes/userRoutes');
@@ -7,18 +8,17 @@ const tripRoutes = require('../routes/tripRoutes');
 const cors = require('cors');
 const errorHandler = require('../middleware/errorMiddleware');
 
-
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: process.env.ORIGIN,
     methods: 'PUT, POST, DELETE, GET',
     allowedHeaders: ['Content-Type', 'Set-Cookie'],
     credentials: true,
 }
 
-
 module.exports = function(app){
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
+    app.use(express.static(path.join(__dirname, '../','public/assets')));
     app.use(cors(corsOptions));
     app.use(cookieParser());
     app.use('/users', users);
