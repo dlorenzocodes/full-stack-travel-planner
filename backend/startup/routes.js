@@ -9,7 +9,7 @@ const cors = require('cors');
 const errorHandler = require('../middleware/errorMiddleware');
 
 const corsOptions = {
-    origin: process.env.ORIGIN,
+    origin: process.env.CLIENT_URL,
     methods: 'PUT, POST, DELETE, GET',
     allowedHeaders: ['Content-Type', 'Set-Cookie'],
     credentials: true,
