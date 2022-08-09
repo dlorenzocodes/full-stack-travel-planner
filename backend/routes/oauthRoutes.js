@@ -17,7 +17,7 @@ router.get('/url', (req, res) => {
 });
 
 // Google callback route
-router.get('/', async (req, res, next) => {
+router.get('/google-callback', async (req, res, next) => {
     const code = String(req.query.code);
    
     try{
