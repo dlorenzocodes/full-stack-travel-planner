@@ -26,13 +26,13 @@ router.get('/', async (req, res, next) => {
         const exsistingUser = await User.findOne({ email: user.email });
 
         if(exsistingUser && exsistingUser.strategy !== 'google'){
-            return res.redirect('http://localhost:3000/login?error=true');
+            return res.redirect(`${process.env.CLIENT_URL}/login?error=true`);
         }
 
         if(exsistingUser){
             const jwtToken = exsistingUser.generateToken();
             res.cookie('jwt', jwtToken, cookieOptions);
-            return res.redirect('http://localhost:3000/?success=true');
+            return res.redirect(`${process.env.CLIENT_URL}/?success=true`);
         }
 
         try{
@@ -45,12 +45,12 @@ router.get('/', async (req, res, next) => {
             if(newUser) {
                 const jwtToken = newUser.generateToken();
                 res.cookie('jwt', jwtToken, cookieOptions);
-                res.redirect('http://localhost:3000/?success=true');
+                res.redirect(`${process.env.CLIENT_URL}/?success=true`);
             }
 
             req.user = newUser;
         }catch(err){
-            res.redirect('http://localhost:3000/login?error=true');
+            res.redirect(`${process.env.CLIENT_URL}/login?error=true`);
             logger.error(err);
         }
 
@@ -70,7 +70,8 @@ router.get('/failed', (req, res, next) => {
             throw new Error('Unable to sign you in');
         }
     }catch(err){
-        next(err)
+        logger.error(err);
+        next(err);
     }
 
 });
