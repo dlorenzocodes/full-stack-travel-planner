@@ -7,7 +7,6 @@ const placesRoutes = require('../routes/placesRoutes');
 const tripRoutes = require('../routes/tripRoutes');
 const cors = require('cors');
 const errorHandler = require('../middleware/errorMiddleware');
-const { serveHTTPS } = require('../utils/serveHTTPS');
 
 const corsOptions = {
     origin: process.env.CLIENT_URL,
@@ -15,8 +14,6 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Set-Cookie'],
     credentials: true,
 }
-
-console.log(`path: ${path.resolve(__dirname, '../../', 'frontend', 'build', 'index.html')}`)
 
 module.exports = function(app){
     app.use(express.json());
@@ -36,7 +33,5 @@ module.exports = function(app){
             res.sendFile(path.resolve(__dirname, '../../', 'frontend', 'build', 'index.html'));
         })
     }
-
-    app.use(serveHTTPS);
     app.use(errorHandler);
 }
