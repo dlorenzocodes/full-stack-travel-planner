@@ -7,6 +7,7 @@ const placesRoutes = require('../routes/placesRoutes');
 const tripRoutes = require('../routes/tripRoutes');
 const cors = require('cors');
 const errorHandler = require('../middleware/errorMiddleware');
+const { serveHTTPS } = require('../utils/serveHTTPS');
 
 const corsOptions = {
     origin: process.env.CLIENT_URL,
@@ -36,5 +37,6 @@ module.exports = function(app){
         })
     }
 
+    app.use(serveHTTPS);
     app.use(errorHandler);
 }
