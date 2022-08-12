@@ -16,6 +16,16 @@ const corsOptions = {
 }
 
 module.exports = function(app){
+    
+    if(process.env.NODE_ENV === 'production') {
+        app.use((req, res, next) => {
+          if (req.header('x-forwarded-proto') !== 'https')
+            res.redirect(`https://${req.header('host')}${req.url}`)
+          else
+            next()
+        })
+    }
+    
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
     app.use(express.static(path.join(__dirname, '../','public/assets')));
@@ -31,15 +41,6 @@ module.exports = function(app){
         app.use(express.static(path.join(__dirname, '../', '../frontend/build')));
         app.get('*', (req, res) => {
             res.sendFile(path.resolve(__dirname, '../../', 'frontend', 'build', 'index.html'));
-        })
-    }
-
-    if(process.env.NODE_ENV === 'production') {
-        app.use((req, res, next) => {
-          if (req.header('x-forwarded-proto') !== 'https')
-            res.redirect(`https://${req.header('host')}${req.url}`)
-          else
-            next()
         })
     }
     
