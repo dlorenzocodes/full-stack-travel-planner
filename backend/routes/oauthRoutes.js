@@ -13,7 +13,8 @@ const cookieOptions = {
 
 
 router.get('/url', (req, res) => {
-    return res.send(getGoogleAuthUrl());
+    let url = getGoogleAuthUrl();
+    return res.send(url);       
 });
 
 // Google callback route
@@ -58,6 +59,7 @@ router.get('/google-callback', async (req, res, next) => {
 
     }catch(err){
         logger.error(err);
+        console.log(`Google Error: ${err}`)
     }
 });
 
