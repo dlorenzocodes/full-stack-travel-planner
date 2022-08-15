@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from './authService'
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
     user: null,
@@ -157,6 +157,22 @@ export const handleTokenVerification = createAsyncThunk(
 )
 
 
+export const googleTest = createAsyncThunk(
+    'auth/googleTest',
+    async(_, thunkAPI) => {
+        try{
+            return await authService.testingGoogle()
+        }catch(err){
+            let message
+
+            if(err.response.data !== undefined) return message = err.response.data.message
+            message = err
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -268,6 +284,15 @@ const authSlice = createSlice({
                 state.isTokenValid = false
                 state.isError = true
                 state.message = action.payload
+            })
+            .addCase(googleTest.fulfilled, (state, action) => {
+                state.isLoginSuccess = true
+                state.user = action.payload
+            })
+            .addCase(googleTest.rejected, (state, action) => {
+                state.isLoginSuccess = false
+                state.isError = true
+                state.message = action.payload || 'Unsuccessfull google validation!'
             })
     }
 })

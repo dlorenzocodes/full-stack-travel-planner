@@ -18,48 +18,71 @@ router.get('/url', (req, res) => {
 });
 
 // Google callback route
-router.get('/google-callback', async (req, res, next) => {
-    const code = String(req.query.code);
+router.post('/', async (req, res, next) => {
+    // const code = String(req.query.code);
+
+    const { user, email } = req.body;
+    console.log(user, email)
    
     try{
-        const user = await getGoogleUser(code);
+        // const user = await getGoogleUser(code);
         
-        const exsistingUser = await User.findOne({ email: user.email });
+        // const exsistingUser = await User.findOne({ email: user.email });
+
+        if(!user || !email) {
+            res.status(400);
+            throw new Error('An error has occured. Please try again later!');
+        }
+
+        const exsistingUser = await User.findOne({ email });
 
         if(exsistingUser && exsistingUser.strategy !== 'google'){
-            return res.redirect(`${process.env.CLIENT_URL}/login?error=true`);
+            // return res.redirect(`${process.env.CLIENT_URL}/login?error=true`);
+            res.status(400);
+            throw new Error('This email is already linked to an account. Please use a different email!')
         }
 
         if(exsistingUser){
             const jwtToken = exsistingUser.generateToken();
             res.cookie('jwt', jwtToken, cookieOptions);
-            return res.redirect(`${process.env.CLIENT_URL}/?success=true`);
+            // return res.redirect(`${process.env.CLIENT_URL}/?success=true`);
+            return res.status(200).send({ name: exsistingUser.name, id: exsistingUser._id });
+            
         }
 
         try{
+            // const newUser = await User.create({
+            //     name: user.given_name,
+            //     email: user.email,
+            //     strategy: 'google'
+            // });
+
             const newUser = await User.create({
-                name: user.given_name,
-                email: user.email,
+                name: user,
+                email,
                 strategy: 'google'
             });
 
             if(newUser) {
                 const jwtToken = newUser.generateToken();
                 res.cookie('jwt', jwtToken, cookieOptions);
-                res.redirect(`${process.env.CLIENT_URL}/?success=true`);
+                // res.redirect(`${process.env.CLIENT_URL}/?success=true`);
+                return res.status(200).send({ name: newUser.name, id: newUser._id });
             }
 
             req.user = newUser;
         }catch(err){
-            res.redirect(`${process.env.CLIENT_URL}/login?error=true`);
+            // res.redirect(`${process.env.CLIENT_URL}/login?error=true`);
             logger.error(err);
+            throw new Error('An error has ocurred. Please try again later!')
         }
 
         req.user = exsistingUser;
 
     }catch(err){
         logger.error(err);
-        console.log(`Google Error: ${err}`)
+        console.log(err);
+        next(err);
     }
 });
 

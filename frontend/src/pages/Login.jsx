@@ -6,8 +6,7 @@ import GoogleBtn from '../components/GoogleBtn'
 import { useSelector, useDispatch } from 'react-redux'
 import { useAuthValidation } from '../hooks/useAuthValidation'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { reset, login, googleSignInFailure, getGoogleSignUrl } from '../features/auth/authSlice'
-
+import { reset, login, googleSignInFailure, getGoogleSignUrl, googleTest } from '../features/auth/authSlice'
 
 function Login() {
 
@@ -53,17 +52,17 @@ function Login() {
     }, [isError, isLoginSuccess, message, naviagte, dispatch])
 
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            let queryparam = searchParams.get('error')
-            if(searchParams.get('error') && queryparam) {
-                dispatch(googleSignInFailure())
-            }
-        }, 1000)
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         let queryparam = searchParams.get('error')
+    //         if(searchParams.get('error') && queryparam) {
+    //             dispatch(googleSignInFailure())
+    //         }
+    //     }, 1000)
 
-        return () => clearTimeout(timer)
+    //     return () => clearTimeout(timer)
 
-    }, [searchParams, dispatch])
+    // }, [searchParams, dispatch])
 
 
     useEffect(() => {
@@ -83,7 +82,9 @@ function Login() {
         }
     }
 
-    const socialSignIn = () => dispatch(getGoogleSignUrl())
+    // const socialSignIn = () => dispatch(getGoogleSignUrl())
+
+    const socialSignIn = () => dispatch(googleTest())
 
     const handleForm = (e) => {
         setFormData(prevState => ({

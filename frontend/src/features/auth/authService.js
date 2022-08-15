@@ -1,4 +1,6 @@
 import axios from "axios"
+import '../../config/intializeFirebase'
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
 
 
 const register = async (userData) => {
@@ -109,6 +111,38 @@ const verifyToken = async (data) => {
     return await response.data
 }
 
+
+const testingGoogle = async() => {
+    const provider = new GoogleAuthProvider()
+    const auth = getAuth()
+
+    try{
+
+        const result = await signInWithPopup(auth, provider)
+        const credential = GoogleAuthProvider.credentialFromResult(result)
+    
+        // eslint-disable-next-line
+        const token = credential.accessToken
+        const user = result.user
+    
+        const userData = { user: user.displayName, email: user.email }
+        const response = await axios.post(
+            '/auth/google',
+            userData,
+            {
+                headers: { 'Content-Type': 'application/json '},
+                withCredentials: true
+            }
+        )
+        
+        return await response.data
+
+    }catch(err){
+        throw new Error('Unsuccessfull google validation!')
+    }
+
+}
+
 const authService = {
     register,
     login,
@@ -120,7 +154,8 @@ const authService = {
     deleteProfileImage,
     forgotPassword,
     resetPassword,
-    verifyToken
+    verifyToken,
+    testingGoogle
 }
 
 export default authService
