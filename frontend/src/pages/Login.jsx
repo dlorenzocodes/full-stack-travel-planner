@@ -6,7 +6,7 @@ import GoogleBtn from '../components/GoogleBtn'
 import { useSelector, useDispatch } from 'react-redux'
 import { useAuthValidation } from '../hooks/useAuthValidation'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { reset, login, googleTest } from '../features/auth/authSlice'
+import { reset, login, handleGoogleValidation } from '../features/auth/authSlice'
 
 function Login() {
 
@@ -69,7 +69,7 @@ function Login() {
         }
     }
 
-    const socialSignIn = () => dispatch(googleTest())
+    const socialSignIn = () => dispatch(handleGoogleValidation())
 
     const handleForm = (e) => {
         setFormData(prevState => ({
