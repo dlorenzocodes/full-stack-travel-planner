@@ -39,30 +39,7 @@ export const login = createAsyncThunk(
     }
 )
 
-// Login user via Google
-export const getGoogleSignUrl = createAsyncThunk(
-    'auth/getGoogleUrl',
-    async(_, thunkAPI) => {
-        try{
-            return await authService.getGoogleUrl()
-        }catch(err){
-            const message = err.response.data.message
-            return thunkAPI.rejectWithValue(message)
-        }
-    }
-)
 
-export const googleSignInFailure = createAsyncThunk(
-    'auth/googleSignInFailure',
-    async(_, thunkAPI) => {
-        try{
-            return await authService.googleSignInFailure()
-        }catch(err){
-            const message = err.response.data.message
-            return thunkAPI.rejectWithValue(message)
-        }
-    }
-)
 
 // Get current user
 export const getCurrentUser = createAsyncThunk(
@@ -156,8 +133,8 @@ export const handleTokenVerification = createAsyncThunk(
     }
 )
 
-
-export const googleTest = createAsyncThunk(
+// Google validation 
+export const handleGoogleValidation = createAsyncThunk(
     'auth/googleTest',
     async(_, thunkAPI) => {
         try{
@@ -202,10 +179,6 @@ const authSlice = createSlice({
                 state.user = action.payload
             })
             .addCase(login.rejected, (state, action) => {
-                state.isError = true
-                state.message = action.payload
-            })
-            .addCase(googleSignInFailure.rejected, (state, action) => {
                 state.isError = true
                 state.message = action.payload
             })
@@ -285,11 +258,11 @@ const authSlice = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
-            .addCase(googleTest.fulfilled, (state, action) => {
+            .addCase(handleGoogleValidation.fulfilled, (state, action) => {
                 state.isLoginSuccess = true
                 state.user = action.payload
             })
-            .addCase(googleTest.rejected, (state, action) => {
+            .addCase(handleGoogleValidation.rejected, (state, action) => {
                 state.isLoginSuccess = false
                 state.isError = true
                 state.message = action.payload || 'Unsuccessfull google validation!'

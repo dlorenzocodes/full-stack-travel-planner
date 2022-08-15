@@ -112,7 +112,7 @@ const verifyToken = async (data) => {
 }
 
 
-const testingGoogle = async() => {
+const googleValidation = async() => {
     const provider = new GoogleAuthProvider()
     const auth = getAuth()
 
@@ -155,7 +155,7 @@ const authService = {
     forgotPassword,
     resetPassword,
     verifyToken,
-    testingGoogle
+    googleValidation
 }
 
 export default authService

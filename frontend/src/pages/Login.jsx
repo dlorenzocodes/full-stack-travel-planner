@@ -6,7 +6,7 @@ import GoogleBtn from '../components/GoogleBtn'
 import { useSelector, useDispatch } from 'react-redux'
 import { useAuthValidation } from '../hooks/useAuthValidation'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { reset, login, googleSignInFailure, getGoogleSignUrl, googleTest } from '../features/auth/authSlice'
+import { reset, login, googleTest } from '../features/auth/authSlice'
 
 function Login() {
 
@@ -52,19 +52,6 @@ function Login() {
     }, [isError, isLoginSuccess, message, naviagte, dispatch])
 
 
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         let queryparam = searchParams.get('error')
-    //         if(searchParams.get('error') && queryparam) {
-    //             dispatch(googleSignInFailure())
-    //         }
-    //     }, 1000)
-
-    //     return () => clearTimeout(timer)
-
-    // }, [searchParams, dispatch])
-
-
     useEffect(() => {
         if( email !== '' && password !== '') setBtnDisbaled(false)
         else setBtnDisbaled(true)
@@ -81,8 +68,6 @@ function Login() {
             setErrorMessage('Input is not valid')
         }
     }
-
-    // const socialSignIn = () => dispatch(getGoogleSignUrl())
 
     const socialSignIn = () => dispatch(googleTest())
 
