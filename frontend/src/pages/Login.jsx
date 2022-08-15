@@ -3,9 +3,9 @@ import { toast } from 'react-toastify'
 import Button from '../components/Button'
 import { useState, useEffect } from 'react'
 import GoogleBtn from '../components/GoogleBtn'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useAuthValidation } from '../hooks/useAuthValidation'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { reset, login, handleGoogleValidation } from '../features/auth/authSlice'
 
 function Login() {
@@ -16,7 +16,6 @@ function Login() {
     })
 
     const [btnDisabled, setBtnDisbaled] = useState(true)
-    const [searchParams] = useSearchParams()
     const [errorMessage, setErrorMessage] = useState('')
 
     const { email, password } = formData

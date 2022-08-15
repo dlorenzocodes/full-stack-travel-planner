@@ -138,7 +138,7 @@ export const handleGoogleValidation = createAsyncThunk(
     'auth/googleTest',
     async(_, thunkAPI) => {
         try{
-            return await authService.testingGoogle()
+            return await authService.googleValidation()
         }catch(err){
             let message
 
@@ -265,7 +265,7 @@ const authSlice = createSlice({
             .addCase(handleGoogleValidation.rejected, (state, action) => {
                 state.isLoginSuccess = false
                 state.isError = true
-                state.message = action.payload || 'Unsuccessfull google validation!'
+                state.message = action.payload || 'Unsuccessful google validation!'
             })
     }
 })
