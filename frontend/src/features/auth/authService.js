@@ -1,5 +1,5 @@
 import axios from "axios"
-import '../../config/intializeFirebase'
+import '../../config/initilaizeFirebase.js'
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
 
 
