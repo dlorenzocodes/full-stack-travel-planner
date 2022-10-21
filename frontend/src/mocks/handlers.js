@@ -29,4 +29,13 @@ export const handlers = [
       ])
     );
   }),
+  rest.post("/trips/city-info", (req, res, ctx) => {
+    return res(
+      ctx.json({
+        title: "Miami",
+        imageURl: "http://localhost:5000/Miami.jpg",
+        cityInfo: "Miami is a beautil city",
+      })
+    );
+  }),
 ];

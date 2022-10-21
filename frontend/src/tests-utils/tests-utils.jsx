@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { setupStore } from "../app/setupStore";
+import { BrowserRouter as Router } from "react-router-dom";
 
 export function renderWithProviders(
   ui,
@@ -11,7 +12,11 @@ export function renderWithProviders(
   } = {}
 ) {
   function Wrapper({ children }) {
-    return <Provider store={store}>{children}</Provider>;
+    return (
+      <Provider store={store}>
+        <Router>{children}</Router>
+      </Provider>
+    );
   }
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
