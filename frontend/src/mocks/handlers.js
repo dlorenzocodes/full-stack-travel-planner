@@ -19,11 +19,11 @@ export const handlers = [
         [
           {
             name: "Panera",
-            vacinity: "697 Spring Street",
+            vicinity: "697 Spring Street",
           },
           {
             name: "Art Gallery",
-            vacinity: "9857 Lincoln Ave",
+            vicinity: "9857 Lincoln Ave",
           },
         ],
       ])
